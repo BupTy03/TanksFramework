@@ -1,4 +1,3 @@
-#pragma once
 #ifndef GAME_HPP
 #define GAME_HPP
 
@@ -22,7 +21,7 @@ namespace tf
 		virtual sf::Vector2u getSizeInWalls() const;
 		void mainLoop();
 
-		void addWall(Wall* w);
+		void addWall(Wall& w);
 
 	protected:		
 		virtual void drawWalls();
