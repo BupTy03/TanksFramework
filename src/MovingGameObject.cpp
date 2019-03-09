@@ -66,7 +66,7 @@ namespace tf
 		return timer_->isSingleShot();
 	}
 
-	void MovingGameObject::onTimerCall()
+	void MovingGameObject::handleEvent(Observable& observ)
 	{
 	}
 

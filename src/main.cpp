@@ -10,7 +10,7 @@
 int main()
 {
 	constexpr int window_width = 800;
-	auto window = std::make_shared<sf::RenderWindow>(sf::VideoMode({ window_width, window_width }), "title");
+	auto window = std::make_shared<sf::RenderWindow>(sf::VideoMode({ window_width, window_width }), "Tanks 2.0");
 
 	tf::Game game(window, sf::Vector2u(20, 20));
 

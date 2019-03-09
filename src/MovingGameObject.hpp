@@ -3,6 +3,7 @@
 #define MOVING_OBJECT_HPP
 
 #include "GameObject.hpp"
+#include "Observer.hpp"
 #include "GameTimer.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -18,7 +19,7 @@ namespace tf
 		RIGHT
 	};
 
-	struct MovingGameObject : GameObject
+	struct MovingGameObject : Observer, GameObject
 	{
 		MovingGameObject();
 		virtual ~MovingGameObject();
@@ -43,8 +44,7 @@ namespace tf
 		void setTimerSingleShot(bool sshot);
 		bool isTimerSingleShot();
 
-	protected:
-		virtual void onTimerCall();
+		virtual void handleEvent(Observable& observ) override;
 
 	private:
 		std::size_t step_{};
