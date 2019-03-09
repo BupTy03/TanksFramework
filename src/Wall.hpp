@@ -16,10 +16,15 @@ namespace tf
 
 	struct Wall : GameObject
 	{
-		Wall(const sf::Vector2f& pos, float sz);
+		Wall();
+		Wall(sf::Vector2f sz);
+		Wall(sf::Vector2f pos, sf::Vector2f sz);
 
-		virtual const sf::Vector2f& getSize() const override;
-		virtual void setSize(const sf::Vector2f& sz) override;
+		virtual sf::Vector2f getSize() const override;
+		virtual void setSize(sf::Vector2f sz) override;
+
+		virtual sf::Vector2f getPosition() const override;
+		virtual void setPosition(sf::Vector2f pos) override;
 
 		virtual void draw(sf::RenderWindow& win) override;
 		virtual bool intersects(const GameObject& other) const override;

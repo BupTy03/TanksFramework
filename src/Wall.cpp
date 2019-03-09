@@ -3,26 +3,45 @@
 namespace tf
 {
 
-	Wall::Wall(const sf::Vector2f& pos, float sz)
-			: rectShape_(sf::Vector2f(sz, sz))
+	Wall::Wall()
+	{
+		rectShape_.setFillColor(sf::Color(62, 64, 55));
+		rectShape_.setOutlineColor(sf::Color(107, 109, 99));
+	}
+
+	Wall::Wall(sf::Vector2f pos)
 	{
 		rectShape_.setPosition(pos);
 		rectShape_.setFillColor(sf::Color(62, 64, 55));
-		rectShape_.setOutlineThickness(-sz / 6.f);
 		rectShape_.setOutlineColor(sf::Color(107, 109, 99));
-		rectShape_.setTextureRect(
-			sf::IntRect(static_cast<int>(pos.x), static_cast<int>(pos.y), 
-						static_cast<int>(sz), static_cast<int>(sz))
-		);
 	}
 
-	const sf::Vector2f& Wall::getSize() const
+	Wall::Wall(sf::Vector2f pos, sf::Vector2f sz)
+		: rectShape_(sz)
+	{
+		rectShape_.setPosition(pos);
+		rectShape_.setFillColor(sf::Color(62, 64, 55));
+		rectShape_.setOutlineThickness(-((sz.x + sz.y) / 2.f) / 9.f);
+		rectShape_.setOutlineColor(sf::Color(107, 109, 99));
+	}
+
+	sf::Vector2f Wall::getSize() const
 	{
 		return rectShape_.getSize();
 	}
-	void Wall::setSize(const sf::Vector2f& sz)
+	void Wall::setSize(sf::Vector2f sz)
 	{
+		rectShape_.setOutlineThickness(-((sz.x + sz.y) / 2.f) / 9.f);
 		rectShape_.setSize(sz);
+	}
+
+	sf::Vector2f Wall::getPosition() const
+	{
+		return rectShape_.getPosition();
+	}
+	void Wall::setPosition(sf::Vector2f pos)
+	{
+		rectShape_.setPosition(pos);
 	}
 
 	void Wall::draw(sf::RenderWindow& win)

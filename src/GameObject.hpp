@@ -26,8 +26,12 @@ namespace tf
 		virtual void draw(sf::RenderWindow& w) = 0;
 		virtual bool intersects(const GameObject& other) const = 0;
 
-		virtual const sf::Vector2f& getSize() const = 0;
-		virtual void setSize(const sf::Vector2f& sz) = 0;
+		virtual sf::Vector2f getSize() const = 0;
+		virtual void setSize(sf::Vector2f sz) = 0;
+
+		virtual sf::Vector2f getPosition() const = 0;
+		virtual void setPosition(sf::Vector2f pos) = 0;
+
 		virtual const sf::IntRect& getRect() const = 0;
 
 	private:
