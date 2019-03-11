@@ -3,8 +3,9 @@
 #define GAME_TIMER_HPP
 
 #include "Observer.hpp"
+#include "signal.hpp"
 
-#include <list>
+#include <vector>
 #include <thread>
 #include <mutex>
 #include <chrono>
@@ -16,11 +17,10 @@ namespace tf
 
 	struct GameTimersDispatcher
 	{
-		static GameTimersDispatcher* Instance();
-		~GameTimersDispatcher();
+		friend class GameTimer;
 
-		void addTimer(GameTimer& tmr);
-		void deleteTimer(GameTimer& tmr);
+		static GameTimersDispatcher& Instance();
+		void dispatch();
 
 	private:
 		GameTimersDispatcher();
@@ -31,16 +31,17 @@ namespace tf
 		GameTimersDispatcher(GameTimersDispatcher&&) = delete;
 		GameTimersDispatcher& operator=(GameTimersDispatcher&&) = delete;
 
+		void addTimer(GameTimer& tmr);
+		void deleteTimer(GameTimer& tmr);
+
 	private:
-		std::list<GameTimer*> timers_;
+		std::vector<GameTimer*> timers_;
 		static GameTimersDispatcher* instance_;
-		std::thread mainThread_;
-		std::mutex mtx_;
 	};
 
-	struct GameTimer : Observable
+	struct GameTimer // : Observable
 	{
-		friend class GameTimersDispatcher;
+		//friend class GameTimersDispatcher;
 
 		GameTimer();
 		explicit GameTimer(std::size_t msec);
@@ -51,6 +52,8 @@ namespace tf
 
 		GameTimer(GameTimer&&) = delete;
 		GameTimer& operator=(GameTimer&&) = delete;
+
+		my::signal<> onTimerCall;
 
 		void start();
 		void start(std::size_t msec);
@@ -63,6 +66,7 @@ namespace tf
 		void setSingleShot(bool sshot);
 		bool isSingleShot();
 
+		bool isStopped() const;
 		std::size_t interval() const;
 		std::size_t timerId() const;
 		std::size_t elapsed() const;
@@ -71,8 +75,8 @@ namespace tf
 		std::chrono::steady_clock::time_point begin_time_;
 		std::chrono::steady_clock::time_point end_time_;
 		std::size_t interval_{};
-		bool single_{ false };
-		bool stopped_{ false };
+		bool single_{};
+		bool stopped_{};
 		std::size_t id_{};
 		static std::size_t timerId_;
 	};

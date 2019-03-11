@@ -15,22 +15,19 @@ struct Observer
 
 struct Observable
 {
-	void addObserver(Observer& obs)
+	virtual void addObserver(Observer& obs)
 	{
-		std::lock_guard<std::mutex> lock(mtx_);
 		observers_.push_back(&obs);
 	}
-	void delObserver(Observer& obs)
+	virtual void delObserver(Observer& obs)
 	{
-		std::lock_guard<std::mutex> lock(mtx_);
 		observers_.erase(std::remove(
 			std::begin(observers_), std::end(observers_), &obs
 		));
 	}
-	void notify()
+	virtual void notify()
 	{
-		std::lock_guard<std::mutex> lock(mtx_);
-		for(Observer* obs : observers_) {
+		for(auto obs : observers_) {
 			obs->handleEvent(*this);
 		}
 	}
@@ -40,7 +37,6 @@ struct Observable
 
 private:
 	std::vector<Observer*> observers_;
-	std::mutex mtx_;
 };
 
 #endif // OBSERVER_HPP

@@ -13,6 +13,16 @@ namespace tf
 	{
 	}
 
+	sf::Vector2f MovingGameObject::getIncrement()
+	{
+		return increment_;
+	}
+
+	void MovingGameObject::setIncrement(sf::Vector2f inc)
+	{
+		increment_ = inc;
+	}
+
 	std::size_t MovingGameObject::getStep()
 	{
 		return step_;

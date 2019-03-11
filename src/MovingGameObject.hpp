@@ -27,6 +27,9 @@ namespace tf
 		virtual void makeStep() = 0;
 		virtual void turn() = 0;
 
+		sf::Vector2f getIncrement();
+		void setIncrement(sf::Vector2f inc);
+
 		std::size_t getStep();
 		virtual void setStep(std::size_t step);
 
@@ -47,6 +50,7 @@ namespace tf
 		virtual void handleEvent(Observable& observ) override;
 
 	private:
+		sf::Vector2f increment_;
 		std::size_t step_{};
 		GameTimer* timer_{nullptr};
 		Direction dir_{Direction::FORWARD};

@@ -5,62 +5,35 @@ namespace tf
 
 	//	GameTimersDispatcher
 
-	GameTimersDispatcher* GameTimersDispatcher::Instance()
+	GameTimersDispatcher& GameTimersDispatcher::Instance()
 	{
-		if (instance_ == nullptr)
-		{
+		if (instance_ == nullptr) {
 			instance_ = new GameTimersDispatcher();
 		}
-
-		return instance_;
-	}
-
-	GameTimersDispatcher::~GameTimersDispatcher()
-	{
-		if (instance_ != nullptr) {
-			instance_->mainThread_.join();
-			delete instance_;
-		}
+		return *instance_;
 	}
 
 	void GameTimersDispatcher::addTimer(GameTimer& tmr)
 	{
-		std::lock_guard<std::mutex> lock(mtx_);
 		timers_.push_back(&tmr);
 	}
 
 	void GameTimersDispatcher::deleteTimer(GameTimer& tmr)
 	{
-		std::lock_guard<std::mutex> lock(mtx_);
 		timers_.erase(std::remove(std::begin(timers_), std::end(timers_), &tmr));
 	}
 
-	GameTimersDispatcher::GameTimersDispatcher() : mainThread_([this]()
+	void GameTimersDispatcher::dispatch()
 	{
-		while (true) {
-			std::lock_guard<std::mutex> lock(mtx_);
-			auto first = std::begin(timers_);
-			auto last = std::end(timers_);
-			while (first != last) {
-				GameTimer* curr = *first;
-				++first;
-				if (!curr->stopped_) {
-					//int diff = (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - curr->begin_time_)).count();
-					if (curr->elapsed() >= curr->interval_) {
-						curr->notify();
-						if (curr->single_){
-							curr->stopped_ = true;
-							timers_.erase(std::remove(std::begin(timers_), std::end(timers_), curr));
-						}
-						else {
-							curr->begin_time_ = std::chrono::steady_clock::now();
-						}
-					}
-				}
+		for(auto timer : timers_) {
+			if (!timer->isStopped() && timer->elapsed() >= timer->interval()) {
+				//timer->notify();
+				timer->onTimerCall();
 			}
-			std::this_thread::sleep_for(std::chrono::microseconds(500));
 		}
-	})
+	}
+
+	GameTimersDispatcher::GameTimersDispatcher()
 	{
 	}
 
@@ -80,9 +53,20 @@ namespace tf
 	GameTimer::~GameTimer() 
 	{ 
 		if(!stopped_){
-			(GameTimersDispatcher::Instance())->deleteTimer(*this); 
+			(GameTimersDispatcher::Instance()).deleteTimer(*this);
 		}
 	}
+
+	// void GameTimer::notify()
+	// {
+	// 	if (single_){
+	// 		stop();
+	// 	}
+	// 	else {
+	// 		begin_time_ = std::chrono::steady_clock::now();
+	// 	}
+	// 	Observable::notify();
+	// }
 
 	void GameTimer::start() 
 	{ 
@@ -92,7 +76,7 @@ namespace tf
 	void GameTimer::start(std::size_t msec)
 	{
 		if(stopped_) {
-			(GameTimersDispatcher::Instance())->addTimer(*this);
+			(GameTimersDispatcher::Instance()).addTimer(*this);
 		}
 
 		interval_ = msec;
@@ -109,7 +93,12 @@ namespace tf
 	{
 		stopped_ = true;
 		end_time_ = std::chrono::steady_clock::now();
-		(GameTimersDispatcher::Instance())->deleteTimer(*this);
+		(GameTimersDispatcher::Instance()).deleteTimer(*this);
+	}
+
+	bool GameTimer::isStopped() const
+	{
+		return stopped_;
 	}
 
 	void GameTimer::setInterval(std::size_t msec)

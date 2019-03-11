@@ -9,74 +9,74 @@
 
 int main()
 {
-	constexpr int window_width = 800;
-	auto window = std::make_shared<sf::RenderWindow>(sf::VideoMode({ window_width, window_width }), "Tanks 2.0");
+	constexpr unsigned int window_width = 800u;
+	auto window = std::make_shared<sf::RenderWindow>(sf::VideoMode(window_width, window_width), "Tanks 2.0");
 
-	tf::Game game(window, sf::Vector2u(20, 20));
+	tf::Game game(window, {20u, 20u});
 
-	game.addWall(new tf::Wall(), {3, 3});
-	game.addWall(new tf::Wall(), {4, 3});
-	game.addWall(new tf::Wall(), {5, 3});
-	game.addWall(new tf::Wall(), {6, 3});
-	game.addWall(new tf::Wall(), {7, 3});
+	game.addWall(new tf::Wall(), {3u, 3u});
+	game.addWall(new tf::Wall(), {4u, 3u});
+	game.addWall(new tf::Wall(), {5u, 3u});
+	game.addWall(new tf::Wall(), {6u, 3u});
+	game.addWall(new tf::Wall(), {7u, 3u});
 
-	game.addWall(new tf::Wall(), {4, 5});
-	game.addWall(new tf::Wall(), {5, 5});
-	game.addWall(new tf::Wall(), {6, 5});
-	game.addWall(new tf::Wall(), {4, 6});
-	game.addWall(new tf::Wall(), {5, 6});
-	game.addWall(new tf::Wall(), {6, 6});
-	game.addWall(new tf::Wall(), {4, 7});
-	game.addWall(new tf::Wall(), {5, 7});
-	game.addWall(new tf::Wall(), {6, 7});
+	game.addWall(new tf::Wall(), {4u, 5u});
+	game.addWall(new tf::Wall(), {5u, 5u});
+	game.addWall(new tf::Wall(), {6u, 5u});
+	game.addWall(new tf::Wall(), {4u, 6u});
+	game.addWall(new tf::Wall(), {5u, 6u});
+	game.addWall(new tf::Wall(), {6u, 6u});
+	game.addWall(new tf::Wall(), {4u, 7u});
+	game.addWall(new tf::Wall(), {5u, 7u});
+	game.addWall(new tf::Wall(), {6u, 7u});
 
-	game.addWall(new tf::Wall(), {12, 3});
-	game.addWall(new tf::Wall(), {13, 3});
-	game.addWall(new tf::Wall(), {14, 3});
-	game.addWall(new tf::Wall(), {15, 3});
-	game.addWall(new tf::Wall(), {16, 3});
+	game.addWall(new tf::Wall(), {12u, 3u});
+	game.addWall(new tf::Wall(), {13u, 3u});
+	game.addWall(new tf::Wall(), {14u, 3u});
+	game.addWall(new tf::Wall(), {15u, 3u});
+	game.addWall(new tf::Wall(), {16u, 3u});
 
-	game.addWall(new tf::Wall(), {13, 5});
-	game.addWall(new tf::Wall(), {14, 5});
-	game.addWall(new tf::Wall(), {15, 5});
-	game.addWall(new tf::Wall(), {13, 6});
-	game.addWall(new tf::Wall(), {14, 6});
-	game.addWall(new tf::Wall(), {15, 6});
-	game.addWall(new tf::Wall(), {13, 7});
-	game.addWall(new tf::Wall(), {14, 7});
-	game.addWall(new tf::Wall(), {15, 7});
+	game.addWall(new tf::Wall(), {13u, 5u});
+	game.addWall(new tf::Wall(), {14u, 5u});
+	game.addWall(new tf::Wall(), {15u, 5u});
+	game.addWall(new tf::Wall(), {13u, 6u});
+	game.addWall(new tf::Wall(), {14u, 6u});
+	game.addWall(new tf::Wall(), {15u, 6u});
+	game.addWall(new tf::Wall(), {13u, 7u});
+	game.addWall(new tf::Wall(), {14u, 7u});
+	game.addWall(new tf::Wall(), {15u, 7u});
 
-	game.addWall(new tf::Wall(), {9, 10});
-	game.addWall(new tf::Wall(), {10, 10});
-	game.addWall(new tf::Wall(), {9, 11});
-	game.addWall(new tf::Wall(), {10, 11});
+	game.addWall(new tf::Wall(), {9u, 10u});
+	game.addWall(new tf::Wall(), {10u, 10u});
+	game.addWall(new tf::Wall(), {9u, 11u});
+	game.addWall(new tf::Wall(), {10u, 11u});
 
 
-	game.addWall(new tf::Wall(), {2, 13});
-	game.addWall(new tf::Wall(), {3, 14});
-	game.addWall(new tf::Wall(), {4, 15});
-	game.addWall(new tf::Wall(), {5, 16});
+	game.addWall(new tf::Wall(), {2u, 13u});
+	game.addWall(new tf::Wall(), {3u, 14u});
+	game.addWall(new tf::Wall(), {4u, 15u});
+	game.addWall(new tf::Wall(), {5u, 16u});
 
-	game.addWall(new tf::Wall(), {5, 16});
-	game.addWall(new tf::Wall(), {6, 16});
-	game.addWall(new tf::Wall(), {7, 16});
-	game.addWall(new tf::Wall(), {8, 16});
-	game.addWall(new tf::Wall(), {9, 16});
-	game.addWall(new tf::Wall(), {10, 16});
-	game.addWall(new tf::Wall(), {11, 16});
-	game.addWall(new tf::Wall(), {12, 16});
-	game.addWall(new tf::Wall(), {13, 16});
+	game.addWall(new tf::Wall(), {5u, 16u});
+	game.addWall(new tf::Wall(), {6u, 16u});
+	game.addWall(new tf::Wall(), {7u, 16u});
+	game.addWall(new tf::Wall(), {8u, 16u});
+	game.addWall(new tf::Wall(), {9u, 16u});
+	game.addWall(new tf::Wall(), {10u, 16u});
+	game.addWall(new tf::Wall(), {11u, 16u});
+	game.addWall(new tf::Wall(), {12u, 16u});
+	game.addWall(new tf::Wall(), {13u, 16u});
 
-	game.addWall(new tf::Wall(), {17, 13});
-	game.addWall(new tf::Wall(), {16, 14});
-	game.addWall(new tf::Wall(), {15, 15});
-	game.addWall(new tf::Wall(), {14, 16});
+	game.addWall(new tf::Wall(), {17u, 13u});
+	game.addWall(new tf::Wall(), {16u, 14u});
+	game.addWall(new tf::Wall(), {15u, 15u});
+	game.addWall(new tf::Wall(), {14u, 16u});
 
 	game.drawAll();
 	
 	window->display();
 
-	sf::sleep(sf::seconds(20));
+	sf::sleep(sf::seconds(10.f));
 
 	return 0;
 }
