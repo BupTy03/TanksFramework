@@ -1,5 +1,7 @@
 #include "MovingGameObject.hpp"
 
+#include <random>
+
 namespace tf
 {
 
@@ -9,36 +11,93 @@ namespace tf
 	{
 	}
 
+	MovingGameObject::MovingGameObject(sf::Vector2f d)
+		: GameObject()
+		, timer_{new GameTimer()}
+		, d_{d}
+	{
+	}
+
 	MovingGameObject::~MovingGameObject()
 	{
+		delete timer_;
 	}
 
-	sf::Vector2f MovingGameObject::getIncrement()
+	sf::Vector2f MovingGameObject::getDelta()
 	{
-		return increment_;
+		return d_;
 	}
 
-	void MovingGameObject::setIncrement(sf::Vector2f inc)
+	void MovingGameObject::setDelta(sf::Vector2f d)
 	{
-		increment_ = inc;
+		d_ = d;
 	}
 
-	std::size_t MovingGameObject::getStep()
+	void MovingGameObject::changeDirection(Direction dir)
 	{
-		return step_;
-	}
-	void MovingGameObject::setStep(std::size_t step)
-	{
-		step_ = step;
+		switch (dir) {
+			case Direction::LEFT:
+				if(d_.x > 0.f) {
+					d_.x *= -1.f;
+				}
+				break;
+			case Direction::RIGHT:
+				if(d_.x < 0.f) {
+					d_.x *= -1.f;
+				}
+				break;
+			case Direction::FORWARD:
+				if(d_.y > 0.f) {
+					d_.y *= -1.f;
+				}
+				break;
+			case Direction::BACKWARD:
+				if(d_.y < 0.f) {
+					d_.y *= -1.f;
+				}
+				break;
+			case Direction::FORWARD_LEFT:
+				if(d_.x > 0.f) {
+					d_.x *= -1.f;
+				}	
+				if(d_.y > 0.f) {
+					d_.y *= -1.f;
+				}
+				break;
+			case Direction::FORWARD_RIGHT:
+				if(d_.x < 0.f) {
+					d_.x *= -1.f;
+				}	
+				if(d_.y > 0.f) {
+					d_.y *= -1.f;
+				}
+				break;
+			case Direction::BACKWARD_LEFT:
+				if(d_.x > 0.f) {
+					d_.x *= -1.f;
+				}	
+				if(d_.y < 0.f) {
+					d_.y *= -1.f;
+				}
+				break;
+			case Direction::BACKWARD_RIGHT:
+				if(d_.x < 0.f) {
+					d_.x *= -1.f;
+				}	
+				if(d_.y < 0.f) {
+					d_.y *= -1.f;
+				}
+				break;
+			default:
+				break;
+		}
 	}
 
-	Direction MovingGameObject::getDirection()
+	Direction MovingGameObject::getRandomDirection(Direction from, Direction to)
 	{
-		return dir_;
-	}
-	void MovingGameObject::setDirection(Direction dir)
-	{
-		dir_ = dir;
+		std::default_random_engine generator;
+		std::uniform_int_distribution<int> distribution(static_cast<int>(from), static_cast<int>(to));
+		return static_cast<Direction>(distribution(generator));
 	}
 
 	void MovingGameObject::startTimer()
@@ -74,10 +133,6 @@ namespace tf
 	bool MovingGameObject::isTimerSingleShot()
 	{
 		return timer_->isSingleShot();
-	}
-
-	void MovingGameObject::handleEvent(Observable& observ)
-	{
 	}
 
 }

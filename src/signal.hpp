@@ -17,7 +17,6 @@ namespace my
 	{
 		void operator()(Args&&... args)
 		{
-			std::shared_lock<std::shared_mutex> lock_(mx_);
 			for (std::size_t i = 0; i < slots_.size(); ++i) {
 				slots_[i](std::forward<Args>(args)...);
 			}
@@ -41,7 +40,6 @@ namespace my
 			if (std::find(std::cbegin(slots_), std::cend(slots_), sl) != std::cend(slots_))
 				return;
 
-			std::unique_lock<std::shared_mutex> lock_(mx_);
 			slots_.push_back(sl);
 		}
 
@@ -50,7 +48,6 @@ namespace my
 			if (std::find(std::cbegin(slots_), std::cend(slots_), sl) != std::cend(slots_))
 				return;
 
-			std::unique_lock<std::shared_mutex> lock_(mx_);
 			slots_.push_back(std::move(sl));
 		}
 
@@ -68,13 +65,11 @@ namespace my
 
 		void disconnect(const slot<Args...>& sl)
 		{
-			std::shared_lock<std::shared_mutex> lock_(mx_);
 			slots_.erase(std::find(std::begin(slots_), std::end(slots_), sl));
 		}
 
 	private:
 		std::vector<slot<Args...>> slots_;
-		mutable std::shared_mutex mx_;
 	};
 
 }

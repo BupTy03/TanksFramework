@@ -8,7 +8,7 @@ namespace tf
 	{
 	}
 
-	GameObject::~GameObject() 
+	GameObject::~GameObject()
 	{
 	}
 

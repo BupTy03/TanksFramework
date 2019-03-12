@@ -27,8 +27,13 @@ namespace tf
 	{
 		for(auto timer : timers_) {
 			if (!timer->isStopped() && timer->elapsed() >= timer->interval()) {
-				//timer->notify();
 				timer->onTimerCall();
+				if(timer->isSingleShot()) {
+					timer->stop();
+				}
+				else {
+				timer->start();
+				}
 			}
 		}
 	}
@@ -56,17 +61,6 @@ namespace tf
 			(GameTimersDispatcher::Instance()).deleteTimer(*this);
 		}
 	}
-
-	// void GameTimer::notify()
-	// {
-	// 	if (single_){
-	// 		stop();
-	// 	}
-	// 	else {
-	// 		begin_time_ = std::chrono::steady_clock::now();
-	// 	}
-	// 	Observable::notify();
-	// }
 
 	void GameTimer::start() 
 	{ 

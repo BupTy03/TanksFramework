@@ -6,8 +6,6 @@
 #include "signal.hpp"
 
 #include <vector>
-#include <thread>
-#include <mutex>
 #include <chrono>
 #include <algorithm>
 
@@ -39,10 +37,8 @@ namespace tf
 		static GameTimersDispatcher* instance_;
 	};
 
-	struct GameTimer // : Observable
+	struct GameTimer
 	{
-		//friend class GameTimersDispatcher;
-
 		GameTimer();
 		explicit GameTimer(std::size_t msec);
 		~GameTimer();
@@ -75,8 +71,8 @@ namespace tf
 		std::chrono::steady_clock::time_point begin_time_;
 		std::chrono::steady_clock::time_point end_time_;
 		std::size_t interval_{};
-		bool single_{};
-		bool stopped_{};
+		bool single_{false};
+		bool stopped_{true};
 		std::size_t id_{};
 		static std::size_t timerId_;
 	};

@@ -4,6 +4,7 @@
 
 #include "MovingGameObject.hpp"
 
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
 namespace tf
@@ -11,11 +12,12 @@ namespace tf
 	struct Bullet : MovingGameObject
 	{
 		Bullet();
-		Bullet(sf::Vector2f pos);
+		Bullet(sf::Vector2f pos, sf::Vector2f sz);
+		Bullet(sf::Vector2f pos, sf::Vector2f sz, sf::Vector2f d);
 		virtual ~Bullet();
 
 		virtual void draw(sf::RenderWindow& w) override;
-		virtual bool intersects(const GameObject& other) const override;
+		virtual void makeStep() override;
 
 		virtual sf::Vector2f getSize() const override;
 		virtual void setSize(sf::Vector2f sz) override;
@@ -25,12 +27,8 @@ namespace tf
 
 		virtual const sf::IntRect& getRect() const override;
 
-		virtual void makeStep() override;
-		virtual void turn() override;
-
-		virtual void handleEvent(Observable& observ) override;
-
 	private:
+		void init();
 		sf::RectangleShape rectShape_;
 	};
 }

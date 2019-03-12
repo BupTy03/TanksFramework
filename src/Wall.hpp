@@ -19,6 +19,7 @@ namespace tf
 		Wall();
 		Wall(sf::Vector2f sz);
 		Wall(sf::Vector2f pos, sf::Vector2f sz);
+		virtual ~Wall();
 
 		virtual sf::Vector2f getSize() const override;
 		virtual void setSize(sf::Vector2f sz) override;
@@ -27,7 +28,6 @@ namespace tf
 		virtual void setPosition(sf::Vector2f pos) override;
 
 		virtual void draw(sf::RenderWindow& win) override;
-		virtual bool intersects(const GameObject& other) const override;
 		virtual const sf::IntRect& getRect() const override;
 
 	protected:

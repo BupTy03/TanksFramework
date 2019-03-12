@@ -25,6 +25,10 @@ namespace tf
 		rectShape_.setOutlineColor(sf::Color(107, 109, 99));
 	}
 
+	Wall::~Wall()
+	{
+	}
+
 	sf::Vector2f Wall::getSize() const
 	{
 		return rectShape_.getSize();
@@ -47,10 +51,6 @@ namespace tf
 	void Wall::draw(sf::RenderWindow& win)
 	{
 		win.draw(rectShape_);
-	}
-	bool Wall::intersects(const GameObject& other) const
-	{
-		return (getRect()).intersects(other.getRect());
 	}
 
 	const sf::IntRect& Wall::getRect() const

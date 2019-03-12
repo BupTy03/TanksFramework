@@ -13,28 +13,30 @@ namespace tf
 
 	enum class Direction
 	{
-		FORWARD,
-		BACKWARD,
-		LEFT,
-		RIGHT
+		FORWARD 		= 0,
+		BACKWARD 		= 1,
+		LEFT 			= 2,
+		RIGHT 			= 3,
+		FORWARD_LEFT 	= 4,
+		FORWARD_RIGHT 	= 5,
+		BACKWARD_LEFT 	= 6,
+		BACKWARD_RIGHT 	= 7
 	};
 
-	struct MovingGameObject : Observer, GameObject
+	struct MovingGameObject : GameObject
 	{
 		MovingGameObject();
+		MovingGameObject(sf::Vector2f d);
 		virtual ~MovingGameObject();
 
 		virtual void makeStep() = 0;
-		virtual void turn() = 0;
 
-		sf::Vector2f getIncrement();
-		void setIncrement(sf::Vector2f inc);
+		sf::Vector2f getDelta();
+		void setDelta(sf::Vector2f d);
 
-		std::size_t getStep();
-		virtual void setStep(std::size_t step);
+		virtual void changeDirection(Direction dir);
 
-		Direction getDirection();
-		virtual void setDirection(Direction dir);
+		static Direction getRandomDirection(Direction from, Direction to);
 
 		void startTimer();
 		void startTimer(std::size_t msec);
@@ -47,13 +49,10 @@ namespace tf
 		void setTimerSingleShot(bool sshot);
 		bool isTimerSingleShot();
 
-		virtual void handleEvent(Observable& observ) override;
-
-	private:
-		sf::Vector2f increment_;
-		std::size_t step_{};
+	protected:
 		GameTimer* timer_{nullptr};
-		Direction dir_{Direction::FORWARD};
+	private:
+		sf::Vector2f d_;
 	};
 
 }

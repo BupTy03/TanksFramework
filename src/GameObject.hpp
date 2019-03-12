@@ -24,7 +24,6 @@ namespace tf
 		std::size_t getId();
 
 		virtual void draw(sf::RenderWindow& w) = 0;
-		virtual bool intersects(const GameObject& other) const = 0;
 
 		virtual sf::Vector2f getSize() const = 0;
 		virtual void setSize(sf::Vector2f sz) = 0;
