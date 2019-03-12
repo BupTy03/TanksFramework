@@ -1,6 +1,7 @@
 #include "Game.hpp"
 #include "Wall.hpp"
 #include "Bullet.hpp"
+#include "Tank.hpp"
 #include "GameTimer.hpp"
 
 #include <SFML/Graphics.hpp>
@@ -16,8 +17,7 @@ int main()
 
 	tf::Game game(window, {20u, 20u});
 
-	tf::Bullet bul({400.f - 50.f / 2.f, 400.f - 50.f / 2.f}, {50.f, 50.f}, {0.f, -10.f});
-
+	tf::Tank tnk({400.f - 100.f, 400.f - 100.f}, {50.f, 50.f}, {0.f, -10.f});
 	while (window->isOpen()) {
 		sf::Event event;
 		while (window->pollEvent(event)) {
@@ -27,7 +27,7 @@ int main()
 		}
 
 		window->clear();
-		bul.draw(*window);
+		tnk.draw(*window);
 		window->display();
 		(tf::GameTimersDispatcher::Instance()).dispatch();
 	}

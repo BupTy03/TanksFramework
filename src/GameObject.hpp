@@ -3,6 +3,7 @@
 #define GAME_OBJECT_HPP
 
 #include "GameTimer.hpp"
+#include "signal.hpp"
 
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -31,11 +32,15 @@ namespace tf
 		virtual sf::Vector2f getPosition() const = 0;
 		virtual void setPosition(sf::Vector2f pos) = 0;
 
-		virtual const sf::IntRect& getRect() const = 0;
+		void deleteLater();
+		bool isDeleted() const;
+
+		my::signal<> onDelete;
 
 	private:
 		static std::size_t counter_;
 		std::size_t id_{};
+		bool deleted_{false};
 	};
 
 }

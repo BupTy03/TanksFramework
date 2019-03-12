@@ -28,7 +28,6 @@ namespace tf
 		virtual void setPosition(sf::Vector2f pos) override;
 
 		virtual void draw(sf::RenderWindow& win) override;
-		virtual const sf::IntRect& getRect() const override;
 
 	protected:
 		sf::RectangleShape rectShape_;

@@ -25,8 +25,6 @@ namespace tf
 		virtual sf::Vector2f getPosition() const override;
 		virtual void setPosition(sf::Vector2f pos) override;
 
-		virtual const sf::IntRect& getRect() const override;
-
 	private:
 		void init();
 		sf::RectangleShape rectShape_;

@@ -53,9 +53,4 @@ namespace tf
 		win.draw(rectShape_);
 	}
 
-	const sf::IntRect& Wall::getRect() const
-	{
-		return rectShape_.getTextureRect();
-	}
-
 }

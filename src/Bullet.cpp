@@ -6,10 +6,10 @@ namespace tf
 	void Bullet::init()
 	{
 		rectShape_.setFillColor(sf::Color(220, 20, 60));
-		rectShape_.setOutlineColor(sf::Color(144, 00, 32));
-		timer_->start(1000);
+		rectShape_.setOutlineColor(sf::Color(144, 0, 32));
 		timer_->onTimerCall.connect(this, 
 									&Bullet::makeStep);
+		timer_->start(1000);
 	}
 
 	Bullet::Bullet()
@@ -64,11 +64,6 @@ namespace tf
 	void Bullet::setPosition(sf::Vector2f pos)
 	{
 		rectShape_.setPosition(pos);
-	}
-
-	const sf::IntRect& Bullet::getRect() const
-	{
-		return rectShape_.getTextureRect();
 	}
 
 }

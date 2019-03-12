@@ -35,7 +35,6 @@ namespace tf
 		void setDelta(sf::Vector2f d);
 
 		virtual void changeDirection(Direction dir);
-
 		static Direction getRandomDirection(Direction from, Direction to);
 
 		void startTimer();

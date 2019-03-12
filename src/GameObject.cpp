@@ -17,6 +17,16 @@ namespace tf
 		return id_;
 	}
 
+	void GameObject::deleteLater()
+	{
+		deleted_ = true;
+	}
+
+	bool GameObject::isDeleted() const
+	{
+		return deleted_;
+	}
+
 	std::size_t GameObject::counter_ = 1;
 
 }

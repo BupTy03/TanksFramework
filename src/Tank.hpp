@@ -14,11 +14,11 @@ namespace tf
 	struct Tank : MovingGameObject
 	{
 		Tank();
-		Tank(sf::Vector2f pos);
+		Tank(sf::Vector2f pos, sf::Vector2f sz);
+		Tank(sf::Vector2f pos, sf::Vector2f sz, sf::Vector2f d);
 		virtual ~Tank();
 
 		virtual void draw(sf::RenderWindow& w) override;
-		virtual bool intersects(const GameObject& other) const override;
 
 		virtual sf::Vector2f getSize() const override;
 		virtual void setSize(sf::Vector2f sz) override;
@@ -26,14 +26,10 @@ namespace tf
 		virtual sf::Vector2f getPosition() const override;
 		virtual void setPosition(sf::Vector2f pos) override;
 
-		virtual const sf::IntRect& getRect() const override;
-
 		virtual void makeShot();
-
 		virtual void makeStep() override;
-		virtual void turn() override;
 
-		virtual void handleEvent(Observable& observ) override;
+		const std::vector<Bullet*>& getBullets();
 
 	protected:
 		std::vector<sf::RectangleShape*> body_;

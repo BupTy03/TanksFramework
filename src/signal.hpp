@@ -17,8 +17,13 @@ namespace my
 	{
 		void operator()(Args&&... args)
 		{
-			for (std::size_t i = 0; i < slots_.size(); ++i) {
+			std::size_t sz = slots_.size();
+			for (std::size_t i = 0; i < sz; ++i) {
 				slots_[i](std::forward<Args>(args)...);
+				if(slots_.size() < sz) { // if slot contains code that unsubscribe him
+					sz = slots_.size();
+					i--;
+				}
 			}
 		}
 
