@@ -3,10 +3,11 @@
 #define MOVING_OBJECT_HPP
 
 #include "GameObject.hpp"
-#include "Observer.hpp"
 #include "GameTimer.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
+
+#include <random>
 
 namespace tf
 {
@@ -20,22 +21,23 @@ namespace tf
 		FORWARD_LEFT 	= 4,
 		FORWARD_RIGHT 	= 5,
 		BACKWARD_LEFT 	= 6,
-		BACKWARD_RIGHT 	= 7
+		BACKWARD_RIGHT 	= 7,
+		STOPPED			= 8
 	};
 
 	struct MovingGameObject : GameObject
 	{
 		MovingGameObject();
-		MovingGameObject(sf::Vector2f d);
+		MovingGameObject(float step);
 		virtual ~MovingGameObject();
 
 		virtual void makeStep() = 0;
 
-		sf::Vector2f getDelta();
-		void setDelta(sf::Vector2f d);
+		float getStep();
+		virtual void setStep(float step);
 
-		virtual void changeDirection(Direction dir);
-		static Direction getRandomDirection(Direction from, Direction to);
+		Direction getDirection();
+		virtual void setDirection(Direction dir);
 
 		void startTimer();
 		void startTimer(std::size_t msec);
@@ -48,10 +50,13 @@ namespace tf
 		void setTimerSingleShot(bool sshot);
 		bool isTimerSingleShot();
 
+		virtual void outOfScreenEvent() override;
+
 	protected:
 		GameTimer* timer_{nullptr};
 	private:
-		sf::Vector2f d_;
+		Direction dir_{};
+		float step_{};
 	};
 
 }

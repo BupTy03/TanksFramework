@@ -5,6 +5,7 @@
 #include "GameTimer.hpp"
 #include "signal.hpp"
 
+#include <SFML/Window.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -26,14 +27,17 @@ namespace tf
 
 		virtual void draw(sf::RenderWindow& w) = 0;
 
-		virtual sf::Vector2f getSize() const = 0;
-		virtual void setSize(sf::Vector2f sz) = 0;
+		virtual float getSize() const = 0;
+		virtual void setSize(float sz) = 0;
 
 		virtual sf::Vector2f getPosition() const = 0;
 		virtual void setPosition(sf::Vector2f pos) = 0;
 
 		void deleteLater();
 		bool isDeleted() const;
+
+		virtual void keyEvent(sf::Keyboard::Key which);
+		virtual void outOfScreenEvent();
 
 		my::signal<> onDelete;
 

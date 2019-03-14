@@ -17,20 +17,20 @@ namespace tf
 	{
 		init();
 	}
-	Bullet::Bullet(sf::Vector2f pos, sf::Vector2f sz) 
+	Bullet::Bullet(sf::Vector2f pos, float sz) 
 		: MovingGameObject()
-		, rectShape_{sz}
+		, rectShape_{{sz, sz}}
 	{
 		rectShape_.setPosition(pos);
-		rectShape_.setOutlineThickness(-((sz.x + sz.y) / 2.f) / 9.f);
+		rectShape_.setOutlineThickness(-sz / 9.f);
 		init();
 	}
-	Bullet::Bullet(sf::Vector2f pos, sf::Vector2f sz, sf::Vector2f d)
-		: MovingGameObject(d)
-		, rectShape_{sz}
+	Bullet::Bullet(sf::Vector2f pos, float sz, float step)
+		: MovingGameObject(step)
+		, rectShape_{{sz, sz}}
 	{
 		rectShape_.setPosition(pos);
-		rectShape_.setOutlineThickness(-((sz.x + sz.y) / 2.f) / 9.f);
+		rectShape_.setOutlineThickness(-sz / 9.f);
 		init();
 	}
 	Bullet::~Bullet()
@@ -44,17 +44,33 @@ namespace tf
 
 	void Bullet::makeStep()
 	{
-		rectShape_.setPosition(rectShape_.getPosition() + getDelta());
+		const auto ps = getPosition();
+		const auto step = getStep();
+		switch (getDirection())
+		{
+			case Direction::FORWARD:
+				setPosition({ps.x, ps.y - step});
+				break;
+			case Direction::BACKWARD:
+				setPosition({ps.x, ps.y + step});
+				break;
+			case Direction::LEFT:
+				setPosition({ps.x - step, ps.y});
+				break;
+			case Direction::RIGHT:
+				setPosition({ps.x + step, ps.y});
+				break;
+		}
 	}
 
-	sf::Vector2f Bullet::getSize() const
+	float Bullet::getSize() const
 	{
-		return rectShape_.getSize();
+		return rectShape_.getSize().x;
 	}
-	void Bullet::setSize(sf::Vector2f sz)
+	void Bullet::setSize(float sz)
 	{
-		rectShape_.setOutlineThickness(-((sz.x + sz.y) / 2.f) / 9.f);
-		rectShape_.setSize(sz);
+		rectShape_.setOutlineThickness(-sz / 9.f);
+		rectShape_.setSize({sz, sz});
 	}
 
 	sf::Vector2f Bullet::getPosition() const
@@ -64,6 +80,11 @@ namespace tf
 	void Bullet::setPosition(sf::Vector2f pos)
 	{
 		rectShape_.setPosition(pos);
+	}
+
+	void Bullet::outOfScreenEvent()
+	{
+		deleteLater();
 	}
 
 }

@@ -29,14 +29,14 @@ namespace tf
 	{
 	}
 
-	sf::Vector2f Wall::getSize() const
+	float Wall::getSize() const
 	{
-		return rectShape_.getSize();
+		return rectShape_.getSize().x;
 	}
-	void Wall::setSize(sf::Vector2f sz)
+	void Wall::setSize(float sz)
 	{
-		rectShape_.setOutlineThickness(-((sz.x + sz.y) / 2.f) / 9.f);
-		rectShape_.setSize(sz);
+		rectShape_.setOutlineThickness(-sz / 9.f);
+		rectShape_.setSize({sz, sz});
 	}
 
 	sf::Vector2f Wall::getPosition() const

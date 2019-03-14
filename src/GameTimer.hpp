@@ -2,7 +2,6 @@
 #ifndef GAME_TIMER_HPP
 #define GAME_TIMER_HPP
 
-#include "Observer.hpp"
 #include "signal.hpp"
 
 #include <vector>

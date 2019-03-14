@@ -30,11 +30,9 @@ namespace tf
 			std::find(std::cbegin(walls_), std::cend(walls_), w) != std::cend(walls_)) {
 			return;
 		}
-		sf::Vector2f new_sz;
-		new_sz.x = static_cast<float>(win_->getSize().x / szInCells_.x);
-		new_sz.y = static_cast<float>(win_->getSize().y / szInCells_.y);
+		const auto new_sz = static_cast<float>(win_->getSize().x / szInCells_.x);
 		w->setSize(new_sz);
-		w->setPosition({coords.x * new_sz.x, coords.y * new_sz.y});
+		w->setPosition({coords.x * new_sz, coords.y * new_sz});
 
 		walls_.push_back(w);
 	}

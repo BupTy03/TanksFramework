@@ -1,6 +1,7 @@
 #include "MovingGameObject.hpp"
 
-#include <random>
+#include <chrono>
+#include <iostream>
 
 namespace tf
 {
@@ -11,10 +12,10 @@ namespace tf
 	{
 	}
 
-	MovingGameObject::MovingGameObject(sf::Vector2f d)
+	MovingGameObject::MovingGameObject(float step)
 		: GameObject()
 		, timer_{new GameTimer()}
-		, d_{d}
+		, step_{step}
 	{
 	}
 
@@ -23,81 +24,22 @@ namespace tf
 		delete timer_;
 	}
 
-	sf::Vector2f MovingGameObject::getDelta()
+	float MovingGameObject::getStep()
 	{
-		return d_;
+		return step_;
+	}
+	void MovingGameObject::setStep(float step)
+	{
+		step_ = step;
 	}
 
-	void MovingGameObject::setDelta(sf::Vector2f d)
+	Direction MovingGameObject::getDirection()
 	{
-		d_ = d;
+		return dir_;
 	}
-
-	void MovingGameObject::changeDirection(Direction dir)
+	void MovingGameObject::setDirection(Direction dir)
 	{
-		switch (dir) {
-			case Direction::LEFT:
-				if(d_.x > 0.f) {
-					d_.x *= -1.f;
-				}
-				break;
-			case Direction::RIGHT:
-				if(d_.x < 0.f) {
-					d_.x *= -1.f;
-				}
-				break;
-			case Direction::FORWARD:
-				if(d_.y > 0.f) {
-					d_.y *= -1.f;
-				}
-				break;
-			case Direction::BACKWARD:
-				if(d_.y < 0.f) {
-					d_.y *= -1.f;
-				}
-				break;
-			case Direction::FORWARD_LEFT:
-				if(d_.x > 0.f) {
-					d_.x *= -1.f;
-				}	
-				if(d_.y > 0.f) {
-					d_.y *= -1.f;
-				}
-				break;
-			case Direction::FORWARD_RIGHT:
-				if(d_.x < 0.f) {
-					d_.x *= -1.f;
-				}	
-				if(d_.y > 0.f) {
-					d_.y *= -1.f;
-				}
-				break;
-			case Direction::BACKWARD_LEFT:
-				if(d_.x > 0.f) {
-					d_.x *= -1.f;
-				}	
-				if(d_.y < 0.f) {
-					d_.y *= -1.f;
-				}
-				break;
-			case Direction::BACKWARD_RIGHT:
-				if(d_.x < 0.f) {
-					d_.x *= -1.f;
-				}	
-				if(d_.y < 0.f) {
-					d_.y *= -1.f;
-				}
-				break;
-			default:
-				break;
-		}
-	}
-
-	Direction MovingGameObject::getRandomDirection(Direction from, Direction to)
-	{
-		std::default_random_engine generator;
-		std::uniform_int_distribution<int> distribution(static_cast<int>(from), static_cast<int>(to));
-		return static_cast<Direction>(distribution(generator));
+		dir_ = dir;
 	}
 
 	void MovingGameObject::startTimer()
@@ -135,4 +77,22 @@ namespace tf
 		return timer_->isSingleShot();
 	}
 
+	void MovingGameObject::outOfScreenEvent()
+	{
+		switch (dir_)
+		{
+		case Direction::FORWARD:
+			setDirection(Direction::BACKWARD);
+			break;
+		case Direction::BACKWARD:
+			setDirection(Direction::FORWARD);
+			break;
+		case Direction::LEFT:
+			setDirection(Direction::RIGHT);
+			break;
+		case Direction::RIGHT:
+			setDirection(Direction::LEFT);
+			break;
+		}
+	}
 }
