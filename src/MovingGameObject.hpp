@@ -27,8 +27,8 @@ namespace tf
 
 	struct MovingGameObject : GameObject
 	{
-		MovingGameObject();
-		MovingGameObject(float step);
+		MovingGameObject(std::shared_ptr<sf::RenderWindow> w);
+		MovingGameObject(std::shared_ptr<sf::RenderWindow> w, float step);
 		virtual ~MovingGameObject();
 
 		virtual void makeStep() = 0;
@@ -39,21 +39,8 @@ namespace tf
 		Direction getDirection();
 		virtual void setDirection(Direction dir);
 
-		void startTimer();
-		void startTimer(std::size_t msec);
-		void startTimer(std::chrono::milliseconds msec);
-		void stopTimer();
-
-		void setTimerInterval(std::size_t msec);
-		void setTimerInterval(std::chrono::milliseconds msec);
-
-		void setTimerSingleShot(bool sshot);
-		bool isTimerSingleShot();
-
 		virtual void outOfScreenEvent() override;
 
-	protected:
-		GameTimer* timer_{nullptr};
 	private:
 		Direction dir_{};
 		float step_{};

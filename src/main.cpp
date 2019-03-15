@@ -2,6 +2,7 @@
 #include "Wall.hpp"
 #include "Bullet.hpp"
 #include "Tank.hpp"
+#include "MainTank.hpp"
 #include "GameTimer.hpp"
 #include "GameEventsManager.hpp"
 
@@ -12,10 +13,6 @@
 #include <memory>
 #include <iostream>
 
-void notify()
-{
-	std::cout << "Bullet deleted!\n";
-}
 
 int main()
 {
@@ -28,8 +25,7 @@ int main()
 		static_cast<float>(window->getSize().y)
 	});
 
-	auto bl = new tf::Bullet({400.f - 5.f, 400.f - 5.f}, 10.f, 50.f);
-	bl->onDelete.connect(notify);
+	auto mtnk = new tf::MainTank(window, {40.f * 8.f, 40.f * 8.f}, 50.f, 50.f);
 	while (window->isOpen()) {
 		sf::Event event;
 		while (window->pollEvent(event)) {
@@ -39,8 +35,8 @@ int main()
 		}
 
 		window->clear();
-		if((tf::GameEventsManager::Instance()).countObjects() > 0){
-			bl->draw(*window);
+		if((tf::GameEventsManager::Instance()).countObjects() > 0) {
+			mtnk->draw();
 		}
 		window->display();
 		(tf::GameEventsManager::Instance()).processEvents();

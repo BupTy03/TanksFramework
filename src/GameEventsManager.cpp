@@ -52,8 +52,8 @@ namespace tf
 		for(auto obj : objects_) {
 			const auto pos = obj->getPosition();
 			const auto sz = obj->getSize();
-			if(pos.x < 0.f || pos.y < 0.f || 
-				pos.x + sz > winSz_.x || pos.y > winSz_.y) {
+			if(pos.x < -3.f * sz || pos.y < -3.f * sz || 
+				pos.x > winSz_.x || pos.y > winSz_.y) {
 				obj->outOfScreenEvent();
 			}
 		}

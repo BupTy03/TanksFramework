@@ -16,9 +16,9 @@ namespace tf
 
 	struct Wall : GameObject
 	{
-		Wall();
-		Wall(sf::Vector2f sz);
-		Wall(sf::Vector2f pos, sf::Vector2f sz);
+		Wall(std::shared_ptr<sf::RenderWindow> w);
+		Wall(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f sz);
+		Wall(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, sf::Vector2f sz);
 		virtual ~Wall();
 
 		virtual float getSize() const override;
@@ -27,7 +27,7 @@ namespace tf
 		virtual sf::Vector2f getPosition() const override;
 		virtual void setPosition(sf::Vector2f pos) override;
 
-		virtual void draw(sf::RenderWindow& win) override;
+		virtual void draw() override;
 
 	protected:
 		sf::RectangleShape rectShape_;

@@ -40,7 +40,7 @@ namespace tf
 	{
 		GameTimer();
 		explicit GameTimer(std::size_t msec);
-		~GameTimer();
+		virtual ~GameTimer();
 
 		GameTimer(const GameTimer&) = delete;
 		GameTimer& operator=(const GameTimer&) = delete;

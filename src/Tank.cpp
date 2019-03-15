@@ -7,33 +7,20 @@
 namespace tf
 {
 
-	Tank::Tank()
-		: MovingGameObject()
-		, changeDirectionTimer_(new GameTimer())
+	Tank::Tank(std::shared_ptr<sf::RenderWindow> w)
+		: MovingGameObject(std::move(w))
 		, body_{6}
-		, randEngine_{static_cast<unsigned int>(
-			((std::chrono::steady_clock::now()).time_since_epoch()).count()
-		)}
 	{
 		for(std::size_t i = 0; i < body_.size(); ++i) {
 			body_[i] = new sf::RectangleShape();
 			body_[i]->setFillColor(sf::Color(220, 20, 60));
 			body_[i]->setOutlineColor(sf::Color(144, 0, 32));
 		}
-
-		timer_->onTimerCall.connect(this, &Tank::makeStep);
-		changeDirectionTimer_->onTimerCall.connect(this, &Tank::setRandDirection);
-
-		timer_->start(1000);
-		changeDirectionTimer_->start(4000);
+		turn(getDirection());
 	}
-	Tank::Tank(sf::Vector2f pos, float sz)
-		: MovingGameObject()
-		, changeDirectionTimer_(new GameTimer())
+	Tank::Tank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz)
+		: MovingGameObject(std::move(w))
 		, body_{6}
-		, randEngine_{static_cast<unsigned int>(
-			((std::chrono::steady_clock::now()).time_since_epoch()).count()
-		)}
 	{
 		for(std::size_t i = 0; i < body_.size(); ++i) {
 			body_[i] = new sf::RectangleShape({sz, sz});
@@ -42,20 +29,11 @@ namespace tf
 			body_[i]->setOutlineThickness(-sz / 9.f);
 		}
 		setPosition(pos);
-
-		timer_->onTimerCall.connect(this, &Tank::makeStep);
-		changeDirectionTimer_->onTimerCall.connect(this, &Tank::setRandDirection);
-
-		timer_->start(1000);
-		changeDirectionTimer_->start(4000);
+		turn(getDirection());
 	}
-	Tank::Tank(sf::Vector2f pos, float sz, float step)
-		: MovingGameObject(step)
-		, changeDirectionTimer_(new GameTimer())
+	Tank::Tank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz, float step)
+		: MovingGameObject(std::move(w), step)
 		, body_{6}
-		, randEngine_{static_cast<unsigned int>(
-			((std::chrono::steady_clock::now()).time_since_epoch()).count()
-		)}
 	{
 		for(std::size_t i = 0; i < body_.size(); ++i) {
 			body_[i] = new sf::RectangleShape({sz, sz});
@@ -64,12 +42,7 @@ namespace tf
 			body_[i]->setOutlineThickness(-sz / 9.f);
 		}
 		setPosition(pos);
-
-		timer_->onTimerCall.connect(this, &Tank::makeStep);
-		changeDirectionTimer_->onTimerCall.connect(this, &Tank::setRandDirection);
-
-		timer_->start(1000);
-		changeDirectionTimer_->start(4000);
+		turn(getDirection());
 	}
 
 	Tank::~Tank()
@@ -81,14 +54,12 @@ namespace tf
 		for(auto b : bullets_) {
 			delete b;
 		}
-
-		delete changeDirectionTimer_;
 	}
 
-	void Tank::draw(sf::RenderWindow& w)
+	void Tank::draw()
 	{
 		for(auto sh : body_) {
-			w.draw(*sh);
+			win_->draw(*sh);
 		}
 	}
 
@@ -182,12 +153,6 @@ namespace tf
 				break;
 		}
 		turn(getDirection());
-	}
-
-	void Tank::setRandDirection()
-	{
-		std::uniform_int_distribution<int> distribution(0, 3);
-		setDirection(static_cast<Direction>(distribution(randEngine_)));
 	}
 
 	const std::vector<Bullet*>& Tank::getBullets()

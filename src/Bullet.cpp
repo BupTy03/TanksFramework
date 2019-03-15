@@ -3,43 +3,37 @@
 namespace tf
 {
 
-	void Bullet::init()
+	Bullet::Bullet(std::shared_ptr<sf::RenderWindow> w)
+		: MovingGameObject(std::move(w))
 	{
 		rectShape_.setFillColor(sf::Color(220, 20, 60));
 		rectShape_.setOutlineColor(sf::Color(144, 0, 32));
-		timer_->onTimerCall.connect(this, 
-									&Bullet::makeStep);
-		timer_->start(1000);
 	}
-
-	Bullet::Bullet()
-		: MovingGameObject()
-	{
-		init();
-	}
-	Bullet::Bullet(sf::Vector2f pos, float sz) 
-		: MovingGameObject()
+	Bullet::Bullet(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz) 
+		: MovingGameObject(std::move(w))
 		, rectShape_{{sz, sz}}
 	{
 		rectShape_.setPosition(pos);
 		rectShape_.setOutlineThickness(-sz / 9.f);
-		init();
+		rectShape_.setFillColor(sf::Color(220, 20, 60));
+		rectShape_.setOutlineColor(sf::Color(144, 0, 32));
 	}
-	Bullet::Bullet(sf::Vector2f pos, float sz, float step)
-		: MovingGameObject(step)
+	Bullet::Bullet(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz, float step)
+		: MovingGameObject(std::move(w), step)
 		, rectShape_{{sz, sz}}
 	{
 		rectShape_.setPosition(pos);
 		rectShape_.setOutlineThickness(-sz / 9.f);
-		init();
+		rectShape_.setFillColor(sf::Color(220, 20, 60));
+		rectShape_.setOutlineColor(sf::Color(144, 0, 32));
 	}
 	Bullet::~Bullet()
 	{
 	}
 
-	void Bullet::draw(sf::RenderWindow& w)
+	void Bullet::draw()
 	{
-		w.draw(rectShape_);
+		win_->draw(rectShape_);
 	}
 
 	void Bullet::makeStep()

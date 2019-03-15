@@ -4,8 +4,9 @@
 namespace tf
 {
 
-	GameObject::GameObject() 
+	GameObject::GameObject(std::shared_ptr<sf::RenderWindow> w) 
 		: id_{counter_++}
+		, win_{std::move(w)}
 	{
 		(GameEventsManager::Instance()).addGameObject(this);
 	}

@@ -11,12 +11,12 @@ namespace tf
 {
 	struct Bullet : MovingGameObject
 	{
-		Bullet();
-		Bullet(sf::Vector2f pos, float sz);
-		Bullet(sf::Vector2f pos, float sz, float step);
+		Bullet(std::shared_ptr<sf::RenderWindow> w);
+		Bullet(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz);
+		Bullet(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz, float step);
 		virtual ~Bullet();
 
-		virtual void draw(sf::RenderWindow& w) override;
+		virtual void draw() override;
 		virtual void makeStep() override;
 
 		virtual float getSize() const override;
@@ -28,7 +28,6 @@ namespace tf
 		virtual void outOfScreenEvent() override;
 
 	private:
-		void init();
 		sf::RectangleShape rectShape_;
 	};
 }

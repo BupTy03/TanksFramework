@@ -6,22 +6,19 @@
 namespace tf
 {
 
-	MovingGameObject::MovingGameObject()
-		: GameObject()
-		, timer_{new GameTimer()}
+	MovingGameObject::MovingGameObject(std::shared_ptr<sf::RenderWindow> w)
+		: GameObject(std::move(w))
 	{
 	}
 
-	MovingGameObject::MovingGameObject(float step)
-		: GameObject()
-		, timer_{new GameTimer()}
+	MovingGameObject::MovingGameObject(std::shared_ptr<sf::RenderWindow> w, float step)
+		: GameObject(std::move(w))
 		, step_{step}
 	{
 	}
 
 	MovingGameObject::~MovingGameObject()
 	{
-		delete timer_;
 	}
 
 	float MovingGameObject::getStep()
@@ -40,41 +37,6 @@ namespace tf
 	void MovingGameObject::setDirection(Direction dir)
 	{
 		dir_ = dir;
-	}
-
-	void MovingGameObject::startTimer()
-	{
-		timer_->start();
-	}
-	void MovingGameObject::startTimer(std::size_t msec)
-	{
-		timer_->start(msec);
-	}
-	void MovingGameObject::startTimer(std::chrono::milliseconds msec)
-	{
-		timer_->start(msec);
-	}
-	void MovingGameObject::stopTimer()
-	{
-		timer_->stop();
-	}
-
-	void MovingGameObject::setTimerInterval(std::size_t msec)
-	{
-		timer_->setInterval(msec);
-	}
-	void MovingGameObject::setTimerInterval(std::chrono::milliseconds msec)
-	{
-		timer_->setInterval(msec);
-	}
-
-	void MovingGameObject::setTimerSingleShot(bool sshot)
-	{
-		timer_->setSingleShot(sshot);
-	}
-	bool MovingGameObject::isTimerSingleShot()
-	{
-		return timer_->isSingleShot();
 	}
 
 	void MovingGameObject::outOfScreenEvent()

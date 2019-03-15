@@ -52,7 +52,7 @@ namespace tf
 	void Game::drawWalls()
 	{
 		for(auto w_ptr : walls_) {
-			w_ptr->draw(*win_);
+			w_ptr->draw();
 		}
 	}
 

@@ -9,12 +9,14 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
+#include <memory>
+
 namespace tf
 {
 
 	struct GameObject
 	{
-		GameObject();
+		GameObject(std::shared_ptr<sf::RenderWindow> w);
 		virtual ~GameObject();
 
 		GameObject(const GameObject&) = delete;
@@ -25,7 +27,7 @@ namespace tf
 
 		std::size_t getId();
 
-		virtual void draw(sf::RenderWindow& w) = 0;
+		virtual void draw() = 0;
 
 		virtual float getSize() const = 0;
 		virtual void setSize(float sz) = 0;
@@ -41,6 +43,8 @@ namespace tf
 
 		my::signal<> onDelete;
 
+	protected:
+		std::shared_ptr<sf::RenderWindow> win_;
 	private:
 		static std::size_t counter_;
 		std::size_t id_{};
