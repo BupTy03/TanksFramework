@@ -2,6 +2,7 @@
 
 #include <SFML/Window.hpp>
 
+#include <iostream>
 #include <algorithm>
 
 namespace tf
@@ -23,66 +24,57 @@ namespace tf
 
 	void GameEventsManager::collectDeleted()
 	{
-		auto endIt = std::end(objects_);
-		auto begIt = std::remove_if(std::begin(objects_), endIt, [](auto p){
-			return p->isDeleted();
-		});
-
-		if(begIt == endIt) {
-			return;
-		}
-
-		for(auto it = begIt; it != endIt; ++it) {
-			(*it)->onDelete();
-			delete (*it);
-		}
-
-		objects_.erase(begIt, endIt);
+		objects_.erase(std::remove_if(std::begin(objects_), std::end(objects_), [](auto p) {
+			if(p->isDeleted()) {
+				delete p;
+				return true;
+			}
+			return false;
+		}), std::end(objects_));
 	}
 
 	void GameEventsManager::handleKeyEvents(sf::Keyboard::Key key)
 	{
-		for(auto obj : objects_) {
-			obj->keyEvent(key);
+		for(std::size_t i = 0; i < objects_.size(); ++i) {
+			objects_[i]->keyEvent(key);
 		}
 	}
 
 	void GameEventsManager::processOutOfScreenEvents()
 	{
-		for(auto obj : objects_) {
-			const auto pos = obj->getPosition();
-			const auto sz = obj->getSize();
+		if(!window_) {
+			return;
+		}
+		const auto win_sz = window_->getSize();
+		for(std::size_t i = 0; i < objects_.size(); ++i) {
+			const auto pos = objects_[i]->getPosition();
+			const auto sz = objects_[i]->getSize();
 			if(pos.x < -3.f * sz || pos.y < -3.f * sz || 
-				pos.x > winSz_.x || pos.y > winSz_.y) {
-				obj->outOfScreenEvent();
+				pos.x > win_sz.x || pos.y > win_sz.y) {
+				objects_[i]->outOfScreenEvent();
 			}
-		}
-	}
-
-	void GameEventsManager::processKeyEvents()
-	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-			handleKeyEvents(sf::Keyboard::A);
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-			handleKeyEvents(sf::Keyboard::D);
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-			handleKeyEvents(sf::Keyboard::S);
-		}
-		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-			handleKeyEvents(sf::Keyboard::W);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-			handleKeyEvents(sf::Keyboard::Space);
 		}
 	}
 
 	void GameEventsManager::processEvents()
 	{
-		processKeyEvents();
 		processOutOfScreenEvents();
 		collectDeleted();
+
+		sf::Event event;
+		sf::Keyboard::Key key = sf::Keyboard::Key::Unknown;
+		while (window_->pollEvent(event)) {
+			if (event.type == sf::Event::Closed) {
+				window_->close();
+				return;
+			}
+			if(event.type == sf::Event::KeyPressed) {
+				key = event.key.code;
+			}
+		}
+		if(key != sf::Keyboard::Key::Unknown) {
+			handleKeyEvents(key);
+		}
 	}
 
 	std::size_t GameEventsManager::countObjects()
@@ -98,9 +90,9 @@ namespace tf
 		instance_ = nullptr;
 	}
 
-	void GameEventsManager::setWindowSize(sf::Vector2f sz)
+	void GameEventsManager::setWindow(std::shared_ptr<sf::RenderWindow> w)
 	{
-		winSz_ = sz;
+		window_ = std::move(w);
 	}
 
 	void GameEventsManager::addGameObject(GameObject* obj)

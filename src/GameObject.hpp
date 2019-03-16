@@ -41,7 +41,7 @@ namespace tf
 		virtual void keyEvent(sf::Keyboard::Key which);
 		virtual void outOfScreenEvent();
 
-		my::signal<> onDelete;
+		my::signal<GameObject*> onDelete;
 
 	protected:
 		std::shared_ptr<sf::RenderWindow> win_;

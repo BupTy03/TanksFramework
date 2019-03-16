@@ -16,7 +16,7 @@ namespace tf
 		static GameEventsManager& Instance();
 		virtual ~GameEventsManager();
 
-		void setWindowSize(sf::Vector2f sz);
+		void setWindow(std::shared_ptr<sf::RenderWindow> w);
 
 		void addGameObject(GameObject* obj);
 		void removeGameObject(GameObject* obj);
@@ -29,13 +29,12 @@ namespace tf
 		GameEventsManager();
 		void collectDeleted();
 		void processOutOfScreenEvents();
-		void processKeyEvents();
 		void handleKeyEvents(sf::Keyboard::Key key);
 
 	private:
 		static GameEventsManager* instance_;
 		std::vector<GameObject*> objects_;
-		sf::Vector2f winSz_{};
+		std::shared_ptr<sf::RenderWindow> window_;
 	};
 
 } // tf

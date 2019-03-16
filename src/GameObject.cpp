@@ -13,6 +13,7 @@ namespace tf
 
 	GameObject::~GameObject()
 	{
+		onDelete(this);
 	}
 
 	std::size_t GameObject::getId()

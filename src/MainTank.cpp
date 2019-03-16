@@ -1,5 +1,8 @@
 #include "MainTank.hpp"
 
+#include <iostream>
+#include <chrono>
+
 namespace tf
 {
 	MainTank::MainTank(std::shared_ptr<sf::RenderWindow> w)
@@ -55,17 +58,26 @@ namespace tf
 		switch (which)
 		{
 		case sf::Keyboard::Key::W:
+			std::cout << "W\n";
 			setDirection(Direction::FORWARD);
 			break;
 		case sf::Keyboard::Key::S:
+			std::cout << "S\n";
 			setDirection(Direction::BACKWARD);
 			break;
 		case sf::Keyboard::Key::A:
+			std::cout << "A\n";
 			setDirection(Direction::LEFT);
 			break;
 		case sf::Keyboard::Key::D:
+			std::cout << "D\n";
 			setDirection(Direction::RIGHT);
+			break;
+		case sf::Keyboard::Key::Space:
+			std::cout << "Space\n";
+			makeShot();
 			break;
 		}
 	}
+
 }

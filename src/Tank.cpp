@@ -3,6 +3,7 @@
 #include <iostream>
 #include <random>
 #include <chrono>
+#include <algorithm>
 
 namespace tf
 {
@@ -50,16 +51,15 @@ namespace tf
 		for(auto sh : body_) {
 			delete sh;
 		}
-
-		for(auto b : bullets_) {
-			delete b;
-		}
 	}
 
 	void Tank::draw()
 	{
 		for(auto sh : body_) {
 			win_->draw(*sh);
+		}
+		for(auto bullet : bullets_) {
+			bullet->draw();
 		}
 	}
 
@@ -132,6 +132,37 @@ namespace tf
 
 	void Tank::makeShot()
 	{
+		Bullet* new_bullet = nullptr;
+
+		const auto curr_pos = getPosition();
+		const auto curr_sz = getSize();
+		const auto curr_step = getStep();
+
+		switch (getDirection()) {
+			case Direction::FORWARD:
+				new_bullet = new Bullet(win_, {curr_pos.x + curr_step, curr_pos.y}, curr_sz, curr_step);
+				new_bullet->setDirection(Direction::FORWARD);
+				break;
+			case Direction::BACKWARD:
+				new_bullet = new Bullet(win_, {curr_pos.x + curr_step, curr_pos.y + 2.f * curr_sz}, curr_sz, curr_step);
+				new_bullet->setDirection(Direction::BACKWARD);
+				break;
+			case Direction::LEFT:
+				new_bullet = new Bullet(win_, {curr_pos.x, curr_pos.y + curr_sz}, curr_sz, curr_step);
+				new_bullet->setDirection(Direction::LEFT);
+				break;
+			case Direction::RIGHT:
+				new_bullet = new Bullet(win_, {curr_pos.x + 2.f * curr_sz, curr_pos.y + curr_sz}, curr_sz, curr_step);
+				new_bullet->setDirection(Direction::RIGHT);
+				break;
+		}
+
+		if(new_bullet == nullptr) {
+			return;
+		}
+
+		new_bullet->onDelete.connect(this, &Tank::deleteBullet);
+		bullets_.push_back(new_bullet);
 	}
 	void Tank::makeStep()
 	{
@@ -164,6 +195,15 @@ namespace tf
 	{
 		MovingGameObject::outOfScreenEvent();
 		turn(getDirection());
+	}
+
+	void Tank::deleteBullet(GameObject* bullet)
+	{
+		bullets_.erase(
+			std::remove(std::begin(bullets_), 
+			std::end(bullets_), (Bullet*)bullet), 
+			std::end(bullets_)
+		);
 	}
 
 }

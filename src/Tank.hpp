@@ -37,6 +37,8 @@ namespace tf
 
 		virtual void outOfScreenEvent() override;
 
+		void deleteBullet(GameObject* bullet);
+
 	protected:
 		std::vector<sf::RectangleShape*> body_;
 		std::vector<Bullet*> bullets_;

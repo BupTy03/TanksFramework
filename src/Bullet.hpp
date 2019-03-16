@@ -29,6 +29,7 @@ namespace tf
 
 	private:
 		sf::RectangleShape rectShape_;
+		GameTimer* moveTimer_{nullptr};
 	};
 }
 
