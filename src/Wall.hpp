@@ -19,15 +19,15 @@ namespace tf
 		Wall(std::shared_ptr<sf::RenderWindow> w);
 		Wall(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f sz);
 		Wall(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, sf::Vector2f sz);
-		virtual ~Wall();
+		virtual ~Wall(){}
 
-		virtual float getSize() const override;
+		virtual float getSize() const override { return rectShape_.getSize().x; }
 		virtual void setSize(float sz) override;
 
-		virtual sf::Vector2f getPosition() const override;
-		virtual void setPosition(sf::Vector2f pos) override;
+		virtual sf::Vector2f getPosition() const override { return rectShape_.getPosition(); }
+		virtual void setPosition(sf::Vector2f pos) override { rectShape_.setPosition(pos); }
 
-		virtual void draw() override;
+		virtual void draw() override { win_->draw(rectShape_); }
 
 	protected:
 		sf::RectangleShape rectShape_;

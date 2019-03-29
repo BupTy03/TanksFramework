@@ -28,32 +28,10 @@ namespace tf
 		rectShape_.setOutlineColor(sf::Color(107, 109, 99));
 	}
 
-	Wall::~Wall()
-	{
-	}
-
-	float Wall::getSize() const
-	{
-		return rectShape_.getSize().x;
-	}
 	void Wall::setSize(float sz)
 	{
 		rectShape_.setOutlineThickness(-sz / 9.f);
 		rectShape_.setSize({sz, sz});
-	}
-
-	sf::Vector2f Wall::getPosition() const
-	{
-		return rectShape_.getPosition();
-	}
-	void Wall::setPosition(sf::Vector2f pos)
-	{
-		rectShape_.setPosition(pos);
-	}
-
-	void Wall::draw()
-	{
-		win_->draw(rectShape_);
 	}
 
 }

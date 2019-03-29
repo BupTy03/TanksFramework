@@ -20,7 +20,7 @@ namespace tf
 		void dispatch();
 
 	private:
-		GameTimersDispatcher();
+		GameTimersDispatcher(){}
 
 		GameTimersDispatcher(const GameTimersDispatcher&) = delete;
 		GameTimersDispatcher& operator=(const GameTimersDispatcher&) = delete;
@@ -28,8 +28,8 @@ namespace tf
 		GameTimersDispatcher(GameTimersDispatcher&&) = delete;
 		GameTimersDispatcher& operator=(GameTimersDispatcher&&) = delete;
 
-		void addTimer(GameTimer& tmr);
-		void deleteTimer(GameTimer& tmr);
+		void addTimer(GameTimer& tmr) { timers_.push_back(&tmr); }
+		void deleteTimer(GameTimer& tmr) { timers_.erase(std::remove(std::begin(timers_), std::end(timers_), &tmr)); }
 
 	private:
 		std::vector<GameTimer*> timers_;
@@ -38,9 +38,9 @@ namespace tf
 
 	struct GameTimer
 	{
-		GameTimer();
-		explicit GameTimer(std::size_t msec);
-		virtual ~GameTimer();
+		GameTimer() : id_{ timerId_++ } {}
+		explicit GameTimer(std::size_t msec) : id_{ timerId_++ } { start(msec);  }
+		virtual ~GameTimer() { if(!stopped_) (GameTimersDispatcher::Instance()).deleteTimer(*this); }
 
 		GameTimer(const GameTimer&) = delete;
 		GameTimer& operator=(const GameTimer&) = delete;
@@ -50,20 +50,20 @@ namespace tf
 
 		my::signal<> onTimerCall;
 
-		void start();
+		inline void start() { begin_time_ = std::chrono::steady_clock::now();  }
 		void start(std::size_t msec);
-		void start(std::chrono::milliseconds msec);
+		void start(std::chrono::milliseconds msec) { start(msec.count()); }
 		void stop();
 
-		void setInterval(std::size_t msec);
-		void setInterval(std::chrono::milliseconds msec);
+		inline void setInterval(std::size_t msec) { interval_ = msec; }
+		inline void setInterval(std::chrono::milliseconds msec) { setInterval(static_cast<std::size_t>(msec.count())); }
 
-		void setSingleShot(bool sshot);
-		bool isSingleShot();
+		inline void setSingleShot(bool sshot) { single_ = sshot; }
+		inline bool isSingleShot() { return single_; }
 
-		bool isStopped() const;
-		std::size_t interval() const;
-		std::size_t timerId() const;
+		inline bool isStopped() const { return stopped_; }
+		inline std::size_t interval() const { return interval_;  }
+		inline std::size_t timerId() const { return id_;  }
 		std::size_t elapsed() const;
 
 	private:

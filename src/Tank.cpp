@@ -63,10 +63,6 @@ namespace tf
 		}
 	}
 
-	float Tank::getSize() const
-	{
-		return body_[0]->getSize().x;
-	}
 	void Tank::setSize(float sz)
 	{
 		for(auto sh : body_) {
@@ -74,15 +70,6 @@ namespace tf
 			sh->setOutlineThickness(-sz / 9.f);
 		}
 		turn(getDirection());
-	}
-
-	sf::Vector2f Tank::getPosition() const
-	{
-		return currPos_;
-	}
-	void Tank::setPosition(sf::Vector2f pos)
-	{
-		currPos_ = pos;
 	}
 
 	void Tank::turn(Direction dir)
@@ -184,11 +171,6 @@ namespace tf
 				break;
 		}
 		turn(getDirection());
-	}
-
-	const std::vector<Bullet*>& Tank::getBullets()
-	{
-		return bullets_;
 	}
 
 	void Tank::outOfScreenEvent()

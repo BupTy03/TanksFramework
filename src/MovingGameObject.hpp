@@ -29,15 +29,15 @@ namespace tf
 	{
 		MovingGameObject(std::shared_ptr<sf::RenderWindow> w);
 		MovingGameObject(std::shared_ptr<sf::RenderWindow> w, float step);
-		virtual ~MovingGameObject();
+		virtual ~MovingGameObject(){}
 
 		virtual void makeStep() = 0;
 
-		float getStep();
-		virtual void setStep(float step);
+		inline float getStep() { return step_; }
+		virtual void setStep(float step) { step_ = step; }
 
-		Direction getDirection();
-		virtual void setDirection(Direction dir);
+		inline Direction getDirection() { return dir_; }
+		virtual void setDirection(Direction dir) { dir_ = dir; }
 
 		virtual void outOfScreenEvent() override;
 

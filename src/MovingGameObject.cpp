@@ -17,28 +17,6 @@ namespace tf
 	{
 	}
 
-	MovingGameObject::~MovingGameObject()
-	{
-	}
-
-	float MovingGameObject::getStep()
-	{
-		return step_;
-	}
-	void MovingGameObject::setStep(float step)
-	{
-		step_ = step;
-	}
-
-	Direction MovingGameObject::getDirection()
-	{
-		return dir_;
-	}
-	void MovingGameObject::setDirection(Direction dir)
-	{
-		dir_ = dir;
-	}
-
 	void MovingGameObject::outOfScreenEvent()
 	{
 		switch (dir_)

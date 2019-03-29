@@ -20,11 +20,11 @@ namespace tf
 
 		virtual void draw() override;
 
-		virtual float getSize() const override;
+		virtual float getSize() const override { return body_[0]->getSize().x; }
 		virtual void setSize(float sz) override;
 
-		virtual sf::Vector2f getPosition() const override;
-		virtual void setPosition(sf::Vector2f pos) override;
+		virtual sf::Vector2f getPosition() const override { return currPos_; }
+		virtual void setPosition(sf::Vector2f pos) override { currPos_ = pos; }
 
 		virtual void setDirection(Direction dir) override;
 
@@ -33,7 +33,7 @@ namespace tf
 
 		virtual void turn(Direction dir);
 
-		const std::vector<Bullet*>& getBullets();
+		const std::vector<Bullet*>& getBullets() { return bullets_; }
 
 		virtual void outOfScreenEvent() override;
 

@@ -36,15 +36,6 @@ namespace tf
 		moveTimer_->onTimerCall.connect(this, &Bullet::makeStep);
 		moveTimer_->start(100);
 	}
-	Bullet::~Bullet()
-	{
-		delete moveTimer_;
-	}
-
-	void Bullet::draw()
-	{
-		win_->draw(rectShape_);
-	}
 
 	void Bullet::makeStep()
 	{
@@ -67,28 +58,10 @@ namespace tf
 		}
 	}
 
-	float Bullet::getSize() const
-	{
-		return rectShape_.getSize().x;
-	}
 	void Bullet::setSize(float sz)
 	{
 		rectShape_.setOutlineThickness(-sz / 9.f);
 		rectShape_.setSize({sz, sz});
-	}
-
-	sf::Vector2f Bullet::getPosition() const
-	{
-		return rectShape_.getPosition();
-	}
-	void Bullet::setPosition(sf::Vector2f pos)
-	{
-		rectShape_.setPosition(pos);
-	}
-
-	void Bullet::outOfScreenEvent()
-	{
-		deleteLater();
 	}
 
 }

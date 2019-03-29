@@ -14,7 +14,7 @@ namespace tf
 		MainTank(std::shared_ptr<sf::RenderWindow> w);
 		MainTank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz);
 		MainTank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz, float step);
-		virtual ~MainTank();
+		virtual ~MainTank() { delete moveTimer_; }
 
 		virtual void outOfScreenEvent() override;
 		virtual void keyEvent(sf::Keyboard::Key which) override;

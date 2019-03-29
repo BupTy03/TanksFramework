@@ -69,16 +69,6 @@ namespace tf
 		}
 	}
 
-	std::size_t GameEventsManager::countObjects()
-	{
-		return objects_.size();
-	}
-
-	void GameEventsManager::setWindow(std::shared_ptr<sf::RenderWindow> w)
-	{
-		window_ = std::move(w);
-	}
-
 	void GameEventsManager::addGameObject(GameObject* obj)
 	{
 		if(obj == nullptr) {

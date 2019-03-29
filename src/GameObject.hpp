@@ -25,7 +25,7 @@ namespace tf
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(GameObject& other) = delete;
 
-		std::size_t getId();
+		inline std::size_t getId(){ return id_; }
 
 		virtual void draw() = 0;
 
@@ -35,11 +35,11 @@ namespace tf
 		virtual sf::Vector2f getPosition() const = 0;
 		virtual void setPosition(sf::Vector2f pos) = 0;
 
-		void deleteLater();
-		bool isDeleted() const;
+		inline void deleteLater() { deleted_ = true; }
+		inline bool isDeleted() const{ return deleted_; }
 
-		virtual void keyEvent(sf::Keyboard::Key which);
-		virtual void outOfScreenEvent();
+		virtual void keyEvent(sf::Keyboard::Key which){}
+		virtual void outOfScreenEvent(){}
 
 		my::signal<GameObject*> onDelete;
 

@@ -15,14 +15,14 @@ namespace tf
 	{
 		static GameEventsManager& Instance();
 
-		void setWindow(std::shared_ptr<sf::RenderWindow> w);
+		inline void setWindow(std::shared_ptr<sf::RenderWindow> w){ window_ = std::move(w); }
 
 		void addGameObject(GameObject* obj);
 		void removeGameObject(GameObject* obj);
 
 		void processEvents();
 
-		std::size_t countObjects();
+		inline std::size_t countObjects(){ return objects_.size(); }
 
 	private:
 		GameEventsManager(){}
