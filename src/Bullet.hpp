@@ -25,6 +25,12 @@ namespace tf
 		virtual sf::Vector2f getPosition() const override { return rectShape_.getPosition(); }
 		virtual void setPosition(sf::Vector2f pos) override { rectShape_.setPosition(pos); }
 
+		virtual void setFillColor(const sf::Color& color) override { rectShape_.setFillColor(color); }
+		virtual sf::Color getFillColor() const override { return rectShape_.getFillColor(); }
+
+		virtual void setBorderColor(const sf::Color& color) override { rectShape_.setOutlineColor(color); }
+		virtual sf::Color getBorderColor() const override { return rectShape_.getOutlineColor(); }
+
 		virtual void outOfScreenEvent() override { deleteLater(); }
 
 	private:

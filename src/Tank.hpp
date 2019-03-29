@@ -26,6 +26,12 @@ namespace tf
 		virtual sf::Vector2f getPosition() const override { return currPos_; }
 		virtual void setPosition(sf::Vector2f pos) override { currPos_ = pos; }
 
+		virtual void setFillColor(const sf::Color& color) override;
+		virtual sf::Color getFillColor() const override { return body_[0]->getFillColor(); }
+
+		virtual void setBorderColor(const sf::Color& color) override;
+		virtual sf::Color getBorderColor() const override { return body_[0]->getOutlineColor(); }
+
 		virtual void setDirection(Direction dir) override;
 
 		virtual void makeShot();

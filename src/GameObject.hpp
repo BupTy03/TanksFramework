@@ -32,6 +32,12 @@ namespace tf
 		virtual float getSize() const = 0;
 		virtual void setSize(float sz) = 0;
 
+		virtual void setFillColor(const sf::Color& color) = 0;
+		virtual sf::Color getFillColor() const = 0;
+
+		virtual void setBorderColor(const sf::Color& color) = 0;
+		virtual sf::Color getBorderColor() const = 0;
+
 		virtual sf::Vector2f getPosition() const = 0;
 		virtual void setPosition(sf::Vector2f pos) = 0;
 

@@ -19,7 +19,10 @@ namespace tf
 		virtual void outOfScreenEvent() override;
 		virtual void keyEvent(sf::Keyboard::Key which) override;
 
-	private:
+	protected:
+		virtual void init();
+
+	protected:
 		GameTimer* moveTimer_{nullptr};
 	};
 }

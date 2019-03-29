@@ -29,6 +29,12 @@ namespace tf
 
 		virtual void draw() override { win_->draw(rectShape_); }
 
+		virtual void setFillColor(const sf::Color& color) { rectShape_.setFillColor(color); }
+		virtual sf::Color getFillColor() const { return rectShape_.getFillColor(); }
+
+		virtual void setBorderColor(const sf::Color& color) { rectShape_.setOutlineColor(color); }
+		virtual sf::Color getBorderColor() const { return rectShape_.getOutlineColor(); }
+
 	protected:
 		sf::RectangleShape rectShape_;
 	};

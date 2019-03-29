@@ -14,15 +14,15 @@ namespace tf
 
 	enum class Direction
 	{
-		FORWARD 		= 0,
-		BACKWARD 		= 1,
-		LEFT 			= 2,
-		RIGHT 			= 3,
-		FORWARD_LEFT 	= 4,
-		FORWARD_RIGHT 	= 5,
-		BACKWARD_LEFT 	= 6,
-		BACKWARD_RIGHT 	= 7,
-		STOPPED			= 8
+		FORWARD,	
+		BACKWARD,	
+		LEFT,		
+		RIGHT, 			
+		FORWARD_LEFT, 	
+		FORWARD_RIGHT, 	
+		BACKWARD_LEFT, 	
+		BACKWARD_RIGHT, 	
+		STOPPED,			
 	};
 
 	struct MovingGameObject : GameObject

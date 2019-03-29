@@ -8,23 +8,24 @@ namespace tf
 	MainTank::MainTank(std::shared_ptr<sf::RenderWindow> w)
 		: Tank(std::move(w))
 		, moveTimer_{new GameTimer()}
-	{
-		moveTimer_->onTimerCall.connect(dynamic_cast<Tank*>(this), &Tank::makeStep);
-		moveTimer_->start(1000);
-	}
+	{ init(); }
+
 	MainTank::MainTank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz)
 		: Tank(std::move(w), pos, sz)
 		, moveTimer_{new GameTimer()}
-	{
-		moveTimer_->onTimerCall.connect(dynamic_cast<Tank*>(this), &Tank::makeStep);
-		moveTimer_->start(1000);
-	}
+	{ init(); }
+
 	MainTank::MainTank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz, float step)
 		: Tank(std::move(w), pos, sz, step)
 		, moveTimer_{new GameTimer()}
+	{ init(); }
+
+	void MainTank::init()
 	{
 		moveTimer_->onTimerCall.connect(dynamic_cast<Tank*>(this), &Tank::makeStep);
 		moveTimer_->start(1000);
+		this->setFillColor(sf::Color(23, 164, 113));
+		this->setBorderColor(sf::Color(31, 87, 67));
 	}
 
 	void MainTank::outOfScreenEvent()

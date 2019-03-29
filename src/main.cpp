@@ -3,6 +3,7 @@
 #include "Bullet.hpp"
 #include "Tank.hpp"
 #include "MainTank.hpp"
+#include "EnemyTank.hpp"
 #include "GameTimer.hpp"
 #include "GameEventsManager.hpp"
 
@@ -23,13 +24,17 @@ int main()
 	(tf::GameEventsManager::Instance()).setWindow(window);
 
 	auto mtnk = new tf::MainTank(window, {40.f * 8.f, 40.f * 8.f}, 50.f, 50.f);
+	auto entnk = new tf::EnemyTank(window, {0.f, 0.f}, 50.f, 50.f);
 	while (window->isOpen()) {
 		(tf::GameTimersDispatcher::Instance()).dispatch();
 		(tf::GameEventsManager::Instance()).processEvents();
 		window->clear();
-		if((tf::GameEventsManager::Instance()).countObjects() > 0) {
-			mtnk->draw();
+		if((tf::GameEventsManager::Instance()).countObjects() <= 0) {
+			window->close();
+			return 0;
 		}
+		mtnk->draw();
+		entnk->draw();
 		window->display();
 	}
 
