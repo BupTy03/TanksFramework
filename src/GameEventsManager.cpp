@@ -8,18 +8,10 @@
 namespace tf
 {
 
-	GameEventsManager* GameEventsManager::instance_ = nullptr;
-
-	GameEventsManager::GameEventsManager()
-	{
-	}
-
 	GameEventsManager& GameEventsManager::Instance()
 	{
-		if(instance_ == nullptr) {
-			instance_ = new GameEventsManager();
-		}
-		return *instance_;
+		static GameEventsManager instance;
+		return instance;
 	}
 
 	void GameEventsManager::collectDeleted()
@@ -80,14 +72,6 @@ namespace tf
 	std::size_t GameEventsManager::countObjects()
 	{
 		return objects_.size();
-	}
-
-	GameEventsManager::~GameEventsManager()
-	{
-		if(instance_ != nullptr) {
-			delete instance_;
-		}
-		instance_ = nullptr;
 	}
 
 	void GameEventsManager::setWindow(std::shared_ptr<sf::RenderWindow> w)

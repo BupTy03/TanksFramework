@@ -14,7 +14,6 @@ namespace tf
 	struct GameEventsManager
 	{
 		static GameEventsManager& Instance();
-		virtual ~GameEventsManager();
 
 		void setWindow(std::shared_ptr<sf::RenderWindow> w);
 
@@ -26,13 +25,16 @@ namespace tf
 		std::size_t countObjects();
 
 	private:
-		GameEventsManager();
+		GameEventsManager(){}
+		GameEventsManager(const GameEventsManager&) = delete;
+		GameEventsManager& operator=(const GameEventsManager&) = delete;
+		GameEventsManager(GameEventsManager&&) = delete;
+		GameEventsManager& operator=(GameEventsManager&&) = delete;
 		void collectDeleted();
 		void processOutOfScreenEvents();
 		void handleKeyEvents(sf::Keyboard::Key key);
 
 	private:
-		static GameEventsManager* instance_;
 		std::vector<GameObject*> objects_;
 		std::shared_ptr<sf::RenderWindow> window_;
 	};
