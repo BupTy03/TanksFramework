@@ -27,7 +27,7 @@ namespace tf
 
 	struct MovingGameObject : GameObject
 	{
-		explicit MovingGameObject(std::shared_ptr<sf::RenderWindow> w, GameObjectType type, float step = 0.f);
+		explicit MovingGameObject(GameObjectType type, float step = 0.f);
 		virtual ~MovingGameObject(){}
 
 		virtual void makeStep() = 0;
@@ -38,7 +38,7 @@ namespace tf
 		inline Direction getDirection() { return dir_; }
 		virtual void setDirection(Direction dir) { dir_ = dir; }
 
-		virtual void outOfScreenEvent() override;
+		virtual void outOfScreenEvent(const sf::RenderWindow& win) override;
 
 	private:
 		Direction dir_{};

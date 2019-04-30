@@ -12,8 +12,8 @@
 namespace tf
 {
 
-	Tank::Tank(std::shared_ptr<sf::RenderWindow> w)
-		: MovingGameObject(std::move(w), GameObjectType::TANK)
+	Tank::Tank()
+		: MovingGameObject(GameObjectType::TANK)
 		, body_{6}
 	{
 		for(std::size_t i = 0; i < body_.size(); ++i) {
@@ -23,8 +23,8 @@ namespace tf
 		}
 		turn(getDirection());
 	}
-	Tank::Tank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz)
-		: MovingGameObject(std::move(w), GameObjectType::TANK)
+	Tank::Tank(sf::Vector2f pos, float sz)
+		: MovingGameObject(GameObjectType::TANK)
 		, body_{6}
 	{
 		for(std::size_t i = 0; i < body_.size(); ++i) {
@@ -36,8 +36,8 @@ namespace tf
 		setPosition(pos);
 		turn(getDirection());
 	}
-	Tank::Tank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz, float step)
-		: MovingGameObject(std::move(w), GameObjectType::TANK, step)
+	Tank::Tank(sf::Vector2f pos, float sz, float step)
+		: MovingGameObject(GameObjectType::TANK, step)
 		, body_{6}
 	{
 		for(std::size_t i = 0; i < body_.size(); ++i) {
@@ -50,20 +50,15 @@ namespace tf
 		turn(getDirection());
 	}
 
-	Tank::~Tank()
-	{
-		for(auto sh : body_) {
-			delete sh;
-		}
-	}
+	Tank::~Tank() { for(auto sh : body_) delete sh; }
 
-	void Tank::draw()
+	void Tank::draw(sf::RenderWindow& win)
 	{
 		for(auto sh : body_) {
-			win_->draw(*sh);
+			win.draw(*sh);
 		}
 		for(auto bullet : bullets_) {
-			bullet->draw();
+			bullet->draw(win);
 		}
 	}
 
@@ -131,34 +126,34 @@ namespace tf
 
 		switch (getDirection()) {
 			case Direction::FORWARD:
-				new_bullet = new Bullet(win_, {curr_pos.x + curr_step, curr_pos.y}, curr_sz, curr_step);
+				new_bullet = new Bullet({curr_pos.x + curr_step, curr_pos.y}, curr_sz, curr_step);
 				new_bullet->setFillColor(body_[0]->getFillColor());
 				new_bullet->setBorderColor(body_[0]->getOutlineColor());
 				new_bullet->setDirection(Direction::FORWARD);
 				break;
 			case Direction::BACKWARD:
-				new_bullet = new Bullet(win_, {curr_pos.x + curr_step, curr_pos.y + 2.f * curr_sz}, curr_sz, curr_step);
+				new_bullet = new Bullet({curr_pos.x + curr_step, curr_pos.y + 2.f * curr_sz}, curr_sz, curr_step);
 				new_bullet->setFillColor(body_[0]->getFillColor());
 				new_bullet->setBorderColor(body_[0]->getOutlineColor());
 				new_bullet->setDirection(Direction::BACKWARD);
 				break;
 			case Direction::LEFT:
-				new_bullet = new Bullet(win_, {curr_pos.x, curr_pos.y + curr_sz}, curr_sz, curr_step);
+				new_bullet = new Bullet({curr_pos.x, curr_pos.y + curr_sz}, curr_sz, curr_step);
 				new_bullet->setFillColor(body_[0]->getFillColor());
 				new_bullet->setBorderColor(body_[0]->getOutlineColor());
 				new_bullet->setDirection(Direction::LEFT);
 				break;
 			case Direction::RIGHT:
-				new_bullet = new Bullet(win_, {curr_pos.x + 2.f * curr_sz, curr_pos.y + curr_sz}, curr_sz, curr_step);
+				new_bullet = new Bullet({curr_pos.x + 2.f * curr_sz, curr_pos.y + curr_sz}, curr_sz, curr_step);
 				new_bullet->setFillColor(body_[0]->getFillColor());
 				new_bullet->setBorderColor(body_[0]->getOutlineColor());
 				new_bullet->setDirection(Direction::RIGHT);
 				break;
 		}
 
-		if(new_bullet == nullptr) {
-			return;
-		}
+		if(new_bullet == nullptr) { return; }
+
+		getGameEventsManager()->addGameObject(new_bullet);
 
 		new_bullet->onDelete.connect(this, &Tank::deleteBullet);
 		bullets_.push_back(new_bullet);
@@ -185,11 +180,11 @@ namespace tf
 		turn(getDirection());
 	}
 
-	void Tank::outOfScreenEvent()
+	void Tank::outOfScreenEvent(const sf::RenderWindow& win)
 	{
 		const auto curr_pos = getPosition();
 		const auto curr_sz = getSize();
-		const auto win_sz = win_->getSize();
+		const auto win_sz = win.getSize();
 		switch (getDirection()) {
 			case Direction::FORWARD:
 				setPosition({curr_pos.x, win_sz.y - curr_sz});

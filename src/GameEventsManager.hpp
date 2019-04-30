@@ -5,39 +5,40 @@
 #include "GameObject.hpp"
 
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window/Keyboard.hpp>
 
 #include <vector>
 
 namespace tf
 {
+	class GameObject;
 
 	struct GameEventsManager
 	{
-		static GameEventsManager& Instance();
-
-		inline void setWindow(std::shared_ptr<sf::RenderWindow> w){ window_ = std::move(w); }
-
-		void addGameObject(GameObject* obj);
-		void removeGameObject(GameObject* obj);
-
-		void processEvents();
-
-		inline std::size_t countObjects(){ return objects_.size(); }
-
-	private:
 		GameEventsManager(){}
+		~GameEventsManager();
+
 		GameEventsManager(const GameEventsManager&) = delete;
 		GameEventsManager& operator=(const GameEventsManager&) = delete;
 		GameEventsManager(GameEventsManager&&) = delete;
 		GameEventsManager& operator=(GameEventsManager&&) = delete;
+
 		void collectDeleted();
-		void processOutOfScreenEvents();
+		void processOutOfScreenEvents(const sf::RenderWindow& window);
 		void handleKeyEvents(sf::Keyboard::Key key);
 		void handleCollisions();
 
+		void addGameObject(GameObject* obj);
+		void removeGameObject(GameObject* obj);
+
+		void processEvents(sf::RenderWindow& window);
+
+		inline std::size_t countObjects(){ return objects_.size(); }
+		inline const std::vector<GameObject*>& getObjects() { return objects_; }
+
 	private:
 		std::vector<GameObject*> objects_;
-		std::shared_ptr<sf::RenderWindow> window_;
 	};
 
 } // tf

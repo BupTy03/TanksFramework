@@ -1,69 +1,60 @@
 #include "Game.hpp"
 
+#define DEBUG
+
+#include <iostream>
 #include <algorithm>
+#include <stdexcept>
+#include <cassert>
 
 namespace tf
 {
 
-	Game::Game(std::shared_ptr<sf::RenderWindow> w, sf::Vector2u sz) 
-		: win_{w}
-		, szInCells_{sz}
-	{
-	}
+	Game::Game(const std::string& name, unsigned int size_in_pixels, unsigned int count_cells) 
+		: win_{new sf::RenderWindow(sf::VideoMode(size_in_pixels, size_in_pixels), name)}
+		, manager_{new GameEventsManager}
+		, countCells_{count_cells} {}
 
 	Game::~Game()
+	{ 
+		delete win_;
+		delete manager_; 
+	}
+
+	void Game::drawAll(sf::RenderWindow& win)
 	{
-		for(auto wall : walls_) {
-			delete wall;
+		for(auto obj : manager_->getObjects()) {
+			obj->draw(win);
 		}
 	}
 
-	sf::Vector2u Game::getSizeInWalls() const
+	void Game::start()
 	{
-		auto sz = win_->getSize();
-		return {sz.x / szInCells_.x, sz.y / szInCells_.y};
-	}
-
-	void Game::addWall(Wall* w, sf::Vector2u coords)
-	{
-		if(w == nullptr || 
-			std::find(std::cbegin(walls_), std::cend(walls_), w) != std::cend(walls_)) {
-			return;
-		}
-		const auto new_sz = static_cast<float>(win_->getSize().x / szInCells_.x);
-		w->setSize(new_sz);
-		w->setPosition({coords.x * new_sz, coords.y * new_sz});
-
-		walls_.push_back(w);
-	}
-
-	void Game::delWall(Wall* w)
-	{
-		if(w == nullptr) {
-			return;
-		}
-
-		walls_.erase(
-			std::remove(std::begin(walls_), std::end(walls_), w), 
-			std::end(walls_)
-		);
-	}
-
-	void Game::drawWalls()
-	{
-		for(auto w_ptr : walls_) {
-			w_ptr->draw();
+		while (win_->isOpen()) {
+			(tf::GameTimersDispatcher::Instance()).dispatch();
+			manager_->processEvents(*win_);
+			win_->clear();
+			if(manager_->countObjects() <= 0) {
+				win_->close();
+				return;
+			}
+			drawAll(*win_);
+			win_->display();
 		}
 	}
 
-	void Game::drawAll()
+	bool Game::place(GameObject* obj/*, sf::Vector2u coordinates*/)
 	{
-		drawWalls();
-	}
-
-	bool Game::computeLogic()
-	{
-		return false;
+		assert(obj != nullptr && "obj was nullptr");
+		// if(!checkBounds(coordinates)){
+		// 	return false;
+		// }
+		// const auto new_size = static_cast<float>(win_->getSize().x / countCells_);
+		// obj->setSize(new_size);
+		// obj->setPosition({coordinates.x * new_size, coordinates.y * new_size});
+		obj->setGameEventsManager(manager_);
+		manager_->addGameObject(obj);
+		return true;
 	}
 
 }

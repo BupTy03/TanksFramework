@@ -1,14 +1,23 @@
+#define DEBUG
+
 #include "GameObject.hpp"
 #include "GameEventsManager.hpp"
+
+#include <cassert>
 
 namespace tf
 {
 
-	GameObject::GameObject(std::shared_ptr<sf::RenderWindow> w, GameObjectType type) 
-		: win_{std::move(w)}
-		, id_{counter_++}
+	GameObject::GameObject(GameObjectType type) 
+		: id_{counter_++}
 		, type_{type}
-	{ (GameEventsManager::Instance()).addGameObject(this); }
+	{ }
+
+	void GameObject::setGameEventsManager(GameEventsManager* manager)
+	{
+		assert(manager != nullptr && "manager ptr was null!");
+		manager_ = manager;
+	}
 
 	GameObject::~GameObject() { onDelete(this); }
 

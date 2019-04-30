@@ -11,12 +11,12 @@ namespace tf
 {
 	struct Bullet : MovingGameObject
 	{
-		explicit Bullet(std::shared_ptr<sf::RenderWindow> w);
-		explicit Bullet(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz);
-		explicit Bullet(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz, float step);
+		explicit Bullet();
+		explicit Bullet(sf::Vector2f pos, float sz);
+		explicit Bullet(sf::Vector2f pos, float sz, float step);
 		virtual ~Bullet(){ delete moveTimer_; }
 
-		virtual void draw() override{ win_->draw(rectShape_); }
+		virtual void draw(sf::RenderWindow& win) override{ win.draw(rectShape_); }
 		virtual void makeStep() override;
 
 		virtual float getSize() const override { return rectShape_.getSize().x; }
@@ -31,7 +31,7 @@ namespace tf
 		virtual void setBorderColor(const sf::Color& color) override { rectShape_.setOutlineColor(color); }
 		virtual sf::Color getBorderColor() const override { return rectShape_.getOutlineColor(); }
 
-		virtual void outOfScreenEvent() override { deleteLater(); }
+		virtual void outOfScreenEvent(const sf::RenderWindow& win) override { deleteLater(); }
 
 		virtual void handleCollision(GameObject* obj) override;
 

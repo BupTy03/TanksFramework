@@ -5,13 +5,13 @@
 
 namespace tf
 {
-	MovingGameObject::MovingGameObject(std::shared_ptr<sf::RenderWindow> w, GameObjectType type, float step)
-		: GameObject{std::move(w), type}
+	MovingGameObject::MovingGameObject(GameObjectType type, float step)
+		: GameObject{type}
 		, step_{step}
 	{
 	}
 
-	void MovingGameObject::outOfScreenEvent()
+	void MovingGameObject::outOfScreenEvent(const sf::RenderWindow& win)
 	{
 		switch (dir_)
 		{

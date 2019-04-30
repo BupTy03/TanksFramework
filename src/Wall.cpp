@@ -3,23 +3,23 @@
 namespace tf
 {
 
-	Wall::Wall(std::shared_ptr<sf::RenderWindow> w)
-		: GameObject(std::move(w), GameObjectType::WALL)
+	Wall::Wall()
+		: GameObject(GameObjectType::WALL)
 	{
 		rectShape_.setFillColor(sf::Color(62, 64, 55));
 		rectShape_.setOutlineColor(sf::Color(107, 109, 99));
 	}
 
-	Wall::Wall(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos)
-		: GameObject(std::move(w), GameObjectType::WALL)
+	Wall::Wall(sf::Vector2f pos)
+		: GameObject(GameObjectType::WALL)
 	{
 		rectShape_.setPosition(pos);
 		rectShape_.setFillColor(sf::Color(62, 64, 55));
 		rectShape_.setOutlineColor(sf::Color(107, 109, 99));
 	}
 
-	Wall::Wall(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, sf::Vector2f sz)
-		: GameObject(std::move(w), GameObjectType::WALL) 
+	Wall::Wall(sf::Vector2f pos, sf::Vector2f sz)
+		: GameObject(GameObjectType::WALL) 
 		, rectShape_(sz)
 	{
 		rectShape_.setPosition(pos);

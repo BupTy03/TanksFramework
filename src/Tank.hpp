@@ -13,12 +13,12 @@ namespace tf
 {
 	struct Tank : MovingGameObject
 	{
-		explicit Tank(std::shared_ptr<sf::RenderWindow> w);
-		explicit Tank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz);
-		explicit Tank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz, float step);
+		explicit Tank();
+		explicit Tank(sf::Vector2f pos, float sz);
+		explicit Tank(sf::Vector2f pos, float sz, float step);
 		virtual ~Tank();
 
-		virtual void draw() override;
+		virtual void draw(sf::RenderWindow& win) override;
 
 		virtual float getSize() const override { return body_[0]->getSize().x; }
 		virtual void setSize(float sz) override;
@@ -41,7 +41,7 @@ namespace tf
 
 		const std::vector<Bullet*>& getBullets() { return bullets_; }
 
-		virtual void outOfScreenEvent() override;
+		virtual void outOfScreenEvent(const sf::RenderWindow& win) override;
 
 		void deleteBullet(GameObject* bullet);
 

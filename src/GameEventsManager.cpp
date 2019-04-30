@@ -2,21 +2,21 @@
 
 #include <SFML/Window.hpp>
 
+#define DEBUG
+
 #include <iostream>
 #include <algorithm>
+#include <cassert>
 
 namespace tf
 {
 
-	GameEventsManager& GameEventsManager::Instance()
-	{
-		static GameEventsManager instance;
-		return instance;
-	}
+	GameEventsManager::~GameEventsManager() { for(auto p : objects_) delete p; }
 
 	void GameEventsManager::collectDeleted()
 	{
-		objects_.erase(std::remove_if(std::begin(objects_), std::end(objects_), [](auto p) {
+		objects_.erase(std::remove_if(std::begin(objects_), std::end(objects_), 
+		[](auto p) {
 			if(p->isDeleted()) {
 				delete p;
 				return true;
@@ -32,33 +32,30 @@ namespace tf
 		}
 	}
 
-	void GameEventsManager::processOutOfScreenEvents()
+	void GameEventsManager::processOutOfScreenEvents(const sf::RenderWindow& window)
 	{
-		if(!window_) {
-			return;
-		}
-		const auto win_sz = window_->getSize();
+		const auto win_sz = window.getSize();
 		for(std::size_t i = 0; i < objects_.size(); ++i) {
 			const auto pos = objects_[i]->getPosition();
 			const auto sz = objects_[i]->getSize();
 			if(pos.x < -3.f * sz || pos.y < -3.f * sz || 
 				pos.x > win_sz.x || pos.y > win_sz.y) {
-				objects_[i]->outOfScreenEvent();
+				objects_[i]->outOfScreenEvent(window);
 			}
 		}
 	}
 
-	void GameEventsManager::processEvents()
+	void GameEventsManager::processEvents(sf::RenderWindow& window)
 	{
-		processOutOfScreenEvents();
+		processOutOfScreenEvents(window);
 		handleCollisions();
 		collectDeleted();
 
 		sf::Event event;
 		sf::Keyboard::Key key = sf::Keyboard::Key::Unknown;
-		while (window_->pollEvent(event)) {
+		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed) {
-				window_->close();
+				window.close();
 				return;
 			}
 			if(event.type == sf::Event::KeyPressed) {
@@ -72,9 +69,7 @@ namespace tf
 
 	void GameEventsManager::addGameObject(GameObject* obj)
 	{
-		if(obj == nullptr) {
-			return;
-		}
+		assert(obj && "obj ptr was null!");
 		if(std::cend(objects_) == std::find(std::cbegin(objects_), std::cend(objects_), obj)) {
 			objects_.push_back(obj);
 		}
@@ -82,9 +77,7 @@ namespace tf
 
 	void GameEventsManager::removeGameObject(GameObject* obj)
 	{
-		if(obj == nullptr) {
-			return;
-		}
+		assert(obj && "obj ptr was null!");
 		objects_.erase(
 			std::remove(std::begin(objects_), std::end(objects_), obj), std::end(objects_)
 		);
@@ -94,9 +87,7 @@ namespace tf
 	{
 		for(std::size_t i = 0; i < objects_.size(); ++i) {
 			for(std::size_t j = 0; j < objects_.size(); ++j) {
-				if(j == i) {
-					continue;
-				}
+				if(j == i) { continue; }
 				objects_[i]->handleCollision(objects_[j]);
 			}
 		}

@@ -7,19 +7,19 @@
 namespace tf
 {
 
-	Bullet::Bullet(std::shared_ptr<sf::RenderWindow> w)
-		: MovingGameObject(std::move(w), GameObjectType::BULLET)
-		, moveTimer_(new GameTimer())
+	Bullet::Bullet()
+		: MovingGameObject(GameObjectType::BULLET)
+		, moveTimer_(new GameTimer)
 	{
 		rectShape_.setFillColor(sf::Color(220, 20, 60));
 		rectShape_.setOutlineColor(sf::Color(144, 0, 32));
 		moveTimer_->onTimerCall.connect(this, &Bullet::makeStep);
 		moveTimer_->start(100);
 	}
-	Bullet::Bullet(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz) 
-		: MovingGameObject(std::move(w), GameObjectType::BULLET)
+	Bullet::Bullet(sf::Vector2f pos, float sz) 
+		: MovingGameObject(GameObjectType::BULLET)
 		, rectShape_{{sz, sz}}
-		, moveTimer_(new GameTimer())
+		, moveTimer_(new GameTimer)
 	{
 		rectShape_.setPosition(pos);
 		rectShape_.setOutlineThickness(-sz / 9.f);
@@ -28,10 +28,10 @@ namespace tf
 		moveTimer_->onTimerCall.connect(this, &Bullet::makeStep);
 		moveTimer_->start(100);
 	}
-	Bullet::Bullet(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz, float step)
-		: MovingGameObject(std::move(w), GameObjectType::BULLET, step)
+	Bullet::Bullet(sf::Vector2f pos, float sz, float step)
+		: MovingGameObject(GameObjectType::BULLET, step)
 		, rectShape_{{sz, sz}}
-		, moveTimer_(new GameTimer())
+		, moveTimer_(new GameTimer)
 	{
 		rectShape_.setPosition(pos);
 		rectShape_.setOutlineThickness(-sz / 9.f);

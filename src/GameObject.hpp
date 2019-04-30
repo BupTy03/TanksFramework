@@ -3,6 +3,7 @@
 #define GAME_OBJECT_HPP
 
 #include "GameTimer.hpp"
+#include "GameEventsManager.hpp"
 #include "signal.hpp"
 
 #include <SFML/Window.hpp>
@@ -13,13 +14,15 @@
 
 namespace tf
 {
+	class GameEventsManager;
+
 	struct GameObject
 	{
 		enum class GameObjectType {
 			WALL, TANK, BULLET 
 		};
 
-		explicit GameObject(std::shared_ptr<sf::RenderWindow> w, GameObjectType type);
+		explicit GameObject(GameObjectType type);
 		virtual ~GameObject();
 
 		GameObject(const GameObject&) = delete;
@@ -30,7 +33,9 @@ namespace tf
 
 		inline std::size_t getId(){ return id_; }
 
-		virtual void draw() = 0;
+		void setGameEventsManager(GameEventsManager* manager);
+
+		virtual void draw(sf::RenderWindow&) = 0;
 
 		virtual float getSize() const = 0;
 		virtual void setSize(float sz) = 0;
@@ -50,18 +55,20 @@ namespace tf
 		inline bool isDeleted() const{ return deleted_; }
 
 		virtual void keyEvent(sf::Keyboard::Key which){}
-		virtual void outOfScreenEvent(){}
+		virtual void outOfScreenEvent(const sf::RenderWindow& win){}
 
 		virtual void handleCollision(GameObject*) {}
 
 		my::signal<GameObject*> onDelete;
 
 	protected:
-		std::shared_ptr<sf::RenderWindow> win_;
+		GameEventsManager* getGameEventsManager() { return manager_; }
+
 	private:
 		static std::size_t counter_;
 		std::size_t id_{};
 		const GameObjectType type_;
+		GameEventsManager* manager_;
 		bool deleted_{false};
 	};
 

@@ -6,25 +6,25 @@
 namespace tf
 {
 
-	EnemyTank::EnemyTank(std::shared_ptr<sf::RenderWindow> w)
-		: Tank(std::move(w))
-		, moveTimer_{new GameTimer()}
-		, changeDirTimer_{new GameTimer()}
-		, shotTimer_{new GameTimer()}
+	EnemyTank::EnemyTank()
+		: Tank()
+		, moveTimer_{new GameTimer}
+		, changeDirTimer_{new GameTimer}
+		, shotTimer_{new GameTimer}
 	{ init(); }
 
-	EnemyTank::EnemyTank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz)
-		: Tank(std::move(w), pos, sz)
-		, moveTimer_{new GameTimer()}
-		, changeDirTimer_{new GameTimer()}
-		, shotTimer_{new GameTimer()}
+	EnemyTank::EnemyTank(sf::Vector2f pos, float sz)
+		: Tank(pos, sz)
+		, moveTimer_{new GameTimer}
+		, changeDirTimer_{new GameTimer}
+		, shotTimer_{new GameTimer}
 	{ init(); }
 
-	EnemyTank::EnemyTank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz, float step)
-		: Tank(std::move(w), pos, sz, step)
-		, moveTimer_{new GameTimer()}
-		, changeDirTimer_{new GameTimer()}
-		, shotTimer_{new GameTimer()}
+	EnemyTank::EnemyTank(sf::Vector2f pos, float sz, float step)
+		: Tank(pos, sz, step)
+		, moveTimer_{new GameTimer}
+		, changeDirTimer_{new GameTimer}
+		, shotTimer_{new GameTimer}
 	{ init(); }
 
 	EnemyTank::~EnemyTank() 

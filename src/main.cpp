@@ -18,25 +18,12 @@
 int main()
 {
 	constexpr unsigned int window_width = 800u;
-	auto window = std::make_shared<sf::RenderWindow>(sf::VideoMode(window_width, window_width), "Tanks 2.0");
+	constexpr unsigned int cell_width = 20u;
 
-	tf::Game game(window, {20u, 20u});
-	(tf::GameEventsManager::Instance()).setWindow(window);
-
-	auto mtnk = new tf::MainTank(window, {40.f * 8.f, 40.f * 8.f}, 50.f, 50.f);
-	auto entnk = new tf::EnemyTank(window, {0.f, 0.f}, 50.f, 50.f);
-	while (window->isOpen()) {
-		(tf::GameTimersDispatcher::Instance()).dispatch();
-		(tf::GameEventsManager::Instance()).processEvents();
-		window->clear();
-		if((tf::GameEventsManager::Instance()).countObjects() <= 0) {
-			window->close();
-			return 0;
-		}
-		mtnk->draw();
-		entnk->draw();
-		window->display();
-	}
+	tf::Game game("Tanks 2.0", window_width, cell_width);
+	game.place(new tf::MainTank({40.f * 8.f, 40.f * 8.f}, 50.f, 50.f));
+	game.place(new tf::EnemyTank({0.f, 0.f}, 50.f, 50.f));
+	game.start();
 
 	return 0;
 }

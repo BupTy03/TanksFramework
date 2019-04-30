@@ -5,20 +5,22 @@
 
 namespace tf
 {
-	MainTank::MainTank(std::shared_ptr<sf::RenderWindow> w)
-		: Tank(std::move(w))
+	MainTank::MainTank()
+		: Tank()
 		, moveTimer_{new GameTimer()}
 	{ init(); }
 
-	MainTank::MainTank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz)
-		: Tank(std::move(w), pos, sz)
+	MainTank::MainTank(sf::Vector2f pos, float sz)
+		: Tank(pos, sz)
 		, moveTimer_{new GameTimer()}
 	{ init(); }
 
-	MainTank::MainTank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz, float step)
-		: Tank(std::move(w), pos, sz, step)
+	MainTank::MainTank(sf::Vector2f pos, float sz, float step)
+		: Tank(pos, sz, step)
 		, moveTimer_{new GameTimer()}
 	{ init(); }
+
+	MainTank::~MainTank() { delete moveTimer_; }
 
 	void MainTank::init()
 	{
@@ -28,11 +30,11 @@ namespace tf
 		this->setBorderColor(sf::Color(31, 87, 67));
 	}
 
-	void MainTank::outOfScreenEvent()
+	void MainTank::outOfScreenEvent(const sf::RenderWindow& win)
 	{
 		const auto curr_pos = getPosition();
 		const auto curr_sz = getSize();
-		const auto win_sz = win_->getSize();
+		const auto win_sz = win.getSize();
 		switch (getDirection()) {
 			case Direction::FORWARD:
 				setPosition({curr_pos.x, win_sz.y - curr_sz});
