@@ -13,9 +13,9 @@ namespace tf
 {
 	struct Tank : MovingGameObject
 	{
-		Tank(std::shared_ptr<sf::RenderWindow> w);
-		Tank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz);
-		Tank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz, float step);
+		explicit Tank(std::shared_ptr<sf::RenderWindow> w);
+		explicit Tank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz);
+		explicit Tank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz, float step);
 		virtual ~Tank();
 
 		virtual void draw() override;
@@ -44,6 +44,8 @@ namespace tf
 		virtual void outOfScreenEvent() override;
 
 		void deleteBullet(GameObject* bullet);
+
+		virtual void handleCollision(GameObject* obj) override;
 
 	protected:
 		std::vector<sf::RectangleShape*> body_;

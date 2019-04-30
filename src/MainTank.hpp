@@ -11,9 +11,9 @@ namespace tf
 {
 	struct MainTank : Tank
 	{
-		MainTank(std::shared_ptr<sf::RenderWindow> w);
-		MainTank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz);
-		MainTank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz, float step);
+		explicit MainTank(std::shared_ptr<sf::RenderWindow> w);
+		explicit MainTank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz);
+		explicit MainTank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz, float step);
 		virtual ~MainTank() { delete moveTimer_; }
 
 		virtual void outOfScreenEvent() override;

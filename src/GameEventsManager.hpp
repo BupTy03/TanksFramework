@@ -33,6 +33,7 @@ namespace tf
 		void collectDeleted();
 		void processOutOfScreenEvents();
 		void handleKeyEvents(sf::Keyboard::Key key);
+		void handleCollisions();
 
 	private:
 		std::vector<GameObject*> objects_;

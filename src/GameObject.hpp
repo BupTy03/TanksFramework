@@ -13,10 +13,13 @@
 
 namespace tf
 {
-
 	struct GameObject
 	{
-		GameObject(std::shared_ptr<sf::RenderWindow> w);
+		enum class GameObjectType {
+			WALL, TANK, BULLET 
+		};
+
+		explicit GameObject(std::shared_ptr<sf::RenderWindow> w, GameObjectType type);
 		virtual ~GameObject();
 
 		GameObject(const GameObject&) = delete;
@@ -41,11 +44,15 @@ namespace tf
 		virtual sf::Vector2f getPosition() const = 0;
 		virtual void setPosition(sf::Vector2f pos) = 0;
 
+		inline GameObjectType getType() const { return type_; }
+
 		inline void deleteLater() { deleted_ = true; }
 		inline bool isDeleted() const{ return deleted_; }
 
 		virtual void keyEvent(sf::Keyboard::Key which){}
 		virtual void outOfScreenEvent(){}
+
+		virtual void handleCollision(GameObject*) {}
 
 		my::signal<GameObject*> onDelete;
 
@@ -54,6 +61,7 @@ namespace tf
 	private:
 		static std::size_t counter_;
 		std::size_t id_{};
+		const GameObjectType type_;
 		bool deleted_{false};
 	};
 

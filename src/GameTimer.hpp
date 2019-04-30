@@ -38,7 +38,7 @@ namespace tf
 
 	struct GameTimer
 	{
-		GameTimer() : id_{ timerId_++ } {}
+		explicit GameTimer() : id_{ timerId_++ } {}
 		explicit GameTimer(std::size_t msec) : id_{ timerId_++ } { start(msec);  }
 		virtual ~GameTimer() { if(!stopped_) (GameTimersDispatcher::Instance()).deleteTimer(*this); }
 

@@ -9,9 +9,9 @@ namespace tf
 
 	struct EnemyTank : Tank
 	{
-		EnemyTank(std::shared_ptr<sf::RenderWindow> w);
-		EnemyTank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz);
-		EnemyTank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz, float step);
+		explicit EnemyTank(std::shared_ptr<sf::RenderWindow> w);
+		explicit EnemyTank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz);
+		explicit EnemyTank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz, float step);
 		virtual ~EnemyTank();
 
 	protected:

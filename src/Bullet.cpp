@@ -1,10 +1,14 @@
 #include "Bullet.hpp"
+#include "Wall.hpp"
+
+#define DEBUG
+#include <cassert>
 
 namespace tf
 {
 
 	Bullet::Bullet(std::shared_ptr<sf::RenderWindow> w)
-		: MovingGameObject(std::move(w))
+		: MovingGameObject(std::move(w), GameObjectType::BULLET)
 		, moveTimer_(new GameTimer())
 	{
 		rectShape_.setFillColor(sf::Color(220, 20, 60));
@@ -13,7 +17,7 @@ namespace tf
 		moveTimer_->start(100);
 	}
 	Bullet::Bullet(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz) 
-		: MovingGameObject(std::move(w))
+		: MovingGameObject(std::move(w), GameObjectType::BULLET)
 		, rectShape_{{sz, sz}}
 		, moveTimer_(new GameTimer())
 	{
@@ -25,7 +29,7 @@ namespace tf
 		moveTimer_->start(100);
 	}
 	Bullet::Bullet(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz, float step)
-		: MovingGameObject(std::move(w), step)
+		: MovingGameObject(std::move(w), GameObjectType::BULLET, step)
 		, rectShape_{{sz, sz}}
 		, moveTimer_(new GameTimer())
 	{
@@ -62,6 +66,28 @@ namespace tf
 	{
 		rectShape_.setOutlineThickness(-sz / 9.f);
 		rectShape_.setSize({sz, sz});
+	}
+
+	void Bullet::handleCollision(GameObject* obj)
+	{
+		assert(obj != nullptr && "obj ptr was null");
+		if(obj->getType() != GameObjectType::WALL) {
+			return;
+		}
+		
+		auto wall = dynamic_cast<Wall*>(obj);
+		assert(wall != nullptr && "wall ptr was null");
+
+		const sf::FloatRect wallGeometryRect(
+			wall->getPosition(),
+			{wall->getSize(), wall->getSize()}
+		);
+		if(this->rectShape_.getGlobalBounds()
+			.intersects(wallGeometryRect)) {
+				this->deleteLater();
+				wall->deleteLater();
+				return;
+			}
 	}
 
 }

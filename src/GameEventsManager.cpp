@@ -51,6 +51,7 @@ namespace tf
 	void GameEventsManager::processEvents()
 	{
 		processOutOfScreenEvents();
+		handleCollisions();
 		collectDeleted();
 
 		sf::Event event;
@@ -87,6 +88,18 @@ namespace tf
 		objects_.erase(
 			std::remove(std::begin(objects_), std::end(objects_), obj), std::end(objects_)
 		);
+	}
+
+	void GameEventsManager::handleCollisions()
+	{
+		for(std::size_t i = 0; i < objects_.size(); ++i) {
+			for(std::size_t j = 0; j < objects_.size(); ++j) {
+				if(j == i) {
+					continue;
+				}
+				objects_[i]->handleCollision(objects_[j]);
+			}
+		}
 	}
 
 }

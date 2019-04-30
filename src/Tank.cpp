@@ -1,15 +1,19 @@
 #include "Tank.hpp"
+#include "Wall.hpp"
+
+#define DEBUG
 
 #include <iostream>
 #include <random>
 #include <chrono>
 #include <algorithm>
+#include <cassert>
 
 namespace tf
 {
 
 	Tank::Tank(std::shared_ptr<sf::RenderWindow> w)
-		: MovingGameObject(std::move(w))
+		: MovingGameObject(std::move(w), GameObjectType::TANK)
 		, body_{6}
 	{
 		for(std::size_t i = 0; i < body_.size(); ++i) {
@@ -20,7 +24,7 @@ namespace tf
 		turn(getDirection());
 	}
 	Tank::Tank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz)
-		: MovingGameObject(std::move(w))
+		: MovingGameObject(std::move(w), GameObjectType::TANK)
 		, body_{6}
 	{
 		for(std::size_t i = 0; i < body_.size(); ++i) {
@@ -33,7 +37,7 @@ namespace tf
 		turn(getDirection());
 	}
 	Tank::Tank(std::shared_ptr<sf::RenderWindow> w, sf::Vector2f pos, float sz, float step)
-		: MovingGameObject(std::move(w), step)
+		: MovingGameObject(std::move(w), GameObjectType::TANK, step)
 		, body_{6}
 	{
 		for(std::size_t i = 0; i < body_.size(); ++i) {
@@ -232,4 +236,68 @@ namespace tf
 		}
 	}
 
+	void Tank::handleCollision(GameObject* obj)
+	{
+		assert(obj != nullptr && "obj ptr was null!");
+		if(isDeleted() || obj->isDeleted()) {
+			return;
+		}
+
+		switch (obj->getType()) {
+			case GameObjectType::WALL: {
+				auto wall = dynamic_cast<Wall*>(obj);
+				assert(wall != nullptr && "wall ptr was null!");
+
+				const sf::FloatRect wallGeomentryRect(
+					wall->getPosition(),
+					{wall->getSize(), wall->getSize()}
+				);
+				for(auto bodyRect : body_) {
+					if(bodyRect->getGlobalBounds()
+						.intersects(wallGeomentryRect)) {
+							this->deleteLater();
+							wall->deleteLater();
+							return;
+						}
+				}
+			} break;
+			case GameObjectType::TANK: {
+				auto tank = dynamic_cast<Tank*>(obj);
+				assert(tank != nullptr && "tank ptr was null!");
+
+				for(auto thisBodyRect : body_) {
+					for(auto tankBodyRect : tank->body_) {
+						if(thisBodyRect->getGlobalBounds()
+							.intersects(tankBodyRect->getGlobalBounds())) {
+								this->deleteLater();
+								tank->deleteLater();
+								return;
+							}
+					}
+				}
+			} break;
+			case GameObjectType::BULLET: {
+				auto bullet = dynamic_cast<Bullet*>(obj);
+				assert(bullet != nullptr && "bullet ptr was null!");
+
+				const auto& myBullets = getBullets();
+				if(std::find(std::begin(myBullets), std::end(myBullets), bullet) 
+						!= std::end(myBullets)) {
+					return;
+				}
+
+				const sf::FloatRect bulletGeomentryRect(
+					bullet->getPosition(),
+					{bullet->getSize(), bullet->getSize()}
+				);
+				for(auto bodyRect : body_) {
+					if(bodyRect->getGlobalBounds()
+						.intersects(bulletGeomentryRect)) {
+							this->deleteLater();
+							bullet->deleteLater();
+						}
+				}
+			} break;
+		}
+	}
 }

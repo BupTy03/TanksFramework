@@ -5,14 +5,8 @@
 
 namespace tf
 {
-
-	MovingGameObject::MovingGameObject(std::shared_ptr<sf::RenderWindow> w)
-		: GameObject(std::move(w))
-	{
-	}
-
-	MovingGameObject::MovingGameObject(std::shared_ptr<sf::RenderWindow> w, float step)
-		: GameObject(std::move(w))
+	MovingGameObject::MovingGameObject(std::shared_ptr<sf::RenderWindow> w, GameObjectType type, float step)
+		: GameObject{std::move(w), type}
 		, step_{step}
 	{
 	}
