@@ -8,29 +8,28 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 
 #include <vector>
+#include <array>
 
 namespace tf
 {
 	struct Tank : MovingGameObject
 	{
-		explicit Tank();
-		explicit Tank(sf::Vector2f pos, float sz);
-		explicit Tank(sf::Vector2f pos, float sz, float step);
+		explicit Tank(float step = 0.f, float sz = 0.f, sf::Vector2f pos = {0.f, 0.f});
 		virtual ~Tank();
 
 		virtual void draw(sf::RenderWindow& win) override;
 
-		virtual float getSize() const override { return body_[0]->getSize().x; }
+		virtual float getSize() const override { return (body_.front())->getSize().x; }
 		virtual void setSize(float sz) override;
 
 		virtual sf::Vector2f getPosition() const override { return currPos_; }
 		virtual void setPosition(sf::Vector2f pos) override { currPos_ = pos; }
 
 		virtual void setFillColor(const sf::Color& color) override;
-		virtual sf::Color getFillColor() const override { return body_[0]->getFillColor(); }
+		virtual sf::Color getFillColor() const override { return (body_.front())->getFillColor(); }
 
 		virtual void setBorderColor(const sf::Color& color) override;
-		virtual sf::Color getBorderColor() const override { return body_[0]->getOutlineColor(); }
+		virtual sf::Color getBorderColor() const override { return (body_.front())->getOutlineColor(); }
 
 		virtual void setDirection(Direction dir) override;
 
@@ -48,8 +47,9 @@ namespace tf
 		virtual void handleCollision(GameObject* obj) override;
 
 	protected:
-		std::vector<sf::RectangleShape*> body_;
+		std::array<sf::RectangleShape*, 6> body_;
 		std::vector<Bullet*> bullets_;
+
 	private:
 		sf::Vector2f currPos_{};
 	};

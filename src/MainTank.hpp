@@ -11,16 +11,11 @@ namespace tf
 {
 	struct MainTank : Tank
 	{
-		explicit MainTank();
-		explicit MainTank(sf::Vector2f pos, float sz);
-		explicit MainTank(sf::Vector2f pos, float sz, float step);
+		explicit MainTank(float step = 0.f, float sz = 0.f, sf::Vector2f pos = {0.f, 0.f});
 		virtual ~MainTank();
 
 		virtual void outOfScreenEvent(const sf::RenderWindow& win) override;
 		virtual void keyEvent(sf::Keyboard::Key which) override;
-
-	protected:
-		virtual void init();
 
 	protected:
 		GameTimer* moveTimer_{nullptr};

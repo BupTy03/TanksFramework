@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 #include "GameObject.hpp"
+#include "MovingGameObject.hpp"
 #include "GameEventsManager.hpp"
 
 #include <SFML/System/Vector2.hpp>
@@ -21,7 +22,7 @@ namespace tf
 
 		virtual unsigned getSizeInBlocks() const { return win_->getSize().x / countCells_; }
 		void start();
-		bool place(GameObject* obj/*, sf::Vector2u coordinates*/);
+		bool place(MovingGameObject* obj, sf::Vector2u coordinates);
 
 	private:
 		inline bool checkBounds(sf::Vector2u coordinates) { return coordinates.x < countCells_ && coordinates.y < countCells_; }

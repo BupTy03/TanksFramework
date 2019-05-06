@@ -9,14 +9,11 @@ namespace tf
 
 	struct EnemyTank : Tank
 	{
-		explicit EnemyTank();
-		explicit EnemyTank(sf::Vector2f pos, float sz);
-		explicit EnemyTank(sf::Vector2f pos, float sz, float step);
+		explicit EnemyTank(float step = 0.f, float sz = 0.f, sf::Vector2f pos = {0.f, 0.f});
 		virtual ~EnemyTank();
 
 	protected:
 		virtual void changeDir();
-		virtual void init();
 	
 	protected:
 		GameTimer* moveTimer_{nullptr};

@@ -7,38 +7,23 @@
 namespace tf
 {
 
-	Bullet::Bullet()
-		: MovingGameObject(GameObjectType::BULLET)
-		, moveTimer_(new GameTimer)
-	{
-		rectShape_.setFillColor(sf::Color(220, 20, 60));
-		rectShape_.setOutlineColor(sf::Color(144, 0, 32));
-		moveTimer_->onTimerCall.connect(this, &Bullet::makeStep);
-		moveTimer_->start(100);
-	}
-	Bullet::Bullet(sf::Vector2f pos, float sz) 
-		: MovingGameObject(GameObjectType::BULLET)
-		, rectShape_{{sz, sz}}
-		, moveTimer_(new GameTimer)
-	{
-		rectShape_.setPosition(pos);
-		rectShape_.setOutlineThickness(-sz / 9.f);
-		rectShape_.setFillColor(sf::Color(220, 20, 60));
-		rectShape_.setOutlineColor(sf::Color(144, 0, 32));
-		moveTimer_->onTimerCall.connect(this, &Bullet::makeStep);
-		moveTimer_->start(100);
-	}
-	Bullet::Bullet(sf::Vector2f pos, float sz, float step)
+	Bullet::Bullet(float step, float sz, sf::Vector2f pos)
 		: MovingGameObject(GameObjectType::BULLET, step)
-		, rectShape_{{sz, sz}}
-		, moveTimer_(new GameTimer)
+		, rectShape_{new sf::RectangleShape({sz, sz})}
+		, moveTimer_{new GameTimer} 
 	{
-		rectShape_.setPosition(pos);
-		rectShape_.setOutlineThickness(-sz / 9.f);
-		rectShape_.setFillColor(sf::Color(220, 20, 60));
-		rectShape_.setOutlineColor(sf::Color(144, 0, 32));
+		rectShape_->setPosition(pos);
+		rectShape_->setOutlineThickness(-sz / 9.f);
+		rectShape_->setFillColor(sf::Color(220, 20, 60));
+		rectShape_->setOutlineColor(sf::Color(144, 0, 32));
 		moveTimer_->onTimerCall.connect(this, &Bullet::makeStep);
 		moveTimer_->start(100);
+	}
+
+	Bullet::~Bullet()
+	{
+		delete rectShape_; 
+		delete moveTimer_;
 	}
 
 	void Bullet::makeStep()
@@ -64,8 +49,8 @@ namespace tf
 
 	void Bullet::setSize(float sz)
 	{
-		rectShape_.setOutlineThickness(-sz / 9.f);
-		rectShape_.setSize({sz, sz});
+		rectShape_->setOutlineThickness(-sz / 9.f);
+		rectShape_->setSize({sz, sz});
 	}
 
 	void Bullet::handleCollision(GameObject* obj)
@@ -82,7 +67,7 @@ namespace tf
 			wall->getPosition(),
 			{wall->getSize(), wall->getSize()}
 		);
-		if(this->rectShape_.getGlobalBounds()
+		if(this->rectShape_->getGlobalBounds()
 			.intersects(wallGeometryRect)) {
 				this->deleteLater();
 				wall->deleteLater();

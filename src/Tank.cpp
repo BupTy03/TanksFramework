@@ -12,45 +12,26 @@
 namespace tf
 {
 
-	Tank::Tank()
-		: MovingGameObject(GameObjectType::TANK)
-		, body_{6}
+	Tank::Tank(float step, float sz, sf::Vector2f pos)
+		: MovingGameObject(GameObjectType::TANK, step) 
 	{
-		for(std::size_t i = 0; i < body_.size(); ++i) {
-			body_[i] = new sf::RectangleShape();
-			body_[i]->setFillColor(sf::Color(23, 164, 113));
-			body_[i]->setOutlineColor(sf::Color(31, 87, 67));
+		for(auto& segment : body_) {
+			segment = new sf::RectangleShape({sz, sz});
+			segment->setFillColor(sf::Color(23, 164, 113));
+			segment->setOutlineColor(sf::Color(31, 87, 67));
+			segment->setOutlineThickness(-sz / 9.f);
 		}
-		turn(getDirection());
-	}
-	Tank::Tank(sf::Vector2f pos, float sz)
-		: MovingGameObject(GameObjectType::TANK)
-		, body_{6}
-	{
-		for(std::size_t i = 0; i < body_.size(); ++i) {
-			body_[i] = new sf::RectangleShape({sz, sz});
-			body_[i]->setFillColor(sf::Color(23, 164, 113));
-			body_[i]->setOutlineColor(sf::Color(31, 87, 67));
-			body_[i]->setOutlineThickness(-sz / 9.f);
-		}
-		setPosition(pos);
-		turn(getDirection());
-	}
-	Tank::Tank(sf::Vector2f pos, float sz, float step)
-		: MovingGameObject(GameObjectType::TANK, step)
-		, body_{6}
-	{
-		for(std::size_t i = 0; i < body_.size(); ++i) {
-			body_[i] = new sf::RectangleShape({sz, sz});
-			body_[i]->setFillColor(sf::Color(23, 164, 113));
-			body_[i]->setOutlineColor(sf::Color(31, 87, 67));
-			body_[i]->setOutlineThickness(-sz / 9.f);
-		}
+
 		setPosition(pos);
 		turn(getDirection());
 	}
 
-	Tank::~Tank() { for(auto sh : body_) delete sh; }
+	Tank::~Tank() 
+	{ 
+		for(auto sh : body_) { 
+			delete sh; 
+		}
+	}
 
 	void Tank::draw(sf::RenderWindow& win)
 	{
@@ -126,25 +107,25 @@ namespace tf
 
 		switch (getDirection()) {
 			case Direction::FORWARD:
-				new_bullet = new Bullet({curr_pos.x + curr_step, curr_pos.y}, curr_sz, curr_step);
+				new_bullet = new Bullet(curr_step, curr_sz, {curr_pos.x + curr_step, curr_pos.y});
 				new_bullet->setFillColor(body_[0]->getFillColor());
 				new_bullet->setBorderColor(body_[0]->getOutlineColor());
 				new_bullet->setDirection(Direction::FORWARD);
 				break;
 			case Direction::BACKWARD:
-				new_bullet = new Bullet({curr_pos.x + curr_step, curr_pos.y + 2.f * curr_sz}, curr_sz, curr_step);
+				new_bullet = new Bullet(curr_step, curr_sz, {curr_pos.x + curr_step, curr_pos.y + 2.f * curr_sz});
 				new_bullet->setFillColor(body_[0]->getFillColor());
 				new_bullet->setBorderColor(body_[0]->getOutlineColor());
 				new_bullet->setDirection(Direction::BACKWARD);
 				break;
 			case Direction::LEFT:
-				new_bullet = new Bullet({curr_pos.x, curr_pos.y + curr_sz}, curr_sz, curr_step);
+				new_bullet = new Bullet(curr_step, curr_sz, {curr_pos.x, curr_pos.y + curr_sz});
 				new_bullet->setFillColor(body_[0]->getFillColor());
 				new_bullet->setBorderColor(body_[0]->getOutlineColor());
 				new_bullet->setDirection(Direction::LEFT);
 				break;
 			case Direction::RIGHT:
-				new_bullet = new Bullet({curr_pos.x + 2.f * curr_sz, curr_pos.y + curr_sz}, curr_sz, curr_step);
+				new_bullet = new Bullet(curr_step, curr_sz, {curr_pos.x + 2.f * curr_sz, curr_pos.y + curr_sz});
 				new_bullet->setFillColor(body_[0]->getFillColor());
 				new_bullet->setBorderColor(body_[0]->getOutlineColor());
 				new_bullet->setDirection(Direction::RIGHT);

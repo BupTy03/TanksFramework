@@ -5,30 +5,17 @@
 
 namespace tf
 {
-	MainTank::MainTank()
-		: Tank()
-		, moveTimer_{new GameTimer()}
-	{ init(); }
-
-	MainTank::MainTank(sf::Vector2f pos, float sz)
-		: Tank(pos, sz)
-		, moveTimer_{new GameTimer()}
-	{ init(); }
-
-	MainTank::MainTank(sf::Vector2f pos, float sz, float step)
-		: Tank(pos, sz, step)
-		, moveTimer_{new GameTimer()}
-	{ init(); }
-
-	MainTank::~MainTank() { delete moveTimer_; }
-
-	void MainTank::init()
-	{
+	MainTank::MainTank(float step, float sz, sf::Vector2f pos)
+		: Tank(step, sz, pos)
+		, moveTimer_{new GameTimer}
+	{ 
 		moveTimer_->onTimerCall.connect(dynamic_cast<Tank*>(this), &Tank::makeStep);
 		moveTimer_->start(1000);
-		this->setFillColor(sf::Color(23, 164, 113));
-		this->setBorderColor(sf::Color(31, 87, 67));
+		setFillColor(sf::Color(23, 164, 113));
+		setBorderColor(sf::Color(31, 87, 67));
 	}
+
+	MainTank::~MainTank() { delete moveTimer_; }
 
 	void MainTank::outOfScreenEvent(const sf::RenderWindow& win)
 	{

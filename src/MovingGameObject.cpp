@@ -7,9 +7,7 @@ namespace tf
 {
 	MovingGameObject::MovingGameObject(GameObjectType type, float step)
 		: GameObject{type}
-		, step_{step}
-	{
-	}
+		, step_{step} {}
 
 	void MovingGameObject::outOfScreenEvent(const sf::RenderWindow& win)
 	{

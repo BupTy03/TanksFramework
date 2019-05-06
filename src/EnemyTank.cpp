@@ -5,36 +5,11 @@
 
 namespace tf
 {
-
-	EnemyTank::EnemyTank()
-		: Tank()
+	EnemyTank::EnemyTank(float step, float sz, sf::Vector2f pos)
+		: Tank(step, sz, pos)
 		, moveTimer_{new GameTimer}
 		, changeDirTimer_{new GameTimer}
 		, shotTimer_{new GameTimer}
-	{ init(); }
-
-	EnemyTank::EnemyTank(sf::Vector2f pos, float sz)
-		: Tank(pos, sz)
-		, moveTimer_{new GameTimer}
-		, changeDirTimer_{new GameTimer}
-		, shotTimer_{new GameTimer}
-	{ init(); }
-
-	EnemyTank::EnemyTank(sf::Vector2f pos, float sz, float step)
-		: Tank(pos, sz, step)
-		, moveTimer_{new GameTimer}
-		, changeDirTimer_{new GameTimer}
-		, shotTimer_{new GameTimer}
-	{ init(); }
-
-	EnemyTank::~EnemyTank() 
-	{ 
-		delete moveTimer_; 
-		delete changeDirTimer_; 
-		delete shotTimer_;
-	}
-
-	void EnemyTank::init()
 	{
 		moveTimer_->onTimerCall.connect(dynamic_cast<Tank*>(this), &Tank::makeStep);
 		changeDirTimer_->onTimerCall.connect(this, &EnemyTank::changeDir);
@@ -45,6 +20,13 @@ namespace tf
 		srand(time(nullptr));
 		this->setFillColor(sf::Color(220, 20, 60));
 		this->setBorderColor(sf::Color(140, 0, 32));
+	}
+
+	EnemyTank::~EnemyTank() 
+	{ 
+		delete moveTimer_; 
+		delete changeDirTimer_; 
+		delete shotTimer_;
 	}
 
 	void EnemyTank::changeDir(){ this->setDirection(static_cast<Direction>(rand() % 4)); }
