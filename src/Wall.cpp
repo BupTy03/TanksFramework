@@ -2,7 +2,6 @@
 #include "Bullet.hpp"
 #include "Tank.hpp"
 
-#define DEBUG
 #include <cassert>
 
 namespace tf

@@ -1,7 +1,5 @@
 #include "Game.hpp"
 
-#define DEBUG
-
 #include <iostream>
 #include <algorithm>
 #include <stdexcept>

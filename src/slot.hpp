@@ -1,4 +1,3 @@
-#pragma once
 #ifndef SLOT_HPP
 #define SLOT_HPP
 

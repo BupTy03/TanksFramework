@@ -1,4 +1,3 @@
-#pragma once
 #ifndef GAME_TIMER_HPP
 #define GAME_TIMER_HPP
 

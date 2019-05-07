@@ -2,8 +2,6 @@
 
 #include <SFML/Window.hpp>
 
-#define DEBUG
-
 #include <iostream>
 #include <algorithm>
 #include <cassert>

@@ -1,7 +1,6 @@
 #include "Bullet.hpp"
 #include "Wall.hpp"
 
-#define DEBUG
 #include <cassert>
 
 namespace tf

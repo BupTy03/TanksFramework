@@ -1,8 +1,6 @@
 #include "Tank.hpp"
 #include "Wall.hpp"
 
-#define DEBUG
-
 #include <iostream>
 #include <random>
 #include <chrono>
@@ -219,61 +217,40 @@ namespace tf
 			return;
 		}
 
-		switch (obj->getType()) {
-			// case GameObjectType::WALL: {
-			// 	auto wall = dynamic_cast<Wall*>(obj);
-			// 	assert(wall != nullptr && "wall ptr was null!");
-
-			// 	const sf::FloatRect wallGeomentryRect(
-			// 		wall->getPosition(),
-			// 		{wall->getSize(), wall->getSize()}
-			// 	);
-			// 	for(auto bodyRect : body_) {
-			// 		if(bodyRect->getGlobalBounds()
-			// 			.intersects(wallGeomentryRect)) {
-			// 				this->deleteLater();
-			// 				wall->deleteLater();
-			// 				return;
-			// 			}
-			// 	}
-			// } break;
-			case GameObjectType::TANK: {
-				auto tank = dynamic_cast<Tank*>(obj);
-				assert(tank != nullptr && "tank ptr was null!");
-
-				for(auto thisBodyRect : body_) {
-					for(auto tankBodyRect : tank->body_) {
-						if(thisBodyRect->getGlobalBounds()
-							.intersects(tankBodyRect->getGlobalBounds())) {
-								this->deleteLater();
-								tank->deleteLater();
-								return;
-							}
+		if(obj->getType() == GameObjectType::BULLET) {
+			auto bullet = dynamic_cast<Bullet*>(obj);
+			assert(bullet != nullptr && "bullet ptr was null!");
+			const auto& myBullets = getBullets();
+			if(std::find(std::begin(myBullets), std::end(myBullets), bullet) 
+					!= std::end(myBullets)) {
+				return;
+			}
+			const sf::FloatRect bulletGeomentryRect(
+				bullet->getPosition(),
+				{bullet->getSize(), bullet->getSize()}
+			);
+			for(auto bodyRect : body_) {
+				if(bodyRect->getGlobalBounds()
+					.intersects(bulletGeomentryRect)) {
+						this->deleteLater();
+						bullet->deleteLater();
 					}
-				}
-			} break;
-			case GameObjectType::BULLET: {
-				auto bullet = dynamic_cast<Bullet*>(obj);
-				assert(bullet != nullptr && "bullet ptr was null!");
+			}
+		}
+		else if(obj->getType() == GameObjectType::TANK) {
+			auto tank = dynamic_cast<Tank*>(obj);
+			assert(tank != nullptr && "tank ptr was null!");
 
-				const auto& myBullets = getBullets();
-				if(std::find(std::begin(myBullets), std::end(myBullets), bullet) 
-						!= std::end(myBullets)) {
-					return;
-				}
-
-				const sf::FloatRect bulletGeomentryRect(
-					bullet->getPosition(),
-					{bullet->getSize(), bullet->getSize()}
-				);
-				for(auto bodyRect : body_) {
-					if(bodyRect->getGlobalBounds()
-						.intersects(bulletGeomentryRect)) {
+			for(auto thisBodyRect : body_) {
+				for(auto tankBodyRect : tank->body_) {
+					if(thisBodyRect->getGlobalBounds()
+						.intersects(tankBodyRect->getGlobalBounds())) {
 							this->deleteLater();
-							bullet->deleteLater();
+							tank->deleteLater();
+							return;
 						}
 				}
-			} break;
+			}
 		}
 	}
 }

@@ -1,5 +1,3 @@
-#define DEBUG
-
 #include "GameObject.hpp"
 #include "GameEventsManager.hpp"
 

@@ -3,7 +3,6 @@
 #include "Tank.hpp"
 #include "Bullet.hpp"
 
-#define DEBUG
 #include <cassert>
 
 namespace tf
