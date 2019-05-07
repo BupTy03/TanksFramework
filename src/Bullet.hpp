@@ -1,4 +1,3 @@
-#pragma once
 #ifndef BULLET_HPP
 #define BULLET_HPP
 
@@ -30,8 +29,6 @@ namespace tf
 		virtual sf::Color getBorderColor() const override { return rectShape_->getOutlineColor(); }
 
 		virtual void outOfScreenEvent(const sf::RenderWindow& win) override { deleteLater(); }
-
-		virtual void handleCollision(GameObject* obj) override;
 
 	private:
 		sf::RectangleShape* rectShape_{nullptr};

@@ -43,7 +43,7 @@ namespace tf
 		}
 	}
 
-	bool Game::place(MovingGameObject* obj, sf::Vector2u coordinates)
+	bool Game::place(GameObject* obj, sf::Vector2u coordinates)
 	{
 		assert(obj != nullptr && "obj was nullptr");
 		if(!checkBounds(coordinates)){
@@ -52,8 +52,10 @@ namespace tf
 		const auto new_size = static_cast<float>(win_->getSize().x / countCells_);
 		obj->setPosition({coordinates.x * new_size, coordinates.y * new_size});
 		obj->setSize(new_size);
-		if(obj->getStep() <= 0.f) {
-			obj->setStep(obj->getSize());
+
+		auto movingGameObject = dynamic_cast<MovingGameObject*>(obj);
+		if(movingGameObject != nullptr && movingGameObject->getStep() <= 0.f) {
+			movingGameObject->setStep(movingGameObject->getSize());
 		}
 		obj->setGameEventsManager(manager_);
 		manager_->addGameObject(obj);

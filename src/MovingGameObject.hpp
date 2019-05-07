@@ -1,4 +1,3 @@
-#pragma once
 #ifndef MOVING_OBJECT_HPP
 #define MOVING_OBJECT_HPP
 

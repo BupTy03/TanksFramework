@@ -1,29 +1,22 @@
-#include "Wall.hpp"
-#include "Bullet.hpp"
+#include "ArmoredWall.hpp"
+
 #include "Tank.hpp"
+#include "Bullet.hpp"
 
 #define DEBUG
 #include <cassert>
 
 namespace tf
 {
-	Wall::Wall(sf::Vector2f sz, sf::Vector2f pos)
-		: GameObject(GameObjectType::WALL) 
-		, rectShape_{new sf::RectangleShape{sz}}
+
+	ArmoredWall::ArmoredWall(sf::Vector2f sz, sf::Vector2f pos)
+		: Wall{sz, pos} 
 	{
-		rectShape_->setPosition(pos);
-		rectShape_->setFillColor(sf::Color{107, 109, 99});
-		rectShape_->setOutlineThickness(-((sz.x + sz.y) / 2.f) / 9.f);
-		rectShape_->setOutlineColor(sf::Color{62, 64, 55});
+		this->setFillColor(sf::Color{100, 33, 33});
+		this->setBorderColor(sf::Color{68, 21, 21});
 	}
 
-	void Wall::setSize(float sz)
-	{
-		rectShape_->setOutlineThickness(-sz / 9.f);
-		rectShape_->setSize({sz, sz});
-	}
-
-	void Wall::handleCollision(GameObject* obj)
+	void ArmoredWall::handleCollision(GameObject* obj)
 	{
 		if(obj->getType() == GameObject::GameObjectType::BULLET) {
 			auto bullet = dynamic_cast<Bullet*>(obj);
@@ -36,7 +29,6 @@ namespace tf
 
 			if(rectShape_->getGlobalBounds()
 				.intersects(bulletGeomentryRect)) {
-				this->deleteLater();
 				bullet->deleteLater();
 			}
 		}
@@ -51,7 +43,6 @@ namespace tf
 			);
 			
 			if(rectShape_->getGlobalBounds().intersects(tankGeometryRect)) {
-				this->deleteLater();
 				tank->deleteLater();
 			}
 		}

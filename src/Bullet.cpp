@@ -53,26 +53,4 @@ namespace tf
 		rectShape_->setSize({sz, sz});
 	}
 
-	void Bullet::handleCollision(GameObject* obj)
-	{
-		assert(obj != nullptr && "obj ptr was null");
-		if(obj->getType() != GameObjectType::WALL) {
-			return;
-		}
-		
-		auto wall = dynamic_cast<Wall*>(obj);
-		assert(wall != nullptr && "wall ptr was null");
-
-		const sf::FloatRect wallGeometryRect(
-			wall->getPosition(),
-			{wall->getSize(), wall->getSize()}
-		);
-		if(this->rectShape_->getGlobalBounds()
-			.intersects(wallGeometryRect)) {
-				this->deleteLater();
-				wall->deleteLater();
-				return;
-			}
-	}
-
 }

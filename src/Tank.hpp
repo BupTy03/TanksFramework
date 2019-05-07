@@ -1,4 +1,3 @@
-#pragma once
 #ifndef TANK_HPP
 #define TANK_HPP
 

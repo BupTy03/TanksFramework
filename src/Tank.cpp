@@ -220,23 +220,23 @@ namespace tf
 		}
 
 		switch (obj->getType()) {
-			case GameObjectType::WALL: {
-				auto wall = dynamic_cast<Wall*>(obj);
-				assert(wall != nullptr && "wall ptr was null!");
+			// case GameObjectType::WALL: {
+			// 	auto wall = dynamic_cast<Wall*>(obj);
+			// 	assert(wall != nullptr && "wall ptr was null!");
 
-				const sf::FloatRect wallGeomentryRect(
-					wall->getPosition(),
-					{wall->getSize(), wall->getSize()}
-				);
-				for(auto bodyRect : body_) {
-					if(bodyRect->getGlobalBounds()
-						.intersects(wallGeomentryRect)) {
-							this->deleteLater();
-							wall->deleteLater();
-							return;
-						}
-				}
-			} break;
+			// 	const sf::FloatRect wallGeomentryRect(
+			// 		wall->getPosition(),
+			// 		{wall->getSize(), wall->getSize()}
+			// 	);
+			// 	for(auto bodyRect : body_) {
+			// 		if(bodyRect->getGlobalBounds()
+			// 			.intersects(wallGeomentryRect)) {
+			// 				this->deleteLater();
+			// 				wall->deleteLater();
+			// 				return;
+			// 			}
+			// 	}
+			// } break;
 			case GameObjectType::TANK: {
 				auto tank = dynamic_cast<Tank*>(obj);
 				assert(tank != nullptr && "tank ptr was null!");
