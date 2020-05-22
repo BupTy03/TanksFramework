@@ -4,6 +4,7 @@
 
 #include <cassert>
 
+
 namespace tf
 {
 	Wall::Wall(sf::Vector2f sz, sf::Vector2f pos)

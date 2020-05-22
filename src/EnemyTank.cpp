@@ -3,6 +3,7 @@
 #include <random>
 #include <ctime>
 
+
 namespace tf
 {
 	EnemyTank::EnemyTank(float step, float sz, sf::Vector2f pos)

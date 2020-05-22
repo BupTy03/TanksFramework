@@ -3,6 +3,7 @@
 #include <iostream>
 #include <chrono>
 
+
 namespace tf
 {
 	MainTank::MainTank(float step, float sz, sf::Vector2f pos)

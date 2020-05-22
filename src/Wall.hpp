@@ -1,5 +1,4 @@
-#ifndef WALL_HPP
-#define WALL_HPP
+#pragma once
 
 #include "GameObject.hpp"
 
@@ -9,6 +8,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include <vector>
+
 
 namespace tf
 {
@@ -39,5 +39,3 @@ namespace tf
 	};
 
 }
-
-#endif // WALL_HPP

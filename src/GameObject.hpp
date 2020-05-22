@@ -1,5 +1,4 @@
-#ifndef GAME_OBJECT_HPP
-#define GAME_OBJECT_HPP
+#pragma once
 
 #include "GameTimer.hpp"
 #include "GameEventsManager.hpp"
@@ -10,6 +9,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include <memory>
+
 
 namespace tf
 {
@@ -72,5 +72,3 @@ namespace tf
 	};
 
 }
-
-#endif // GAME_OBJECT_HPP

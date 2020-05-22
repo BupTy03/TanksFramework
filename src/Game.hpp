@@ -1,5 +1,4 @@
-#ifndef GAME_HPP
-#define GAME_HPP
+#pragma once
 
 #include "GameObject.hpp"
 #include "MovingGameObject.hpp"
@@ -35,5 +34,3 @@ namespace tf
 	};
 
 }
-
-#endif // GAME_HPP

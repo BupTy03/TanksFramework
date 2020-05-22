@@ -1,13 +1,12 @@
-#ifndef SIGNAL_HPP
-#define SIGNAL_HPP
+#pragma once
 
-#include"slot.hpp"
+#include "slot.hpp"
 
-#include<utility>
-#include<algorithm>
-#include<vector>
-#include<mutex>
-#include<shared_mutex>
+#include <utility>
+#include <algorithm>
+#include <vector>
+#include <mutex>
+#include <shared_mutex>
 
 namespace my
 {
@@ -77,5 +76,3 @@ namespace my
 	};
 
 }
-
-#endif // !SIGNAL_HPP

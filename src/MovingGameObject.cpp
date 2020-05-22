@@ -3,6 +3,7 @@
 #include <chrono>
 #include <iostream>
 
+
 namespace tf
 {
 	MovingGameObject::MovingGameObject(GameObjectType type, float step)

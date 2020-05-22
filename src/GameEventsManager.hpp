@@ -1,6 +1,4 @@
 #pragma once
-#ifndef GAME_EVENTS_MANAGER_HPP
-#define GAME_EVENTS_MANAGER_HPP
 
 #include "GameObject.hpp"
 
@@ -41,6 +39,4 @@ namespace tf
 		std::vector<GameObject*> objects_;
 	};
 
-} // tf
-
-#endif // GAME_EVENTS_MANAGER_HPP
+}

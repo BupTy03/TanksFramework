@@ -1,8 +1,7 @@
 #pragma once
-#ifndef ENEMY_TANK_HPP
-#define ENEMY_TANK_HPP
 
 #include "Tank.hpp"
+
 
 namespace tf
 {
@@ -22,5 +21,3 @@ namespace tf
 	};
 
 }
-
-#endif // ENEMY_TANK_HPP

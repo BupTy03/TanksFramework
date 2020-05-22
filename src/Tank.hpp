@@ -1,5 +1,4 @@
-#ifndef TANK_HPP
-#define TANK_HPP
+#pragma once
 
 #include "MovingGameObject.hpp"
 #include "Bullet.hpp"
@@ -8,6 +7,7 @@
 
 #include <vector>
 #include <array>
+
 
 namespace tf
 {
@@ -53,5 +53,3 @@ namespace tf
 		sf::Vector2f currPos_{};
 	};
 }
-
-#endif // TANK_HPP

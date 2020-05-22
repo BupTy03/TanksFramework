@@ -1,8 +1,8 @@
-#ifndef SLOT_HPP
-#define SLOT_HPP
+#pragma once
 
-#include<utility>
-#include<stdexcept>
+#include <utility>
+#include <stdexcept>
+
 
 namespace my
 {
@@ -53,5 +53,3 @@ namespace my
 		};
 	};
 }
-
-#endif // !SLOT_HPP

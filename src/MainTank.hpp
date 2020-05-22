@@ -1,10 +1,10 @@
-#ifndef MAIN_TANK_HPP
-#define MAIN_TANK_HPP
+#pragma once
 
 #include "GameTimer.hpp"
 #include "Tank.hpp"
 
 #include <SFML/System/Vector2.hpp>
+
 
 namespace tf
 {
@@ -20,5 +20,3 @@ namespace tf
 		GameTimer* moveTimer_{nullptr};
 	};
 }
-
-#endif // MAIN_TANK_HPP

@@ -1,5 +1,4 @@
-#ifndef MOVING_OBJECT_HPP
-#define MOVING_OBJECT_HPP
+#pragma once
 
 #include "GameObject.hpp"
 #include "GameTimer.hpp"
@@ -7,6 +6,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include <random>
+
 
 namespace tf
 {
@@ -45,5 +45,3 @@ namespace tf
 	};
 
 }
-
-#endif // MOVING_OBJECT_HPP

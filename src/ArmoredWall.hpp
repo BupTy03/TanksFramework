@@ -1,7 +1,7 @@
-#ifndef ARMORED_WALL
-#define ARMORED_WALL
+#pragma once
 
 #include "Wall.hpp"
+
 
 namespace tf
 {
@@ -13,5 +13,3 @@ namespace tf
 		virtual void handleCollision(GameObject* obj) override;
 	};
 }
-
-#endif

@@ -1,10 +1,10 @@
-#ifndef BULLET_HPP
-#define BULLET_HPP
+#pragma once
 
 #include "MovingGameObject.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+
 
 namespace tf
 {
@@ -35,5 +35,3 @@ namespace tf
 		GameTimer* moveTimer_{nullptr};
 	};
 }
-
-#endif // BULLET_HPP

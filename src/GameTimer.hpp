@@ -1,11 +1,10 @@
-#ifndef GAME_TIMER_HPP
-#define GAME_TIMER_HPP
-
+#pragma once
 #include "signal.hpp"
 
 #include <vector>
 #include <chrono>
 #include <algorithm>
+
 
 namespace tf
 {
@@ -75,5 +74,3 @@ namespace tf
 		static std::size_t timerId_;
 	};
 }
-
-#endif // GAME_TIMER_HPP
