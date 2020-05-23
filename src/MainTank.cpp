@@ -1,22 +1,19 @@
 #include "MainTank.hpp"
 
-#include <iostream>
-#include <chrono>
+#include <SFML/Graphics/RenderWindow.hpp>
 
 
 namespace tf
 {
-	MainTank::MainTank(float step, float sz, sf::Vector2f pos)
+	MainTank::MainTank(float step, float sz, const sf::Vector2f& pos)
 		: Tank(step, sz, pos)
-		, moveTimer_{new GameTimer}
+		, moveTimer_{}
 	{ 
-		moveTimer_->onTimerCall.connect(dynamic_cast<Tank*>(this), &Tank::makeStep);
-		moveTimer_->start(1000);
-		setFillColor(sf::Color(23, 164, 113));
-		setBorderColor(sf::Color(31, 87, 67));
+		moveTimer_.onTimerCall.connect(dynamic_cast<Tank*>(this), &Tank::makeStep);
+		moveTimer_.start(1000);
+		setFillColor(sf::Color{23, 164, 113});
+		setBorderColor(sf::Color{31, 87, 67});
 	}
-
-	MainTank::~MainTank() { delete moveTimer_; }
 
 	void MainTank::outOfScreenEvent(const sf::RenderWindow& win)
 	{
@@ -25,16 +22,18 @@ namespace tf
 		const auto win_sz = win.getSize();
 		switch (getDirection()) {
 			case Direction::FORWARD:
-				setPosition({curr_pos.x, win_sz.y - curr_sz});
+				setPosition(sf::Vector2f{curr_pos.x, win_sz.y - curr_sz});
 				break;
 			case Direction::BACKWARD:
-				setPosition({curr_pos.x, -2.f * curr_sz});
+				setPosition(sf::Vector2f{curr_pos.x, -2.f * curr_sz});
 				break;
 			case Direction::LEFT:
-				setPosition({win_sz.x - curr_sz, curr_pos.y});
+				setPosition(sf::Vector2f{win_sz.x - curr_sz, curr_pos.y});
 				break;
 			case Direction::RIGHT:
-				setPosition({-2.f * curr_sz, curr_pos.y});
+				setPosition(sf::Vector2f{-2.f * curr_sz, curr_pos.y});
+				break;
+			default: 
 				break;
 		}
 		turn(getDirection());
@@ -58,6 +57,8 @@ namespace tf
 			break;
 		case sf::Keyboard::Key::Space:
 			makeShot();
+			break;
+		default: 
 			break;
 		}
 	}

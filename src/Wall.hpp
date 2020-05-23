@@ -13,29 +13,35 @@
 namespace tf
 {
 
-	struct Wall : GameObject
+	class Wall : public GameObject
 	{
-		explicit Wall(sf::Vector2f sz = {0.f, 0.f}, sf::Vector2f pos = {0.f, 0.f});
-		virtual ~Wall(){ delete rectShape_; }
+	public:
+		explicit Wall(
+			const sf::Vector2f& sz = sf::Vector2f{0.f, 0.f}, 
+			const sf::Vector2f& pos = sf::Vector2f{0.f, 0.f}
+		);
 
-		virtual float getSize() const override { return rectShape_->getSize().x; }
-		virtual void setSize(float sz) override;
+		float getSize() const override;
+		void setSize(float sz) override;
 
-		virtual sf::Vector2f getPosition() const override { return rectShape_->getPosition(); }
-		virtual void setPosition(sf::Vector2f pos) override { rectShape_->setPosition(pos); }
+		sf::Vector2f getPosition() const override;
+		void setPosition(const sf::Vector2f& pos) override;
 
-		virtual void draw(sf::RenderWindow& win) override { win.draw(*rectShape_); }
+		void draw(sf::RenderWindow& win) override;
 
-		virtual void setFillColor(const sf::Color& color) { rectShape_->setFillColor(color); }
-		virtual sf::Color getFillColor() const { return rectShape_->getFillColor(); }
+		virtual void setFillColor(const sf::Color& color);
+		virtual sf::Color getFillColor() const;
 
-		virtual void setBorderColor(const sf::Color& color) { rectShape_->setOutlineColor(color); }
-		virtual sf::Color getBorderColor() const { return rectShape_->getOutlineColor(); }
+		virtual void setBorderColor(const sf::Color& color);
+		virtual sf::Color getBorderColor() const;
 
-		virtual void handleCollision(GameObject* obj) override;
+		void handleCollision(GameObject* obj) override;
 
 	protected:
-		sf::RectangleShape* rectShape_{nullptr};
+		const sf::RectangleShape& getRectShape() const;
+
+	private:
+		sf::RectangleShape rectShape_;
 	};
 
 }

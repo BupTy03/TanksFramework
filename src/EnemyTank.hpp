@@ -6,18 +6,22 @@
 namespace tf
 {
 
-	struct EnemyTank : Tank
+	class EnemyTank : public Tank
 	{
-		explicit EnemyTank(float step = 0.f, float sz = 0.f, sf::Vector2f pos = {0.f, 0.f});
-		virtual ~EnemyTank();
+	public:
+		explicit EnemyTank(
+			float step = 0.f, 
+			float sz = 0.f, 
+			const sf::Vector2f& pos = {0.f, 0.f}
+		);
 
-	protected:
+	private:
 		virtual void changeDir();
 	
-	protected:
-		GameTimer* moveTimer_{nullptr};
-		GameTimer* changeDirTimer_{nullptr};
-		GameTimer* shotTimer_{nullptr};
+	private:
+		GameTimer moveTimer_;
+		GameTimer changeDirTimer_;
+		GameTimer shotTimer_;
 	};
 
 }

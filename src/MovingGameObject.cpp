@@ -1,14 +1,33 @@
 #include "MovingGameObject.hpp"
 
-#include <chrono>
-#include <iostream>
-
 
 namespace tf
 {
 	MovingGameObject::MovingGameObject(GameObjectType type, float step)
 		: GameObject{type}
-		, step_{step} {}
+		, dir_{Direction::FORWARD}
+		, step_{step} 
+	{}
+
+	float MovingGameObject::getStep() const
+	{ 
+		return step_; 
+	}
+
+	void MovingGameObject::setStep(float step) 
+	{ 
+		step_ = step; 
+	}
+
+	Direction MovingGameObject::getDirection() const 
+	{ 
+		return dir_;
+	}
+
+	void MovingGameObject::setDirection(Direction dir) 
+	{ 
+		dir_ = dir;
+	}
 
 	void MovingGameObject::outOfScreenEvent(const sf::RenderWindow& win)
 	{
@@ -25,6 +44,8 @@ namespace tf
 			break;
 		case Direction::RIGHT:
 			setDirection(Direction::LEFT);
+			break;
+		default:
 			break;
 		}
 	}

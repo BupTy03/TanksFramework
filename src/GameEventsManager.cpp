@@ -9,7 +9,11 @@
 namespace tf
 {
 
-	GameEventsManager::~GameEventsManager() { for(auto p : objects_) delete p; }
+	GameEventsManager::~GameEventsManager() 
+	{ 
+		for(auto p : objects_) 
+			delete p; 
+	}
 
 	void GameEventsManager::collectDeleted()
 	{
@@ -63,6 +67,16 @@ namespace tf
 		if(key != sf::Keyboard::Key::Unknown) {
 			handleKeyEvents(key);
 		}
+	}
+
+	std::size_t GameEventsManager::countObjects() const 
+	{ 
+		return objects_.size(); 
+	}
+
+	const std::vector<GameObject*>& GameEventsManager::getObjects() const
+	{ 
+		return objects_; 
 	}
 
 	void GameEventsManager::addGameObject(GameObject* obj)

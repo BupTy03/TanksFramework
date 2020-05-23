@@ -5,11 +5,14 @@
 
 namespace tf
 {
-	struct ArmoredWall : Wall
+	class ArmoredWall : public Wall
 	{
-		explicit ArmoredWall(sf::Vector2f sz = {0.f, 0.f}, sf::Vector2f pos = {0.f, 0.f});
-		virtual ~ArmoredWall(){}
+	public:
+		explicit ArmoredWall(
+			const sf::Vector2f& sz = {0.f, 0.f}, 
+			const sf::Vector2f& pos = {0.f, 0.f}
+		);
 
-		virtual void handleCollision(GameObject* obj) override;
+		void handleCollision(GameObject* obj) override;
 	};
 }

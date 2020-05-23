@@ -9,11 +9,11 @@
 namespace tf
 {
 
-	ArmoredWall::ArmoredWall(sf::Vector2f sz, sf::Vector2f pos)
-		: Wall{sz, pos} 
+	ArmoredWall::ArmoredWall(const sf::Vector2f& sz, const sf::Vector2f& pos)
+		: Wall(sz, pos) 
 	{
-		this->setFillColor(sf::Color{100, 33, 33});
-		this->setBorderColor(sf::Color{68, 21, 21});
+		setFillColor(sf::Color{100, 33, 33});
+		setBorderColor(sf::Color{68, 21, 21});
 	}
 
 	void ArmoredWall::handleCollision(GameObject* obj)
@@ -27,7 +27,7 @@ namespace tf
 				{bullet->getSize(), bullet->getSize()}
 			);
 
-			if(rectShape_->getGlobalBounds()
+			if(getRectShape().getGlobalBounds()
 				.intersects(bulletGeomentryRect)) {
 				bullet->deleteLater();
 			}
@@ -42,7 +42,7 @@ namespace tf
 				{size_of_tank, size_of_tank}
 			);
 			
-			if(rectShape_->getGlobalBounds().intersects(tankGeometryRect)) {
+			if(getRectShape().getGlobalBounds().intersects(tankGeometryRect)) {
 				tank->deleteLater();
 			}
 		}

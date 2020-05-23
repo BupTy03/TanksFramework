@@ -11,45 +11,49 @@
 
 namespace tf
 {
-	struct Tank : MovingGameObject
+	class Tank : public MovingGameObject
 	{
-		explicit Tank(float step = 0.f, float sz = 0.f, sf::Vector2f pos = {0.f, 0.f});
-		virtual ~Tank();
+	public:
+		explicit Tank(
+			float step = 0.f, 
+			float sz = 0.f, 
+			const sf::Vector2f& pos = {0.f, 0.f}
+		);
 
-		virtual void draw(sf::RenderWindow& win) override;
+		void draw(sf::RenderWindow& win) override;
 
-		virtual float getSize() const override { return (body_.front())->getSize().x; }
-		virtual void setSize(float sz) override;
+		float getSize() const override;
+		void setSize(float sz) override;
 
-		virtual sf::Vector2f getPosition() const override { return currPos_; }
-		virtual void setPosition(sf::Vector2f pos) override { currPos_ = pos; }
+		sf::Vector2f getPosition() const override;
+		void setPosition(const sf::Vector2f& pos) override;
 
-		virtual void setFillColor(const sf::Color& color) override;
-		virtual sf::Color getFillColor() const override { return (body_.front())->getFillColor(); }
+		void setFillColor(const sf::Color& color) override;
+		sf::Color getFillColor() const override;
 
-		virtual void setBorderColor(const sf::Color& color) override;
-		virtual sf::Color getBorderColor() const override { return (body_.front())->getOutlineColor(); }
+		void setBorderColor(const sf::Color& color) override;
+		sf::Color getBorderColor() const override;
 
-		virtual void setDirection(Direction dir) override;
+		void setDirection(Direction dir) override;
 
 		virtual void makeShot();
-		virtual void makeStep() override;
+		void makeStep() override;
 
 		virtual void turn(Direction dir);
 
-		const std::vector<Bullet*>& getBullets() { return bullets_; }
+		const std::vector<Bullet*>& getBullets() const;
 
-		virtual void outOfScreenEvent(const sf::RenderWindow& win) override;
+		void outOfScreenEvent(const sf::RenderWindow& win) override;
 
 		void deleteBullet(GameObject* bullet);
 
-		virtual void handleCollision(GameObject* obj) override;
+		void handleCollision(GameObject* obj) override;
 
 	protected:
-		std::array<sf::RectangleShape*, 6> body_;
+		std::array<sf::RectangleShape, 6> body_;
 		std::vector<Bullet*> bullets_;
 
 	private:
-		sf::Vector2f currPos_{};
+		sf::Vector2f currPos_;
 	};
 }

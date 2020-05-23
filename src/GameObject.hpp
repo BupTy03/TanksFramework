@@ -1,22 +1,21 @@
 #pragma once
 
+#include "signal.hpp"
 #include "GameTimer.hpp"
 #include "GameEventsManager.hpp"
-#include "signal.hpp"
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
-
-#include <memory>
 
 
 namespace tf
 {
 	class GameEventsManager;
 
-	struct GameObject
+	class GameObject
 	{
+	public:
 		enum class GameObjectType {
 			WALL, TANK, BULLET 
 		};
@@ -30,7 +29,7 @@ namespace tf
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(GameObject& other) = delete;
 
-		inline std::size_t getId(){ return id_; }
+		std::size_t getId() const;
 
 		void setGameEventsManager(GameEventsManager* manager);
 
@@ -46,29 +45,30 @@ namespace tf
 		virtual sf::Color getBorderColor() const = 0;
 
 		virtual sf::Vector2f getPosition() const = 0;
-		virtual void setPosition(sf::Vector2f pos) = 0;
+		virtual void setPosition(const sf::Vector2f& pos) = 0;
 
-		inline GameObjectType getType() const { return type_; }
+		GameObjectType getType() const;
 
-		inline void deleteLater() { deleted_ = true; }
-		inline bool isDeleted() const{ return deleted_; }
+		void deleteLater();
+		bool isDeleted() const;
 
-		virtual void keyEvent(sf::Keyboard::Key which){}
-		virtual void outOfScreenEvent(const sf::RenderWindow& win){}
+		virtual void keyEvent(sf::Keyboard::Key which) {}
+		virtual void outOfScreenEvent(const sf::RenderWindow& win) {}
 
 		virtual void handleCollision(GameObject*) {}
 
 		my::signal<GameObject*> onDelete;
 
 	protected:
-		GameEventsManager* getGameEventsManager() { return manager_; }
+		GameEventsManager* getGameEventsManager() const;
 
 	private:
 		static std::size_t counter_;
-		std::size_t id_{};
+
+		std::size_t id_;
 		const GameObjectType type_;
 		GameEventsManager* manager_;
-		bool deleted_{false};
+		bool deleted_;
 	};
 
 }

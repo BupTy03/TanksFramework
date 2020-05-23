@@ -1,9 +1,6 @@
 #include "Tank.hpp"
 #include "Wall.hpp"
 
-#include <iostream>
-#include <random>
-#include <chrono>
 #include <algorithm>
 #include <cassert>
 
@@ -11,44 +8,55 @@
 namespace tf
 {
 
-	Tank::Tank(float step, float sz, sf::Vector2f pos)
+	Tank::Tank(float step, float sz, const sf::Vector2f& pos)
 		: MovingGameObject(GameObjectType::TANK, step) 
+		, body_()
+		, bullets_()
+		, currPos_()
 	{
 		for(auto& segment : body_) {
-			segment = new sf::RectangleShape({sz, sz});
-			segment->setFillColor(sf::Color(23, 164, 113));
-			segment->setOutlineColor(sf::Color(31, 87, 67));
-			segment->setOutlineThickness(-sz / 9.f);
+			segment = sf::RectangleShape{sf::Vector2f{sz, sz}};
+			segment.setFillColor(sf::Color{23, 164, 113});
+			segment.setOutlineColor(sf::Color{31, 87, 67});
+			segment.setOutlineThickness(-sz / 9.f);
 		}
 
 		setPosition(pos);
 		turn(getDirection());
 	}
 
-	Tank::~Tank() 
-	{ 
-		for(auto sh : body_) { 
-			delete sh; 
-		}
-	}
-
 	void Tank::draw(sf::RenderWindow& win)
 	{
-		for(auto sh : body_) {
-			win.draw(*sh);
+		for(const auto& sh : body_) {
+			win.draw(sh);
 		}
 		for(auto bullet : bullets_) {
 			bullet->draw(win);
 		}
 	}
 
+	float Tank::getSize() const 
+	{ 
+		return (body_.front()).getSize().x; 
+	}
+
 	void Tank::setSize(float sz)
 	{
-		for(auto sh : body_) {
-			sh->setSize({sz, sz});
-			sh->setOutlineThickness(-sz / 9.f);
+		for(auto& sh : body_) {
+			sh.setSize({sz, sz});
+			sh.setOutlineThickness(-sz / 9.f);
 		}
 		turn(getDirection());
+	}
+
+	sf::Vector2f Tank::getPosition() const 
+	{ 
+		return currPos_;
+	}
+
+	void Tank::setPosition(const sf::Vector2f& pos) 
+	{ 
+		currPos_ = pos;
 	}
 
 	void Tank::turn(Direction dir)
@@ -56,38 +64,45 @@ namespace tf
 		const auto sz = getSize();
 		switch (dir) {
 		case Direction::FORWARD:
-			body_[0]->setPosition({currPos_.x + sz, currPos_.y});
-			body_[1]->setPosition({currPos_.x, currPos_.y + sz});
-			body_[2]->setPosition({currPos_.x + sz, currPos_.y + sz});
-			body_[3]->setPosition({currPos_.x + 2.f * sz, currPos_.y + sz});
-			body_[4]->setPosition({currPos_.x, currPos_.y + 2.f * sz});
-			body_[5]->setPosition({currPos_.x + 2.f * sz, currPos_.y + 2.f * sz});
+			body_[0].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y});
+			body_[1].setPosition(sf::Vector2f{currPos_.x, currPos_.y + sz});
+			body_[2].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y + sz});
+			body_[3].setPosition(sf::Vector2f{currPos_.x + 2.f * sz, currPos_.y + sz});
+			body_[4].setPosition(sf::Vector2f{currPos_.x, currPos_.y + 2.f * sz});
+			body_[5].setPosition(sf::Vector2f{currPos_.x + 2.f * sz, currPos_.y + 2.f * sz});
 			break;
 		case Direction::BACKWARD:
-			body_[0]->setPosition({currPos_.x, currPos_.y});
-			body_[1]->setPosition({currPos_.x + 2.f * sz, currPos_.y});
-			body_[2]->setPosition({currPos_.x, currPos_.y + sz});
-			body_[3]->setPosition({currPos_.x + sz, currPos_.y + sz});
-			body_[4]->setPosition({currPos_.x + 2.f * sz, currPos_.y + sz});
-			body_[5]->setPosition({currPos_.x + sz, currPos_.y + 2.f * sz});
+			body_[0].setPosition(sf::Vector2f{currPos_.x, currPos_.y});
+			body_[1].setPosition(sf::Vector2f{currPos_.x + 2.f * sz, currPos_.y});
+			body_[2].setPosition(sf::Vector2f{currPos_.x, currPos_.y + sz});
+			body_[3].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y + sz});
+			body_[4].setPosition(sf::Vector2f{currPos_.x + 2.f * sz, currPos_.y + sz});
+			body_[5].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y + 2.f * sz});
 			break;
 		case Direction::LEFT:
-			body_[0]->setPosition({currPos_.x + sz, currPos_.y});
-			body_[1]->setPosition({currPos_.x + 2.f * sz, currPos_.y});
-			body_[2]->setPosition({currPos_.x, currPos_.y + sz});
-			body_[3]->setPosition({currPos_.x + sz, currPos_.y + sz});
-			body_[4]->setPosition({currPos_.x + sz, currPos_.y + 2.f * sz});
-			body_[5]->setPosition({currPos_.x + 2.f * sz, currPos_.y + 2.f * sz});
+			body_[0].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y});
+			body_[1].setPosition(sf::Vector2f{currPos_.x + 2.f * sz, currPos_.y});
+			body_[2].setPosition(sf::Vector2f{currPos_.x, currPos_.y + sz});
+			body_[3].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y + sz});
+			body_[4].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y + 2.f * sz});
+			body_[5].setPosition(sf::Vector2f{currPos_.x + 2.f * sz, currPos_.y + 2.f * sz});
 			break;
 		case Direction::RIGHT:
-			body_[0]->setPosition({currPos_.x, currPos_.y});
-			body_[1]->setPosition({currPos_.x + sz, currPos_.y});
-			body_[2]->setPosition({currPos_.x + sz, currPos_.y + sz});
-			body_[3]->setPosition({currPos_.x + 2.f * sz, currPos_.y + sz});
-			body_[4]->setPosition({currPos_.x, currPos_.y + 2.f * sz});
-			body_[5]->setPosition({currPos_.x + sz, currPos_.y + 2.f * sz});
+			body_[0].setPosition(sf::Vector2f{currPos_.x, currPos_.y});
+			body_[1].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y});
+			body_[2].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y + sz});
+			body_[3].setPosition(sf::Vector2f{currPos_.x + 2.f * sz, currPos_.y + sz});
+			body_[4].setPosition(sf::Vector2f{currPos_.x, currPos_.y + 2.f * sz});
+			body_[5].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y + 2.f * sz});
+			break;
+		default:
 			break;
 		}
+	}
+
+	const std::vector<Bullet*>& Tank::getBullets() const
+	{ 
+		return bullets_; 
 	}
 
 	void Tank::setDirection(Direction dir)
@@ -107,27 +122,29 @@ namespace tf
 		switch (getDirection()) {
 			case Direction::FORWARD:
 				new_bullet = new Bullet(curr_step, curr_sz, {curr_pos.x + curr_step, curr_pos.y});
-				new_bullet->setFillColor(body_[0]->getFillColor());
-				new_bullet->setBorderColor(body_[0]->getOutlineColor());
+				new_bullet->setFillColor(body_[0].getFillColor());
+				new_bullet->setBorderColor(body_[0].getOutlineColor());
 				new_bullet->setDirection(Direction::FORWARD);
 				break;
 			case Direction::BACKWARD:
 				new_bullet = new Bullet(curr_step, curr_sz, {curr_pos.x + curr_step, curr_pos.y + 2.f * curr_sz});
-				new_bullet->setFillColor(body_[0]->getFillColor());
-				new_bullet->setBorderColor(body_[0]->getOutlineColor());
+				new_bullet->setFillColor(body_[0].getFillColor());
+				new_bullet->setBorderColor(body_[0].getOutlineColor());
 				new_bullet->setDirection(Direction::BACKWARD);
 				break;
 			case Direction::LEFT:
 				new_bullet = new Bullet(curr_step, curr_sz, {curr_pos.x, curr_pos.y + curr_sz});
-				new_bullet->setFillColor(body_[0]->getFillColor());
-				new_bullet->setBorderColor(body_[0]->getOutlineColor());
+				new_bullet->setFillColor(body_[0].getFillColor());
+				new_bullet->setBorderColor(body_[0].getOutlineColor());
 				new_bullet->setDirection(Direction::LEFT);
 				break;
 			case Direction::RIGHT:
 				new_bullet = new Bullet(curr_step, curr_sz, {curr_pos.x + 2.f * curr_sz, curr_pos.y + curr_sz});
-				new_bullet->setFillColor(body_[0]->getFillColor());
-				new_bullet->setBorderColor(body_[0]->getOutlineColor());
+				new_bullet->setFillColor(body_[0].getFillColor());
+				new_bullet->setBorderColor(body_[0].getOutlineColor());
 				new_bullet->setDirection(Direction::RIGHT);
+				break;
+			default:
 				break;
 		}
 
@@ -138,6 +155,7 @@ namespace tf
 		new_bullet->onDelete.connect(this, &Tank::deleteBullet);
 		bullets_.push_back(new_bullet);
 	}
+
 	void Tank::makeStep()
 	{
 		const auto ps = getPosition();
@@ -145,16 +163,18 @@ namespace tf
 		switch (getDirection())
 		{
 			case Direction::FORWARD:
-				setPosition({ps.x, ps.y - step});
+				setPosition(sf::Vector2f{ps.x, ps.y - step});
 				break;
 			case Direction::BACKWARD:
-				setPosition({ps.x, ps.y + step});
+				setPosition(sf::Vector2f{ps.x, ps.y + step});
 				break;
 			case Direction::LEFT:
-				setPosition({ps.x - step, ps.y});
+				setPosition(sf::Vector2f{ps.x - step, ps.y});
 				break;
 			case Direction::RIGHT:
-				setPosition({ps.x + step, ps.y});
+				setPosition(sf::Vector2f{ps.x + step, ps.y});
+				break;
+			default:
 				break;
 		}
 		turn(getDirection());
@@ -167,16 +187,18 @@ namespace tf
 		const auto win_sz = win.getSize();
 		switch (getDirection()) {
 			case Direction::FORWARD:
-				setPosition({curr_pos.x, win_sz.y - curr_sz});
+				setPosition(sf::Vector2f{curr_pos.x, win_sz.y - curr_sz});
 				break;
 			case Direction::BACKWARD:
-				setPosition({curr_pos.x, -2.f * curr_sz});
+				setPosition(sf::Vector2f{curr_pos.x, -2.f * curr_sz});
 				break;
 			case Direction::LEFT:
-				setPosition({win_sz.x - curr_sz, curr_pos.y});
+				setPosition(sf::Vector2f{win_sz.x - curr_sz, curr_pos.y});
 				break;
 			case Direction::RIGHT:
-				setPosition({-2.f * curr_sz, curr_pos.y});
+				setPosition(sf::Vector2f{-2.f * curr_sz, curr_pos.y});
+				break;
+			default:
 				break;
 		}
 		turn(getDirection());
@@ -193,22 +215,32 @@ namespace tf
 
 	void Tank::setFillColor(const sf::Color& color)
 	{
-		for(auto sh : body_) {
-			sh->setFillColor(color);
+		for(auto& sh : body_) {
+			sh.setFillColor(color);
 		}
 		for(auto b : bullets_) {
 			b->setFillColor(color);
 		}
 	}
 
+	sf::Color Tank::getFillColor() const 
+	{ 
+		return (body_.front()).getFillColor(); 
+	}
+
 	void Tank::setBorderColor(const sf::Color& color)
 	{
-		for(auto sh : body_) {
-			sh->setOutlineColor(color);
+		for(auto& sh : body_) {
+			sh.setOutlineColor(color);
 		}
 		for(auto b : bullets_) {
 			b->setBorderColor(color);
 		}
+	}
+
+	sf::Color Tank::getBorderColor() const 
+	{ 
+		return (body_.front()).getOutlineColor(); 
 	}
 
 	void Tank::handleCollision(GameObject* obj)
@@ -231,7 +263,7 @@ namespace tf
 				{bullet->getSize(), bullet->getSize()}
 			);
 			for(auto bodyRect : body_) {
-				if(bodyRect->getGlobalBounds()
+				if(bodyRect.getGlobalBounds()
 					.intersects(bulletGeomentryRect)) {
 						this->deleteLater();
 						bullet->deleteLater();
@@ -242,10 +274,10 @@ namespace tf
 			auto tank = dynamic_cast<Tank*>(obj);
 			assert(tank != nullptr && "tank ptr was null!");
 
-			for(auto thisBodyRect : body_) {
-				for(auto tankBodyRect : tank->body_) {
-					if(thisBodyRect->getGlobalBounds()
-						.intersects(tankBodyRect->getGlobalBounds())) {
+			for(const auto& thisBodyRect : body_) {
+				for(const auto& tankBodyRect : tank->body_) {
+					if(thisBodyRect.getGlobalBounds()
+						.intersects(tankBodyRect.getGlobalBounds())) {
 							this->deleteLater();
 							tank->deleteLater();
 							return;

@@ -12,9 +12,10 @@ namespace tf
 {
 	class GameObject;
 
-	struct GameEventsManager
+	class GameEventsManager
 	{
-		GameEventsManager(){}
+	public:
+		GameEventsManager() = default;
 		~GameEventsManager();
 
 		GameEventsManager(const GameEventsManager&) = delete;
@@ -32,8 +33,8 @@ namespace tf
 
 		void processEvents(sf::RenderWindow& window);
 
-		inline std::size_t countObjects(){ return objects_.size(); }
-		inline const std::vector<GameObject*>& getObjects() { return objects_; }
+		std::size_t countObjects() const;
+		const std::vector<GameObject*>& getObjects() const;
 
 	private:
 		std::vector<GameObject*> objects_;

@@ -1,4 +1,5 @@
 #pragma once
+
 #include "signal.hpp"
 
 #include <vector>
@@ -8,17 +9,18 @@
 
 namespace tf
 {
-	struct GameTimer;
+	class GameTimer;
 
-	struct GameTimersDispatcher
+	class GameTimersDispatcher
 	{
+	public:
 		friend class GameTimer;
 
 		static GameTimersDispatcher& Instance();
 		void dispatch();
 
 	private:
-		GameTimersDispatcher(){}
+		GameTimersDispatcher() = default;
 
 		GameTimersDispatcher(const GameTimersDispatcher&) = delete;
 		GameTimersDispatcher& operator=(const GameTimersDispatcher&) = delete;
@@ -31,14 +33,14 @@ namespace tf
 
 	private:
 		std::vector<GameTimer*> timers_;
-		static GameTimersDispatcher* instance_;
 	};
 
-	struct GameTimer
+	class GameTimer
 	{
-		explicit GameTimer() : id_{ timerId_++ } {}
-		explicit GameTimer(std::size_t msec) : id_{ timerId_++ } { start(msec);  }
-		virtual ~GameTimer() { if(!stopped_) (GameTimersDispatcher::Instance()).deleteTimer(*this); }
+	public:
+		GameTimer();
+		explicit GameTimer(std::chrono::milliseconds msec);
+		virtual ~GameTimer();
 
 		GameTimer(const GameTimer&) = delete;
 		GameTimer& operator=(const GameTimer&) = delete;
@@ -48,29 +50,29 @@ namespace tf
 
 		my::signal<> onTimerCall;
 
-		inline void start() { begin_time_ = std::chrono::steady_clock::now();  }
+		void start() { begin_time_ = std::chrono::steady_clock::now();  }
 		void start(std::size_t msec);
 		void start(std::chrono::milliseconds msec) { start(msec.count()); }
 		void stop();
 
-		inline void setInterval(std::size_t msec) { interval_ = msec; }
-		inline void setInterval(std::chrono::milliseconds msec) { setInterval(static_cast<std::size_t>(msec.count())); }
+		void setInterval(std::size_t msec) { interval_ = msec; }
+		void setInterval(std::chrono::milliseconds msec) { setInterval(static_cast<std::size_t>(msec.count())); }
 
-		inline void setSingleShot(bool sshot) { single_ = sshot; }
-		inline bool isSingleShot() { return single_; }
+		void setSingleShot(bool sshot) { single_ = sshot; }
+		bool isSingleShot() { return single_; }
 
-		inline bool isStopped() const { return stopped_; }
-		inline std::size_t interval() const { return interval_;  }
-		inline std::size_t timerId() const { return id_;  }
+		bool isStopped() const { return stopped_; }
+		std::size_t interval() const { return interval_;  }
+		std::size_t timerId() const { return id_;  }
 		std::size_t elapsed() const;
 
 	private:
 		std::chrono::steady_clock::time_point begin_time_;
 		std::chrono::steady_clock::time_point end_time_;
-		std::size_t interval_{};
-		bool single_{false};
-		bool stopped_{true};
-		std::size_t id_{};
+		std::size_t interval_;
+		bool single_;
+		bool stopped_;
+		std::size_t id_;
 		static std::size_t timerId_;
 	};
 }

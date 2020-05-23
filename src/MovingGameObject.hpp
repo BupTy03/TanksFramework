@@ -24,24 +24,24 @@ namespace tf
 		STOPPED,			
 	};
 
-	struct MovingGameObject : GameObject
+	class MovingGameObject : public GameObject
 	{
+	public:
 		explicit MovingGameObject(GameObjectType type, float step = 0.f);
-		virtual ~MovingGameObject(){}
 
 		virtual void makeStep() = 0;
 
-		inline float getStep() { return step_; }
-		virtual void setStep(float step) { step_ = step; }
+		float getStep() const;
+		virtual void setStep(float step);
 
-		inline Direction getDirection() { return dir_; }
-		virtual void setDirection(Direction dir) { dir_ = dir; }
+		Direction getDirection() const;
+		virtual void setDirection(Direction dir);
 
-		virtual void outOfScreenEvent(const sf::RenderWindow& win) override;
+		void outOfScreenEvent(const sf::RenderWindow& win) override;
 
 	private:
-		Direction dir_{};
-		float step_{};
+		Direction dir_;
+		float step_;
 	};
 
 }

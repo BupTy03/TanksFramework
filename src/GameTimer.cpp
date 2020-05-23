@@ -8,10 +8,8 @@ namespace tf
 
 	GameTimersDispatcher& GameTimersDispatcher::Instance()
 	{
-		if (instance_ == nullptr) {
-			instance_ = new GameTimersDispatcher();
-		}
-		return *instance_;
+		static GameTimersDispatcher instance_;
+		return instance_;
 	}
 
 	void GameTimersDispatcher::dispatch()
@@ -23,18 +21,42 @@ namespace tf
 					timer->stop();
 				}
 				else {
-				timer->start();
+					timer->start();
 				}
 			}
 		}
 	}
 
-	GameTimersDispatcher* GameTimersDispatcher::instance_ = nullptr;
-
 	//	end of GameTimersDispatcher
 
 
 	//	GameTimer
+
+	GameTimer::GameTimer()
+		: begin_time_{}
+		, end_time_{}
+		, interval_{0}
+		, single_{false}
+		, stopped_{true}
+		, id_{timerId_++}
+	{}
+
+	GameTimer::GameTimer(std::chrono::milliseconds msec)
+		: begin_time_{}
+		, end_time_{}
+		, interval_{0}
+		, single_{false}
+		, stopped_{true}
+		, id_{timerId_++}
+	{
+		start(msec);
+	}
+
+	GameTimer::~GameTimer() 
+	{ 
+		if(!stopped_) 
+			(GameTimersDispatcher::Instance()).deleteTimer(*this); 
+	}
 
 	void GameTimer::start(std::size_t msec)
 	{
