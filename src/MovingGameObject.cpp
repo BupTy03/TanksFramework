@@ -3,10 +3,10 @@
 
 namespace tf
 {
-	MovingGameObject::MovingGameObject(GameObjectType type, float step)
+	MovingGameObject::MovingGameObject(GameObjectType type)
 		: GameObject{type}
 		, dir_{Direction::FORWARD}
-		, step_{step} 
+		, step_{0} 
 	{}
 
 	float MovingGameObject::getStep() const

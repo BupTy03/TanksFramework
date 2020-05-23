@@ -8,10 +8,12 @@ namespace tf
 {
 
 	Bullet::Bullet(float step, float sz, const sf::Vector2f& pos)
-		: MovingGameObject(GameObjectType::BULLET, step)
+		: MovingGameObject(GameObjectType::BULLET)
 		, rectShape_{sf::Vector2f{sz, sz}}
-		, moveTimer_{} 
+		, moveTimer_()
 	{
+		setStep(step);
+
 		rectShape_.setPosition(pos);
 		rectShape_.setOutlineThickness(-sz / 9.f);
 		rectShape_.setFillColor(sf::Color{220, 20, 60});

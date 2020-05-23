@@ -14,11 +14,7 @@ namespace tf
 	class MainTank : public Tank
 	{
 	public:
-		explicit MainTank(
-			float step = 0.f, 
-			float sz = 0.f, 
-			const sf::Vector2f& pos = sf::Vector2f{0.f, 0.f}
-		);
+		MainTank();
 
 		void outOfScreenEvent(const sf::RenderWindow& win) override;
 		void keyEvent(sf::Keyboard::Key which) override;

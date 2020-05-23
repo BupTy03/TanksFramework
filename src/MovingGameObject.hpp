@@ -27,7 +27,7 @@ namespace tf
 	class MovingGameObject : public GameObject
 	{
 	public:
-		explicit MovingGameObject(GameObjectType type, float step = 0.f);
+		explicit MovingGameObject(GameObjectType type);
 
 		virtual void makeStep() = 0;
 

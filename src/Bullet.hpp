@@ -13,9 +13,9 @@ namespace tf
 	{
 	public:
 		explicit Bullet(
-			float step = 0.f, 
-			float sz = 0.f, 
-			const sf::Vector2f& pos = {0.f, 0.f}
+			float step, 
+			float sz, 
+			const sf::Vector2f& pos
 		);
 
 		void draw(sf::RenderWindow& win) override;

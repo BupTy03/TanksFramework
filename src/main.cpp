@@ -6,8 +6,6 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <memory>
-
 
 int main()
 {

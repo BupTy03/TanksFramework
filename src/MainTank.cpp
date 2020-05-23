@@ -5,9 +5,9 @@
 
 namespace tf
 {
-	MainTank::MainTank(float step, float sz, const sf::Vector2f& pos)
-		: Tank(step, sz, pos)
-		, moveTimer_{}
+	MainTank::MainTank()
+		: Tank()
+		, moveTimer_()
 	{ 
 		moveTimer_.onTimerCall.connect(dynamic_cast<Tank*>(this), &Tank::makeStep);
 		moveTimer_.start(1000);

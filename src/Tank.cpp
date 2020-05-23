@@ -8,20 +8,17 @@
 namespace tf
 {
 
-	Tank::Tank(float step, float sz, const sf::Vector2f& pos)
-		: MovingGameObject(GameObjectType::TANK, step) 
+	Tank::Tank()
+		: MovingGameObject{GameObjectType::TANK} 
 		, body_()
 		, bullets_()
 		, currPos_()
 	{
 		for(auto& segment : body_) {
-			segment = sf::RectangleShape{sf::Vector2f{sz, sz}};
 			segment.setFillColor(sf::Color{23, 164, 113});
 			segment.setOutlineColor(sf::Color{31, 87, 67});
-			segment.setOutlineThickness(-sz / 9.f);
 		}
 
-		setPosition(pos);
 		turn(getDirection());
 	}
 
@@ -43,7 +40,7 @@ namespace tf
 	void Tank::setSize(float sz)
 	{
 		for(auto& sh : body_) {
-			sh.setSize({sz, sz});
+			sh.setSize(sf::Vector2f{sz, sz});
 			sh.setOutlineThickness(-sz / 9.f);
 		}
 		turn(getDirection());
@@ -121,25 +118,25 @@ namespace tf
 
 		switch (getDirection()) {
 			case Direction::FORWARD:
-				new_bullet = new Bullet(curr_step, curr_sz, {curr_pos.x + curr_step, curr_pos.y});
+				new_bullet = new Bullet(curr_step, curr_sz, sf::Vector2f{curr_pos.x + curr_step, curr_pos.y});
 				new_bullet->setFillColor(body_[0].getFillColor());
 				new_bullet->setBorderColor(body_[0].getOutlineColor());
 				new_bullet->setDirection(Direction::FORWARD);
 				break;
 			case Direction::BACKWARD:
-				new_bullet = new Bullet(curr_step, curr_sz, {curr_pos.x + curr_step, curr_pos.y + 2.f * curr_sz});
+				new_bullet = new Bullet(curr_step, curr_sz, sf::Vector2f{curr_pos.x + curr_step, curr_pos.y + 2.f * curr_sz});
 				new_bullet->setFillColor(body_[0].getFillColor());
 				new_bullet->setBorderColor(body_[0].getOutlineColor());
 				new_bullet->setDirection(Direction::BACKWARD);
 				break;
 			case Direction::LEFT:
-				new_bullet = new Bullet(curr_step, curr_sz, {curr_pos.x, curr_pos.y + curr_sz});
+				new_bullet = new Bullet(curr_step, curr_sz, sf::Vector2f{curr_pos.x, curr_pos.y + curr_sz});
 				new_bullet->setFillColor(body_[0].getFillColor());
 				new_bullet->setBorderColor(body_[0].getOutlineColor());
 				new_bullet->setDirection(Direction::LEFT);
 				break;
 			case Direction::RIGHT:
-				new_bullet = new Bullet(curr_step, curr_sz, {curr_pos.x + 2.f * curr_sz, curr_pos.y + curr_sz});
+				new_bullet = new Bullet(curr_step, curr_sz, sf::Vector2f{curr_pos.x + 2.f * curr_sz, curr_pos.y + curr_sz});
 				new_bullet->setFillColor(body_[0].getFillColor());
 				new_bullet->setBorderColor(body_[0].getOutlineColor());
 				new_bullet->setDirection(Direction::RIGHT);
@@ -153,7 +150,7 @@ namespace tf
 		getGameEventsManager()->addGameObject(new_bullet);
 
 		new_bullet->onDelete.connect(this, &Tank::deleteBullet);
-		bullets_.push_back(new_bullet);
+		bullets_.emplace_back(new_bullet);
 	}
 
 	void Tank::makeStep()

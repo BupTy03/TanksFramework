@@ -14,11 +14,7 @@ namespace tf
 	class Tank : public MovingGameObject
 	{
 	public:
-		explicit Tank(
-			float step = 0.f, 
-			float sz = 0.f, 
-			const sf::Vector2f& pos = {0.f, 0.f}
-		);
+		Tank();
 
 		void draw(sf::RenderWindow& win) override;
 
