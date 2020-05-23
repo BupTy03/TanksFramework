@@ -29,25 +29,7 @@ namespace tf
 
 	void Bullet::makeStep()
 	{
-		const auto ps = getPosition();
-		const auto step = getStep();
-		switch (getDirection())
-		{
-			case Direction::FORWARD:
-				setPosition(sf::Vector2f{ps.x, ps.y - step});
-				break;
-			case Direction::BACKWARD:
-				setPosition(sf::Vector2f{ps.x, ps.y + step});
-				break;
-			case Direction::LEFT:
-				setPosition(sf::Vector2f{ps.x - step, ps.y});
-				break;
-			case Direction::RIGHT:
-				setPosition(sf::Vector2f{ps.x + step, ps.y});
-				break;
-			default:
-				break;
-		}
+		setPosition(getPosition() + getStep() * getDirection().ToVector2f());
 	}
 
 	float Bullet::getSize() const 

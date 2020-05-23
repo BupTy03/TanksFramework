@@ -1,5 +1,6 @@
 #include "Tank.hpp"
 #include "Wall.hpp"
+#include "Direction.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -56,44 +57,44 @@ namespace tf
 		currPos_ = pos;
 	}
 
-	void Tank::turn(Direction dir)
+	void Tank::turn(const Direction& dir)
 	{
 		const auto sz = getSize();
-		switch (dir) {
-		case Direction::FORWARD:
+		if(dir == Direction::forward())
+		{
 			body_[0].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y});
 			body_[1].setPosition(sf::Vector2f{currPos_.x, currPos_.y + sz});
 			body_[2].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y + sz});
 			body_[3].setPosition(sf::Vector2f{currPos_.x + 2.f * sz, currPos_.y + sz});
 			body_[4].setPosition(sf::Vector2f{currPos_.x, currPos_.y + 2.f * sz});
 			body_[5].setPosition(sf::Vector2f{currPos_.x + 2.f * sz, currPos_.y + 2.f * sz});
-			break;
-		case Direction::BACKWARD:
+		}
+		else if(dir == Direction::backward())
+		{
 			body_[0].setPosition(sf::Vector2f{currPos_.x, currPos_.y});
 			body_[1].setPosition(sf::Vector2f{currPos_.x + 2.f * sz, currPos_.y});
 			body_[2].setPosition(sf::Vector2f{currPos_.x, currPos_.y + sz});
 			body_[3].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y + sz});
 			body_[4].setPosition(sf::Vector2f{currPos_.x + 2.f * sz, currPos_.y + sz});
 			body_[5].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y + 2.f * sz});
-			break;
-		case Direction::LEFT:
+		}
+		else if(dir == Direction::left())
+		{
 			body_[0].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y});
 			body_[1].setPosition(sf::Vector2f{currPos_.x + 2.f * sz, currPos_.y});
 			body_[2].setPosition(sf::Vector2f{currPos_.x, currPos_.y + sz});
 			body_[3].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y + sz});
 			body_[4].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y + 2.f * sz});
 			body_[5].setPosition(sf::Vector2f{currPos_.x + 2.f * sz, currPos_.y + 2.f * sz});
-			break;
-		case Direction::RIGHT:
+		}
+		else if(dir == Direction::right())
+		{
 			body_[0].setPosition(sf::Vector2f{currPos_.x, currPos_.y});
 			body_[1].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y});
 			body_[2].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y + sz});
 			body_[3].setPosition(sf::Vector2f{currPos_.x + 2.f * sz, currPos_.y + sz});
 			body_[4].setPosition(sf::Vector2f{currPos_.x, currPos_.y + 2.f * sz});
 			body_[5].setPosition(sf::Vector2f{currPos_.x + sz, currPos_.y + 2.f * sz});
-			break;
-		default:
-			break;
 		}
 	}
 
@@ -102,7 +103,7 @@ namespace tf
 		return bullets_; 
 	}
 
-	void Tank::setDirection(Direction dir)
+	void Tank::setDirection(const Direction& dir)
 	{
 		MovingGameObject::setDirection(dir);
 		turn(dir);
@@ -110,70 +111,35 @@ namespace tf
 
 	void Tank::makeShot()
 	{
-		Bullet* new_bullet = nullptr;
+		Bullet* pNewBullet = nullptr;
 
 		const auto curr_pos = getPosition();
 		const auto curr_sz = getSize();
 		const auto curr_step = getStep();
 
-		switch (getDirection()) {
-			case Direction::FORWARD:
-				new_bullet = new Bullet(curr_step, curr_sz, sf::Vector2f{curr_pos.x + curr_step, curr_pos.y});
-				new_bullet->setFillColor(body_[0].getFillColor());
-				new_bullet->setBorderColor(body_[0].getOutlineColor());
-				new_bullet->setDirection(Direction::FORWARD);
-				break;
-			case Direction::BACKWARD:
-				new_bullet = new Bullet(curr_step, curr_sz, sf::Vector2f{curr_pos.x + curr_step, curr_pos.y + 2.f * curr_sz});
-				new_bullet->setFillColor(body_[0].getFillColor());
-				new_bullet->setBorderColor(body_[0].getOutlineColor());
-				new_bullet->setDirection(Direction::BACKWARD);
-				break;
-			case Direction::LEFT:
-				new_bullet = new Bullet(curr_step, curr_sz, sf::Vector2f{curr_pos.x, curr_pos.y + curr_sz});
-				new_bullet->setFillColor(body_[0].getFillColor());
-				new_bullet->setBorderColor(body_[0].getOutlineColor());
-				new_bullet->setDirection(Direction::LEFT);
-				break;
-			case Direction::RIGHT:
-				new_bullet = new Bullet(curr_step, curr_sz, sf::Vector2f{curr_pos.x + 2.f * curr_sz, curr_pos.y + curr_sz});
-				new_bullet->setFillColor(body_[0].getFillColor());
-				new_bullet->setBorderColor(body_[0].getOutlineColor());
-				new_bullet->setDirection(Direction::RIGHT);
-				break;
-			default:
-				break;
-		}
+		if(getDirection() == Direction::forward())
+			pNewBullet = new Bullet(curr_step, curr_sz, sf::Vector2f{curr_pos.x + curr_step, curr_pos.y});
+		else if(getDirection() == Direction::backward())
+			pNewBullet = new Bullet(curr_step, curr_sz, sf::Vector2f{curr_pos.x + curr_step, curr_pos.y + 2.f * curr_sz});
+		else if(getDirection() == Direction::left())
+			pNewBullet = new Bullet(curr_step, curr_sz, sf::Vector2f{curr_pos.x, curr_pos.y + curr_sz});
+		else if(getDirection() == Direction::right())
+			pNewBullet = new Bullet(curr_step, curr_sz, sf::Vector2f{curr_pos.x + 2.f * curr_sz, curr_pos.y + curr_sz});
 
-		if(new_bullet == nullptr) { return; }
+		if(pNewBullet == nullptr) 
+			return;
 
-		getGameEventsManager()->addGameObject(new_bullet);
-
-		new_bullet->onDelete.connect(this, &Tank::deleteBullet);
-		bullets_.emplace_back(new_bullet);
+		pNewBullet->setFillColor(body_[0].getFillColor());
+		pNewBullet->setBorderColor(body_[0].getOutlineColor());
+		pNewBullet->setDirection(getDirection());
+		pNewBullet->onDelete.connect(this, &Tank::deleteBullet);
+		getGameEventsManager()->addGameObject(pNewBullet);
+		bullets_.emplace_back(pNewBullet);
 	}
 
 	void Tank::makeStep()
 	{
-		const auto ps = getPosition();
-		const auto step = getStep();
-		switch (getDirection())
-		{
-			case Direction::FORWARD:
-				setPosition(sf::Vector2f{ps.x, ps.y - step});
-				break;
-			case Direction::BACKWARD:
-				setPosition(sf::Vector2f{ps.x, ps.y + step});
-				break;
-			case Direction::LEFT:
-				setPosition(sf::Vector2f{ps.x - step, ps.y});
-				break;
-			case Direction::RIGHT:
-				setPosition(sf::Vector2f{ps.x + step, ps.y});
-				break;
-			default:
-				break;
-		}
+		setPosition(getPosition() + getStep() * getDirection().ToVector2f());
 		turn(getDirection());
 	}
 
@@ -182,22 +148,16 @@ namespace tf
 		const auto curr_pos = getPosition();
 		const auto curr_sz = getSize();
 		const auto win_sz = win.getSize();
-		switch (getDirection()) {
-			case Direction::FORWARD:
-				setPosition(sf::Vector2f{curr_pos.x, win_sz.y - curr_sz});
-				break;
-			case Direction::BACKWARD:
-				setPosition(sf::Vector2f{curr_pos.x, -2.f * curr_sz});
-				break;
-			case Direction::LEFT:
-				setPosition(sf::Vector2f{win_sz.x - curr_sz, curr_pos.y});
-				break;
-			case Direction::RIGHT:
-				setPosition(sf::Vector2f{-2.f * curr_sz, curr_pos.y});
-				break;
-			default:
-				break;
-		}
+
+		if(getDirection() == Direction::forward())
+			setPosition(sf::Vector2f{curr_pos.x, win_sz.y - curr_sz});
+		else if(getDirection() == Direction::backward())
+			setPosition(sf::Vector2f{curr_pos.x, -2.f * curr_sz});
+		else if(getDirection() == Direction::left())
+			setPosition(sf::Vector2f{win_sz.x - curr_sz, curr_pos.y});
+		else if(getDirection() == Direction::right())
+			setPosition(sf::Vector2f{-2.f * curr_sz, curr_pos.y});
+		
 		turn(getDirection());
 	}
 

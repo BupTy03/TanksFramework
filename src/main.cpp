@@ -9,16 +9,16 @@
 
 int main()
 {
-	constexpr unsigned int window_width = 800u;
-	constexpr unsigned int width_in_cells = 20u;
+	constexpr auto window_width = 800;
+	constexpr auto width_in_cells = 20;
 
 	tf::Game game{"Tanks 2.0", window_width, width_in_cells};
 
-	for(unsigned int i = 0u; i < width_in_cells; ++i) {
-		for(unsigned int j = 0u; j < width_in_cells; ++j) {
-			if(i == 0u || j == 0u || i == width_in_cells - 1u || j == width_in_cells - 1u) {
-				if((i == 0u && j == 0u) || (i == width_in_cells - 1u && j == width_in_cells - 1u) ||
-					(i == 0u && j == width_in_cells - 1u) || (j == 0u && i == width_in_cells - 1u)) {
+	for(unsigned int i = 0; i < width_in_cells; ++i) {
+		for(unsigned int j = 0; j < width_in_cells; ++j) {
+			if(i == 0 || j == 0 || i == width_in_cells - 1 || j == width_in_cells - 1) {
+				if((i == 0 && j == 0) || (i == width_in_cells - 1 && j == width_in_cells - 1) ||
+					(i == 0 && j == width_in_cells - 1) || (j == 0 && i == width_in_cells - 1)) {
 					game.place(new tf::ArmoredWall(), sf::Vector2u{i, j});
 				}
 				else {

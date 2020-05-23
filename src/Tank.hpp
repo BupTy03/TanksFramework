@@ -30,12 +30,12 @@ namespace tf
 		void setBorderColor(const sf::Color& color) override;
 		sf::Color getBorderColor() const override;
 
-		void setDirection(Direction dir) override;
+		void setDirection(const Direction& dir) override;
 
 		virtual void makeShot();
 		void makeStep() override;
 
-		virtual void turn(Direction dir);
+		virtual void turn(const Direction& dir);
 
 		const std::vector<Bullet*>& getBullets() const;
 

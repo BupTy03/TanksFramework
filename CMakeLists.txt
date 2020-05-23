@@ -22,6 +22,7 @@ add_executable(${PROJECT_NAME}
 	./src/GameEventsManager.cpp 
 	./src/MainTank.cpp
 	./src/EnemyTank.cpp
+	./src/Direction.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} sfml-window sfml-graphics sfml-system)

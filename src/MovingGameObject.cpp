@@ -5,8 +5,8 @@ namespace tf
 {
 	MovingGameObject::MovingGameObject(GameObjectType type)
 		: GameObject{type}
-		, dir_{Direction::FORWARD}
-		, step_{0} 
+		, dir_{Direction::forward()}
+		, step_{0.f}
 	{}
 
 	float MovingGameObject::getStep() const
@@ -24,29 +24,13 @@ namespace tf
 		return dir_;
 	}
 
-	void MovingGameObject::setDirection(Direction dir) 
+	void MovingGameObject::setDirection(const Direction& dir) 
 	{ 
 		dir_ = dir;
 	}
 
 	void MovingGameObject::outOfScreenEvent(const sf::RenderWindow& win)
 	{
-		switch (dir_)
-		{
-		case Direction::FORWARD:
-			setDirection(Direction::BACKWARD);
-			break;
-		case Direction::BACKWARD:
-			setDirection(Direction::FORWARD);
-			break;
-		case Direction::LEFT:
-			setDirection(Direction::RIGHT);
-			break;
-		case Direction::RIGHT:
-			setDirection(Direction::LEFT);
-			break;
-		default:
-			break;
-		}
+		setDirection(getDirection().inversed());
 	}
 }

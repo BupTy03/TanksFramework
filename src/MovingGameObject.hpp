@@ -1,28 +1,17 @@
 #pragma once
 
-#include "GameObject.hpp"
+#include "Direction.hpp"
 #include "GameTimer.hpp"
+#include "GameObject.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include <random>
+#include <stdexcept>
 
 
 namespace tf
 {
-
-	enum class Direction
-	{
-		FORWARD,	
-		BACKWARD,	
-		LEFT,		
-		RIGHT, 			
-		FORWARD_LEFT, 	
-		FORWARD_RIGHT, 	
-		BACKWARD_LEFT, 	
-		BACKWARD_RIGHT, 	
-		STOPPED,			
-	};
 
 	class MovingGameObject : public GameObject
 	{
@@ -35,7 +24,7 @@ namespace tf
 		virtual void setStep(float step);
 
 		Direction getDirection() const;
-		virtual void setDirection(Direction dir);
+		virtual void setDirection(const Direction& dir);
 
 		void outOfScreenEvent(const sf::RenderWindow& win) override;
 

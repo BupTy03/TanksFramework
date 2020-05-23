@@ -20,22 +20,16 @@ namespace tf
 		const auto curr_pos = getPosition();
 		const auto curr_sz = getSize();
 		const auto win_sz = win.getSize();
-		switch (getDirection()) {
-			case Direction::FORWARD:
-				setPosition(sf::Vector2f{curr_pos.x, win_sz.y - curr_sz});
-				break;
-			case Direction::BACKWARD:
-				setPosition(sf::Vector2f{curr_pos.x, -2.f * curr_sz});
-				break;
-			case Direction::LEFT:
-				setPosition(sf::Vector2f{win_sz.x - curr_sz, curr_pos.y});
-				break;
-			case Direction::RIGHT:
-				setPosition(sf::Vector2f{-2.f * curr_sz, curr_pos.y});
-				break;
-			default: 
-				break;
-		}
+
+		if(getDirection() == Direction::forward())
+			setPosition(sf::Vector2f{curr_pos.x, win_sz.y - curr_sz});
+		else if(getDirection() == Direction::backward())
+			setPosition(sf::Vector2f{curr_pos.x, -2.f * curr_sz});
+		else if(getDirection() == Direction::left())
+			setPosition(sf::Vector2f{win_sz.x - curr_sz, curr_pos.y});
+		else if(getDirection() == Direction::right())
+			setPosition(sf::Vector2f{-2.f * curr_sz, curr_pos.y});
+
 		turn(getDirection());
 	}
 
@@ -44,16 +38,16 @@ namespace tf
 		switch (which)
 		{
 		case sf::Keyboard::Key::W:
-			setDirection(Direction::FORWARD);
+			setDirection(Direction::forward());
 			break;
 		case sf::Keyboard::Key::S:
-			setDirection(Direction::BACKWARD);
+			setDirection(Direction::backward());
 			break;
 		case sf::Keyboard::Key::A:
-			setDirection(Direction::LEFT);
+			setDirection(Direction::left());
 			break;
 		case sf::Keyboard::Key::D:
-			setDirection(Direction::RIGHT);
+			setDirection(Direction::right());
 			break;
 		case sf::Keyboard::Key::Space:
 			makeShot();

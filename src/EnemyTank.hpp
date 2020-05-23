@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GameTimer.hpp"
 #include "Tank.hpp"
 
 
@@ -12,7 +13,7 @@ namespace tf
 		EnemyTank();
 
 	private:
-		virtual void changeDir();
+		void changeDirection();
 	
 	private:
 		GameTimer moveTimer_;
